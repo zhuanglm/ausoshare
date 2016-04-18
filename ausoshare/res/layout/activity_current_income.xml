@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include
+        android:id="@+id/topbar"
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentTop="true"
+        layout="@layout/topbar"
+        />
+    <TextView
+        android:id="@+id/current_income_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/topbar"
+        android:background="@color/indianred"
+        android:text="你当前可提现金额为：CAD 0.00"
+        android:textColor="@color/white"
+        android:paddingBottom="@dimen/padding_size_top_bottom"
+        android:paddingTop="@dimen/padding_size_top_bottom"
+        android:paddingLeft="@dimen/padding_size_left_right"
+        android:paddingRight="@dimen/padding_size_left_right"
+        style="@style/margin_left_right"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        />
+
+    <TextView
+        android:id="@+id/top10_list_txt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/profile_top10_info_text"
+        android:layout_below="@+id/current_income_text"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="18dp"
+        android:layout_marginBottom="12dp"
+        android:textSize="@dimen/font_size_normal"
+        />
+
+
+    <ListView
+        android:id="@+id/top10_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/top10_list_txt"
+        android:layout_marginTop="@dimen/padding_size_top_bottom"
+        android:layout_marginLeft="@dimen/padding_size_top_bottom"
+        android:layout_marginRight="@dimen/padding_size_top_bottom"
+        android:layout_marginBottom="@dimen/padding_size_top_bottom"
+        >
+
+
+    </ListView>
+</RelativeLayout>

@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:visibility="gone"
+    >
+
+    <ImageView
+        android:id="@+id/yellow_page_ad_image"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:src="@drawable/yp_ad_image"
+        android:scaleType="fitXY"
+        android:visibility="invisible"
+        />
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/yellow_page_ad_image"
+        >
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:id="@+id/yp_life_service_first_layout"
+                style="@style/myProfileLayout"
+                >
+                <RelativeLayout
+                    android:id="@+id/yp_life_service_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:id="@+id/yp_life_service_image"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:gravity="center_vertical"
+                        android:src="@drawable/app_icon" />
+                    <TextView
+                        android:id="@+id/yp_life_service_tv"
+                        android:layout_toRightOf="@+id/yp_life_service_image"
+                        style="@style/myProfile"
+                        android:text="@string/yp_first_life_text" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/yp_life_service_second_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/yp_life_service_layout"
+                    android:visibility="gone"
+                    >
+
+                    <LinearLayout
+                        android:id="@+id/yp_life_second_one_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:orientation="horizontal"
+                        >
+                        <Button
+                            android:layout_width="0dp"
+                            android:layout_height="48dp"
+                            android:layout_weight="1"
+                            android:text="abc"
+                            />
+                        <Button
+                            android:layout_width="0dp"
+                            android:layout_height="48dp"
+                            android:layout_weight="1"
+                            android:text="edf"
+                            />
+                        <Button
+                            android:layout_width="0dp"
+                            android:layout_height="48dp"
+                            android:layout_weight="1"
+                            android:text="ddd"
+                            />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/yp_life_second_two_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:orientation="horizontal"
+                        android:layout_below="@+id/yp_life_second_one_layout"
+                        >
+                        <Button
+                            android:layout_width="0dp"
+                            android:layout_height="48dp"
+                            android:layout_weight="1"
+                            android:text="abc"
+                            />
+                        <Button
+                            android:layout_width="0dp"
+                            android:layout_height="48dp"
+                            android:layout_weight="1"
+                            android:text="edf"
+                            />
+                        <Button
+                            android:layout_width="0dp"
+                            android:layout_height="48dp"
+                            android:layout_weight="1"
+                            android:text="ddd"
+                            />
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/yg_real_estate_layout"
+                style="@style/myProfileLayout"
+                android:layout_below="@+id/yp_life_service_first_layout"
+                >
+                <ImageView
+                    android:id="@+id/yp_real_estate_image"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:gravity="center_vertical"
+                    android:src="@drawable/app_icon" />
+                <TextView
+                    android:id="@+id/yp_real_estate_tv"
+                    android:layout_toRightOf="@+id/yp_real_estate_image"
+                    style="@style/myProfile"
+                    android:text="@string/yp_first_real_estate_text" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/yp_vehicle_layout"
+                style="@style/myProfileLayout"
+                android:layout_below="@+id/yg_real_estate_layout"
+                >
+                <ImageView
+                    android:id="@+id/yp_vehicle_image"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:gravity="center_vertical"
+                    android:src="@drawable/app_icon" />
+                <TextView
+                    android:id="@+id/yp_vehicle_tv"
+                    android:layout_toRightOf="@+id/yp_vehicle_image"
+                    style="@style/myProfile"
+                    android:text="@string/yp_first_vehicle_text" />
+
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/yp_child_training_layout"
+                style="@style/myProfileLayout"
+                android:layout_below="@+id/yp_vehicle_layout"
+                >
+                <ImageView
+                    android:id="@+id/yp_child_training_image"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:gravity="center_vertical"
+                    android:src="@drawable/app_icon" />
+                <TextView
+                    android:id="@+id/yp_child_training_tv"
+                    android:layout_toRightOf="@+id/yp_child_training_image"
+                    style="@style/myProfile"
+                    android:text="@string/yp_first_education_text" />
+
+            </RelativeLayout>
+        </RelativeLayout>
+
+    </ScrollView>
+</RelativeLayout>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <ImageView
+        android:id="@+id/ad_image"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        android:src="@drawable/app_icon"
+        />
+    <TextView
+        android:id="@+id/ad_simple_des_tv"
+        android:layout_width="match_parent"
+        android:layout_height="72dp"
+        android:layout_toRightOf="@+id/ad_image"
+        android:layout_marginLeft="8dp"
+        android:text="@string/ad_simple_desc_text"
+        android:padding="4dp"
+        android:gravity="center_vertical"
+        android:background="@drawable/text_view_clicked"
+        />
+    
+  <!--   android:background="@color/detail_bg" -->
+
+    <ImageView
+        android:id="@+id/line_pattern"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:src="@drawable/line_pattern"
+        android:layout_below="@+id/ad_image"
+        android:scaleType="fitXY"
+        android:layout_marginTop="2dp"
+        android:visibility="gone"
+        />
+
+
+    <TextView
+        android:id="@+id/ad_total_fund_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:layout_below="@+id/ad_image"
+        android:text="广告金额：$300"
+        android:padding="4dp"
+        />
+    <TextView
+        android:id="@+id/ad_completed_progress_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:layout_below="@+id/ad_image"
+        android:layout_alignParentRight="true"
+        android:padding="4dp"
+        android:text="已分配56%"
+        />
+
+</RelativeLayout>

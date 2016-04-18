@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/popup_background">
+
+    <RelativeLayout
+        android:id="@+id/content_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp">
+
+        <TextView
+            android:id="@+id/alert_title"
+            style="@style/alertTextStyle"
+            android:text="@string/empty"
+            android:textSize="@dimen/font_size_big"
+            android:textStyle="bold"
+            android:textColor="@android:color/black"
+            android:gravity="center_horizontal"
+            android:padding="10dp"/>
+
+        <TextView
+            android:id="@+id/alert_message"
+            style="@style/alertTextStyle"
+            android:textSize="@dimen/font_size_normal"
+            android:layout_below="@+id/alert_title"
+            android:text="@string/empty"
+            android:textColor="@android:color/background_dark"
+            android:gravity="center_horizontal"
+            android:padding="10dp"/>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/Buttons_Layout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/content_layout"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <Button
+            android:id="@+id/alert_button_0"
+            style="@style/buttonStyle"
+            android:text="@string/button_ok"
+            android:textSize="@dimen/font_size_normal"
+            android:layout_height="48dp"
+            android:background="@drawable/btn_shape"
+            android:textStyle="bold"/>
+
+        <Button
+            android:id="@+id/alert_button_1"
+            style="@style/buttonStyle"
+            android:text="@string/button_cancel"
+            android:textSize="@dimen/font_size_normal"
+            android:layout_height="48dp"
+            android:background="@drawable/btn_shape"
+            android:textStyle="bold"/>
+    </LinearLayout>
+</RelativeLayout>

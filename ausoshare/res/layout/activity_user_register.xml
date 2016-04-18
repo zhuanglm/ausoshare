@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include
+        android:id="@+id/topbar"
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentTop="true"
+        layout="@layout/topbar"
+        />
+    
+    <TextView
+        android:id="@+id/register_email_prompt_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/topbar"
+        android:background="@color/indianred"
+        android:text="@string/register_email_prompt"
+        android:textColor="@color/white"
+        android:paddingBottom="@dimen/padding_size_top_bottom"
+        android:paddingTop="@dimen/padding_size_top_bottom"
+        android:paddingLeft="@dimen/padding_size_left_right"
+        android:paddingRight="@dimen/padding_size_left_right"
+        style="@style/margin_left_right"
+        android:layout_marginTop="6dp"
+        android:layout_marginBottom="2dp"
+        />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+    	android:layout_height="match_parent"
+    	android:layout_below="@+id/register_email_prompt_text"
+    	android:layout_marginTop="2dp"
+    	android:layout_marginLeft="16dp"
+    	android:layout_marginRight="16dp">
+    
+	    <EditText
+	        android:id="@+id/text_username"
+	        android:layout_width="match_parent"
+	        android:layout_height="@dimen/common_height_size"
+	        android:layout_marginTop="6dp"
+	        android:singleLine="true"
+	        android:imeOptions="actionNext"
+	        android:hint="@string/nick_name_text" />
+	
+	    <EditText
+	        android:id="@+id/text_register_email"
+	        android:layout_width="match_parent"
+	        android:layout_height="@dimen/common_height_size"
+	        android:layout_below="@+id/text_username"
+	        android:singleLine="true"
+	        android:imeOptions="actionNext"
+	        android:hint="@string/register_email_tv" />
+	
+	    <EditText
+	        android:id="@+id/text_password"
+	        android:layout_width="match_parent"
+	        android:layout_height="@dimen/common_height_size"
+	        android:layout_below="@+id/text_register_email"
+	        android:password="true"
+	        android:singleLine="true"
+	        android:imeOptions="actionNext"
+	        android:hint="@string/password_text" />
+	
+	    <EditText
+	        android:id="@+id/text_password_confirm"
+	        android:layout_width="match_parent"
+	        android:layout_height="@dimen/common_height_size"
+	        android:layout_below="@+id/text_password"
+	        android:password="true"
+	        android:singleLine="true"
+	        android:imeOptions="actionDone"
+	        android:hint="@string/confirm_password_text" />
+	
+	    <TextView
+	        android:id="@+id/text_gender"
+	        android:layout_width="match_parent"
+	        android:layout_height="@dimen/common_height_size"
+	        android:layout_below="@+id/text_password_confirm"
+	        android:visibility="gone"
+	        android:hint="@string/gender_text" />
+	
+	    <TextView
+	        android:id="@+id/text_birthday"
+	        android:layout_width="match_parent"
+	        android:layout_height="@dimen/common_height_size"
+	        android:layout_below="@+id/text_gender"
+	        android:visibility="gone"
+	        android:hint="@string/birthday_text" />
+
+	    <Button
+	        android:id="@+id/btn_register"
+	        android:layout_width="match_parent"
+	        android:layout_height="@dimen/common_height_size"
+	        android:layout_below="@+id/text_birthday"
+	        android:onClick="onRegisterButtonClicked"
+	        android:textColor="@color/white"
+	        android:layout_marginTop="@dimen/activity_vertical_margin"
+	        android:text="@string/confirm_button_text"
+	        android:textAllCaps="false"
+	        android:background="@drawable/btn_shape"
+	        />
+    </RelativeLayout>
+
+</RelativeLayout>

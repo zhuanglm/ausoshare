@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="4dp">
+
+    <RelativeLayout
+        android:id="@+id/contact_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible"
+        >
+
+        <RelativeLayout
+            android:id="@+id/contact_t_c_layout"
+            style="@style/myProfileLayout"
+            >
+
+            <ImageView
+                android:id="@+id/contact_t_c_image"
+                style="@style/image_setting"
+                android:src="@drawable/icon_contact_statement" />
+
+            <TextView
+                android:id="@+id/contact_t_c_tv"
+                style="@style/myProfile"
+                android:layout_toRightOf="@+id/contact_t_c_image"
+                android:text="@string/contact_t_c_text" 
+                />
+            
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/contact_incoming_rule_layout"
+            style="@style/myProfileLayout"
+            android:descendantFocusability="blocksDescendants"
+            android:background="@drawable/text_view_clicked"
+            android:layout_below="@+id/contact_t_c_layout">
+
+            <ImageView
+                android:id="@+id/contact_income_rule_image"
+                style="@style/image_setting"
+                android:src="@drawable/icon_contact_income_rule" />
+
+            <TextView
+                android:id="@+id/contact_income_rule_tv"
+                style="@style/myProfile"
+                android:layout_toRightOf="@+id/contact_income_rule_image"
+                android:text="@string/contact_incoming_rule_text" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/contact_withdraw_rule_layout"
+            style="@style/myProfileLayout"
+            android:layout_below="@+id/contact_incoming_rule_layout">
+
+            <ImageView
+                android:id="@+id/contact_withdraw_rule_image"
+                style="@style/image_setting"
+                android:src="@drawable/icon_contact_withdraw_rule" />
+
+            <TextView
+                android:id="@+id/contact_withdraw_rule_tv"
+                style="@style/myProfile"
+                android:layout_toRightOf="@+id/contact_withdraw_rule_image"
+                android:text="@string/contact_withdraw_rule_text" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/contact_company_introduction_layout"
+            style="@style/myProfileLayout"
+            android:layout_below="@+id/contact_withdraw_rule_layout">
+
+            <ImageView
+                android:id="@+id/contact_company_introduction_image"
+                style="@style/image_setting"
+                android:src="@drawable/icon_contact_company_introduction" />
+
+            <TextView
+                android:id="@+id/contact_company_introduction_tv"
+                style="@style/myProfile"
+                android:layout_toRightOf="@+id/contact_company_introduction_image"
+                android:text="@string/contact_company_introduction_text" />
+        </RelativeLayout>
+        
+        <RelativeLayout
+            android:id="@+id/contact_questions_answers_layout"
+            style="@style/myProfileLayout"
+            android:layout_below="@+id/contact_company_introduction_layout">
+
+            <ImageView
+                android:id="@+id/contact_questions_answers_image"
+                style="@style/image_setting"
+                android:src="@drawable/icon_contact_questions_answers" />
+
+            <TextView
+                android:id="@+id/contact_questions_answers_tv"
+                style="@style/myProfile"
+                android:layout_toRightOf="@+id/contact_questions_answers_image"
+                android:text="@string/contact_questions_answers_text" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/contact_customer_layout"
+            style="@style/myProfileLayout"
+            android:layout_below="@+id/contact_questions_answers_layout">
+
+            <ImageView
+                android:id="@+id/contact_customer_image"
+                style="@style/image_setting"
+                android:src="@drawable/icon_contact_operator" />
+
+            <TextView
+                android:id="@+id/contact_customer_tv"
+                style="@style/myProfile"
+                android:layout_toRightOf="@+id/contact_customer_image"
+                android:text="@string/contact_customer_text" />
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+
+
+</RelativeLayout>

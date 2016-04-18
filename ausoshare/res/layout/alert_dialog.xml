@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"    
+    android:layout_width="match_parent"    
+    android:layout_height="match_parent"    
+    android:layout_gravity="center"
+    android:background="@drawable/alert_shape_bg"
+    >     <!-- 顶部椭园边缘 -->
+    <!-- <ImageView        
+        android:layout_width="400dp"        
+        android:layout_height="22dp"  -->       
+        >
+        <!-- android:src="@drawable/dialog_top"  -->
+   <!--  </ImageView> -->
+    <!-- 中间白色背景,两个TextView,标题和内容,留一个LinearLayout,在代码中根据调用动态加上按钮 -->
+    <!-- android:background="@drawable/dialog_center"  -->
+    <LinearLayout        
+        android:layout_width="400dp"        
+        android:layout_height="wrap_content"        
+        android:orientation="vertical" >         
+        <TextView android:textColor="#000000"            
+            android:textSize="@dimen/font_size_big"            
+            android:gravity="center"            
+            android:id="@+id/alert_title"            
+            android:layout_width="fill_parent"            
+            android:layout_height="wrap_content" 
+            android:textStyle="bold"
+            android:padding="10dp"
+            />         
+        <TextView 
+            android:id="@+id/alert_message" 
+            android:gravity="center"                    
+            android:layout_marginBottom="10dp"            
+            android:layout_marginTop="20dp"            
+            android:textColor="#000000"            
+            android:textSize="@dimen/font_size_normal"            
+            android:layout_width="fill_parent"            
+            android:layout_height="wrap_content" 
+            android:padding="10dp"/>
+        <!-- 在LinearLayout中加按钮 -->
+        <LinearLayout            
+            android:id="@+id/buttonLayout"            
+            android:layout_width="fill_parent"            
+            android:layout_height="fill_parent"            
+            android:layout_gravity="center"            
+            android:gravity="center"            
+            android:orientation="horizontal" 
+            android:padding="10dp"
+            >         
+        </LinearLayout>
+    </LinearLayout>
+    <!-- 底部椭园边缘 -->
+  <!--   <ImageView        
+        android:layout_marginTop="-2dp"        
+        android:layout_width="400dp"        
+        android:layout_height="22dp"        
+         > -->
+        <!-- android:src="@drawable/dialog_bottom" -->
+    <!-- </ImageView>  -->
+</RelativeLayout>

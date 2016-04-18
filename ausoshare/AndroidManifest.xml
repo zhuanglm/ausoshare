@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.auroratechdevelopment.ausoshare"
+    android:versionCode="26"
+    android:versionName="1.0.8.3" >
+
+    <uses-permission android:name="android.permission.INTERNET" />      <!-- allow to open internet sockets -->
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>  <!-- mount and unmount file related permission -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />   <!-- allow to read/write external storage, such as SDcard -->
+   <!--  <uses-permission android:name="android.permission.RESTART_PACKAGES" />   --> <!-- restart the other app -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />   <!-- allow to access network -->
+   <!--  <uses-permission android:name="myapp.permission.MAPS_RECEIVE" />   -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />  <!-- allow to get location from cellID or WIFI -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />    <!-- allow to get exact location from GPS -->
+   <!--  <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />  -->
+    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS"/>   <!-- allow to get extra location -->
+    
+    <uses-permission android:name="android.permission.PERMISSION.INSTALL_LOCATION_PROVIDER"/>  <!-- download and install related permission -->
+    <uses-permission android:name="android.permission.DOWNLOAD_WITHOUT_NOTIFICATION" />        <!-- download and install related permission -->
+    
+<!--     <uses-feature
+        android:glEsVersion="0x00020000"
+        android:required="true" /> -->
+    
+    <uses-feature 
+        android:name="android.hardware.telephony" 
+        android:required="false" />
+    
+    <uses-sdk
+        android:minSdkVersion="9"
+        android:targetSdkVersion="21" />
+
+	<supports-screens
+        android:anyDensity="true"
+        android:largeScreens="true"
+        android:normalScreens="true"
+        android:smallScreens="true" />
+    
+    
+    <application
+        android:name=".CustomApplication"
+        android:allowBackup="true"
+        android:icon="@drawable/app_icon"
+        android:label="@string/app_name"
+        android:theme="@style/Theme.Rc_mobile"
+        >
+        <!--android:theme="@style/Theme.Rc_mobile"-->
+<!---->
+        <uses-library android:name="com.google.android.maps" />
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="7895000"       
+		/>
+
+        <!-- knupro API test key -->
+        <meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="AIzaSyCgRqfqH0Hx0oFYZ6WHBnNsAwY31rxOFJo" />
+
+        <activity
+            android:name=".ui.startup.SplashActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+        </activity>
+
+        <activity
+            android:name=".ui.home.HomeActivity"
+            android:label="@string/title_infinity_cellphone"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustUnspecified"></activity>
+
+        <activity android:name=".ui.login.LoginActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".ui.login.RegisterActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".ui.contact.ContactURLActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".ui.profile.UpdateUserProfileActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ui.profile.UpdateProfileActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".ui.profile.CurrentIncomeActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".ui.profile.ForwardedAdHistoryActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".ui.home.PrepareShareAdActivity"
+            android:screenOrientation="portrait"/>
+        
+        <activity android:name=".ui.startup.FirstTimeUseGuideActivity"
+            android:screenOrientation="portrait"/>
+        
+        <activity 
+            android:name=".ui.profile.ProfileURLActivity"
+            android:screenOrientation="portrait"
+            ></activity>
+        
+        <activity 
+            android:name=".ui.entertainment.PrepareShareEntertainmentActivity"
+            android:screenOrientation="portrait"
+            ></activity>
+
+      <!--   <supports-screens
+            android:smallScreens="true"
+            android:normalScreens="true"
+            android:largeScreens="true"
+            android:resizeable="true"
+            android:anyDensity="true" /> -->
+            
+        <service 
+            android:name="com.auroratechdevelopment.common.util.UpdateService"
+            android:enabled="true"
+            >
+        </service>
+
+    </application>
+
+</manifest>

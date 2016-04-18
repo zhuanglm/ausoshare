@@ -1,0 +1,46 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.auroratechdevelopment.ausomedia.MainActivity">
+
+
+    <!--<com.astuetz.PagerSlidingTabStrip-->
+        <!--android:id="@+id/tabs"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="48dip"-->
+        <!--android:background="@drawable/background_tabs" />-->
+
+    <!--android:layout_below="@+id/tabs"-->
+    <include
+        android:id="@+id/topbar"
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentTop="true"
+        layout="@layout/topbar"
+        />
+
+    <com.auroratechdevelopment.common.ui.ViewPagerEx
+        android:id="@+id/pager"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/line_image"
+        android:layout_below="@+id/topbar"
+        tools:context=".MainActivity" />
+
+    <ImageView
+        android:id="@+id/line_image"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_above="@+id/bottombar"
+        android:background="@drawable/line_pattern"
+        />
+
+    <include
+        android:id="@+id/bottombar"
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        layout="@layout/bottombar" />
+
+</RelativeLayout>

@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="4dp">
+
+
+    <RelativeLayout
+        android:id="@+id/login_out_profile_layout"
+        style="@style/myProfileLayout"
+        >
+        <ImageView
+            android:id="@+id/login_out_image_thumb"
+            style="@style/image_setting"
+            android:src="@drawable/icon_mine_login_out" />
+        <TextView
+            android:id="@+id/login_out_profile_text"
+            android:layout_toRightOf="@+id/login_out_image_thumb"
+            style="@style/myProfile"
+            android:text="@string/my_log_in" />
+    </RelativeLayout>
+    
+    <RelativeLayout
+        android:id="@+id/user_profile_layout"
+        style="@style/myProfileLayout"
+        android:layout_below="@+id/login_out_profile_layout"
+        >
+        <ImageView
+            android:id="@+id/user_image_thumb"
+            style="@style/image_setting"
+            android:src="@drawable/icon_mine_update_profile" />
+        <TextView
+            android:id="@+id/user_profile_text"
+            android:layout_toRightOf="@+id/user_image_thumb"
+            style="@style/myProfile"
+            android:text="@string/my_update_profile" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/my_current_income_layout"
+        android:layout_below="@+id/user_profile_layout"
+        style="@style/myProfileLayout"
+        >
+
+        <ImageView
+            android:id="@+id/my_current_income_image"
+            style="@style/image_setting"
+            android:src="@drawable/icon_mine_current_income" />
+        <TextView
+            android:id="@+id/my_current_income_tv"
+            android:layout_toRightOf="@+id/my_current_income_image"
+            style="@style/myProfile"
+            android:text="@string/my_current_income" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/my_forwarded_ad_tv_layout"
+        android:layout_below="@+id/my_current_income_layout"
+        style="@style/myProfileLayout"
+        >
+
+        <ImageView
+            android:id="@+id/my_forwarded_ad_image"
+            style="@style/image_setting"
+            android:src="@drawable/icon_mine_forwarded_ad" />
+        <TextView
+            android:id="@+id/my_forwarded_ad_tv"
+            android:layout_toRightOf="@+id/my_forwarded_ad_image"
+            style="@style/myProfile"
+            android:text="@string/my_forwarded_ad" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/my_incoming_record_layout"
+        android:layout_below="@+id/my_forwarded_ad_tv_layout"
+        android:visibility="gone"
+        style="@style/myProfileLayout">
+        <ImageView
+            android:id="@+id/my_incoming_record_image"
+            style="@style/image_setting"
+            android:src="@drawable/icon_mine_withdraw_record" />
+        <TextView
+            android:id="@+id/my_incoming_record_tv"
+            android:layout_toRightOf="@+id/my_incoming_record_image"
+            style="@style/myProfile"
+            android:text="@string/my_incoming_record" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/my_withdraw_record_layout"
+        android:layout_below="@+id/my_incoming_record_layout"
+        style="@style/myProfileLayout">
+
+        <ImageView
+            android:id="@+id/my_withdraw_record_image"
+            style="@style/image_setting"
+            android:src="@drawable/icon_mine_withdraw_record" />
+        <TextView
+            android:id="@+id/my_withdraw_record_tv"
+            android:layout_toRightOf="@+id/my_withdraw_record_image"
+            style="@style/myProfile"
+            android:text="@string/my_withdraw_record" />
+    </RelativeLayout>
+    
+    <RelativeLayout
+        android:id="@+id/my_withdraw_request_layout"
+        android:layout_below="@+id/my_withdraw_record_layout"
+        android:layout_marginTop="10dp"
+        style="@style/myProfileLayout">
+
+        <ImageView
+            android:id="@+id/my_withdraw_request_image"
+            style="@style/image_setting"
+            android:src="@drawable/icon_mine_withdraw_request" />
+        <TextView
+            android:id="@+id/my_withdraw_request_tv"
+            android:layout_toRightOf="@+id/my_withdraw_request_image"
+            style="@style/myProfile"
+            android:text="@string/my_withdraw_request" />
+    </RelativeLayout>
+
+</RelativeLayout>

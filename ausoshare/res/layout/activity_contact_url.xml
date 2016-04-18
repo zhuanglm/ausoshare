@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include
+        android:id="@+id/topbar"
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentTop="true"
+        layout="@layout/topbar"
+        />
+   <!--  <WebView
+        android:id="@+id/contact_url_webview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/contact_confirm_btn"
+        android:layout_below="@+id/topbar"
+        android:layout_marginBottom="4dp"
+        >
+    </WebView> -->
+
+    <FrameLayout
+    	android:id="@+id/layoutWebView"
+    	android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/contact_confirm_btn"
+        android:layout_below="@+id/topbar"
+        android:layout_marginBottom="4dp"
+    />
+
+    <Button
+        android:id="@+id/contact_confirm_btn"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:background="@drawable/btn_shape"
+        android:text="@string/confirm_button_text"
+        android:textColor="@color/white"
+        android:textSize="@dimen/font_size_normal"
+        android:visibility="gone"
+        />
+</RelativeLayout>

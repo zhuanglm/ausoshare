@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/colors"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:layout_alignParentBottom="true"
+    android:background="@color/white"
+    android:orientation="horizontal">
+
+    <ImageButton
+        android:id="@+id/bottomtab_home"
+        android:layout_width="0dip"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@null"
+        android:contentDescription="@string/empty"
+        android:onClick="onBottombarItemClicked"
+        android:padding="5dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/bottombar_share_selector"
+        android:tag="0" />
+
+    <ImageButton 
+        android:id="@+id/bottomtab_entertainment"
+        android:layout_width="0dip"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@null"
+        android:contentDescription="@string/empty"
+        android:onClick="onBottombarItemClicked"
+        android:padding="5dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/bottombar_entertainment_selector"
+        android:tag="0" />
+        />
+    <ImageButton
+        android:id="@+id/bottomtab_yellow_page"
+        android:layout_width="0dip"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@null"
+        android:contentDescription="@string/empty"
+        android:onClick="onBottombarItemClicked"
+        android:padding="5dp"
+        android:src="@drawable/bottombar_yellow_page_selector"
+        android:scaleType="fitCenter"
+        android:tag="2"
+        android:visibility="gone" />
+
+    <ImageButton
+        android:id="@+id/bottomtab_contact"
+        android:layout_width="0dip"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:scaleType="fitCenter"
+        android:background="@null"
+        android:contentDescription="@string/empty"
+        android:onClick="onBottombarItemClicked"
+        android:padding="5dp"
+        android:src="@drawable/bottombar_contact_selector"
+        android:tag="3" />
+
+    <ImageButton
+        android:id="@+id/bottomtab_profile"
+        android:layout_width="0dip"
+        android:scaleType="fitCenter"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@null"
+        android:contentDescription="@string/empty"
+        android:onClick="onBottombarItemClicked"
+        android:padding="5dp"
+        android:src="@drawable/bottombar_mine_selector"
+        android:tag="4" />
+
+</LinearLayout>
