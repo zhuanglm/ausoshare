@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import com.auroratechdevelopment.ausoshare.CustomApplication;
 import com.auroratechdevelopment.ausoshare.R;
 import com.auroratechdevelopment.ausoshare.ui.contact.ContactURLActivity;
+import com.auroratechdevelopment.ausoshare.ui.ext.LineProgress;
 import com.auroratechdevelopment.ausoshare.ui.home.HomeActivity.HomeAdListUpdated;
 import com.auroratechdevelopment.ausoshare.ui.home.HomeActivity.HomeEntertainmentListUpdated;
 import com.auroratechdevelopment.ausoshare.ui.login.LoginActivity;
@@ -86,7 +87,8 @@ public class HomeFragment extends HomeFragmentBase  implements
         if(CustomApplication.getInstance().getSharedADTime()>=3){
         	forwardMethodText.setVisibility(View.GONE);
         }
-
+        
+        
         list = (ListView) rootView.findViewById(R.id.valid_ad_list); 
         list.setEmptyView(rootView.findViewById(R.id.empty_list));
 

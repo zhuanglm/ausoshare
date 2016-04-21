@@ -160,6 +160,11 @@
     <string name="login_test_email">cs@ausoshare.com</string>
     <string name="login_test_password">1234</string>
     
-    
+     <!-- ad list -->
+    <string name="ui_bonus">奖金：$</string>
+    <string name="ui_income">现金收益：$</string>
+    <string name="ui_location">投放地点：Richmond Hill</string>
+    <string name="ui_shared">63人已转发</string>
+    <string name="ui_progress">进度：50%</string>
     
 </resources>

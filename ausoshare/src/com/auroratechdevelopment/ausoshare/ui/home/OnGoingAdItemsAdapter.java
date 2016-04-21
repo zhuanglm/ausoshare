@@ -17,11 +17,13 @@ import com.auroratechdevelopment.ausoshare.R;
 import com.auroratechdevelopment.common.util.ImageService;
 import com.auroratechdevelopment.common.webservice.models.AdDataItem;
 import com.auroratechdevelopment.common.webservice.models.OnGoingAdItem;
+import com.auroratechdevelopment.ausoshare.ui.ext.LineProgress;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by Edward Liu on 2015/11/1.
@@ -92,12 +94,17 @@ public class OnGoingAdItemsAdapter extends BaseAdapter{
 	            final AdDataItem item = list.get(position);
 	
 	            if(convertView == null){
-	                convertView = inflater.inflate(R.layout.fragment_home_valid_ad_list_item, null);
+	                convertView = inflater.inflate(R.layout.fragment_home_valid_ad_list_item_v2, null);
 	                holder = new ViewHolder();
 	                holder.thumb = (ImageView)convertView.findViewById(R.id.ad_image);
 	                holder.adSimpleDesTv = (TextView)convertView.findViewById(R.id.ad_simple_des_tv);
-	                holder.adTotalADFundTv = (TextView)convertView.findViewById(R.id.ad_total_fund_tv);
+	                //holder.adTotalADFundTv = (TextView)convertView.findViewById(R.id.ad_total_fund_tv);
 	                holder.adCompletedProgressTv = (TextView)convertView.findViewById(R.id.ad_completed_progress_tv);
+	                holder.click_ad_Progress = (LineProgress)convertView.findViewById(R.id.ad_progress);
+	                holder.click_ad_Progress.setRoundEdge(true);
+	                holder.click_ad_Progress.setShadow(true);
+	                
+	                
 	
 	                convertView.setTag(holder);
 	            }else{
@@ -119,13 +126,16 @@ public class OnGoingAdItemsAdapter extends BaseAdapter{
 	
 	                //ad description
 	                holder.adSimpleDesTv.setText(item.description);
+	                
+	                //holder.click_ad_Progress.setProgress(Integer.parseInt(item.completedPercentage) );
+	                holder.click_ad_Progress.setProgress(new Random().nextInt(100));
 	
 	                //ad total Ad Funds
-	                holder.adTotalADFundTv.setText(context.getResources().getString(R.string.ongoing_total_ad_funds) + item.totalAdFunds);
+	                //holder.adTotalADFundTv.setText(context.getResources().getString(R.string.ongoing_total_ad_funds) + item.totalAdFunds);
 	
 	                //ad completed progress
-	                holder.adCompletedProgressTv.setText(context.getResources().getString(R.string.ongoing_ad_completed_percentage)+
-	                        item.completedPercentage + context.getResources().getString(R.string.ongoing_ad_completed_percentage_suffix));
+	                //holder.adCompletedProgressTv.setText(context.getResources().getString(R.string.ongoing_ad_completed_percentage)+
+	                        //item.completedPercentage + context.getResources().getString(R.string.ongoing_ad_completed_percentage_suffix));
 	
 	                CustomApplication.getInstance().setSharedAdUrl(item.shareURL);
 //	                CustomApplication.getInstance().setSharedAdThumb(item.thumb);
@@ -158,7 +168,8 @@ public class OnGoingAdItemsAdapter extends BaseAdapter{
         int iTag;
         ImageView thumb;
         TextView adSimpleDesTv;
-        TextView adTotalADFundTv;
+        //TextView adTotalADFundTv;
         TextView adCompletedProgressTv;
+        LineProgress click_ad_Progress;
     }
 }
