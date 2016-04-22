@@ -16,6 +16,8 @@ import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TabHost;
+import android.widget.TabHost.TabSpec;
 import android.widget.TextView;
 
 import com.auroratechdevelopment.ausoshare.CustomApplication;
@@ -53,9 +55,10 @@ public class EntertainmentFragment extends HomeFragmentBase  implements
 	SwipeRefreshLayout.OnRefreshListener,
 	HomeActivity.HomeEntertainmentListUpdated
 	{
-		private ListView list;
+		private ListView list1,list2;
+		
 		private EntertainmentItemsAdapter adapter;
-		protected SwipeRefreshLayout swipeRefreshlayout;
+		protected SwipeRefreshLayout swipeRefreshlayout1,swipeRefreshlayout2;
 		private int startNumber = 0;
 		private static final String KEY_ADS = "ENTERTAINMENT";
 		
@@ -79,18 +82,57 @@ public class EntertainmentFragment extends HomeFragmentBase  implements
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) { 	
 		startNumber = 0;
-	    View rootView = inflater.inflate(R.layout.fragment_home_entertainment, container, false);
+	    View rootView = inflater.inflate(R.layout.fragment_home_entertainment_v2, container, false);
+	    TabHost tabs = (TabHost) rootView.findViewById(android.R.id.tabhost);
+	    tabs.setup(); 
+	    
+	    TabSpec tabSpec = tabs.newTabSpec("page1");
+        tabSpec.setIndicator("page 1");
+        tabSpec.setContent(R.id.tab1);
+        tabs.addTab(tabSpec);
+        
+        tabSpec = tabs.newTabSpec("page2");
+        tabSpec.setIndicator("page 2");
+        tabSpec.setContent(R.id.tab2);
+        tabs.addTab(tabSpec);
 	   	    
+        tabSpec = tabs.newTabSpec("page3");
+        tabSpec.setIndicator("page 3");
+        tabSpec.setContent(R.id.tab3);
+        tabs.addTab(tabSpec);
+        
 	    int abt = CustomApplication.getInstance().getSharedADTime();
 	
-	    list = (ListView) rootView.findViewById(R.id.valid_entertainment_list);
-        list.setEmptyView(rootView.findViewById(R.id.empty_list));
+	    list1 = (ListView) rootView.findViewById(R.id.valid_entertainment_list1);
+        list1.setEmptyView(rootView.findViewById(R.id.empty_list1));
+        list2 = (ListView) rootView.findViewById(R.id.valid_entertainment_list2);
+        list2.setEmptyView(rootView.findViewById(R.id.empty_list2));
 
-	    list.setOnScrollListener(new AbsListView.OnScrollListener() {
+	    list1.setOnScrollListener(new AbsListView.OnScrollListener() {
 	    	@Override
 	    	public void onScrollStateChanged(AbsListView view, int scrollState) {
 	    		if (scrollState == SCROLL_STATE_IDLE) {
-	    			if (list.getLastVisiblePosition() >= list.getCount() - 1 - 0) {
+	    			if (list1.getLastVisiblePosition() >= list1.getCount() - 1 - 0) {
+
+//                    startNumber = startNumber + Constants.ADS_PAGE_SIZE;
+	    				if(startNumber%Constants.ADS_PAGE_SIZE == 0){
+	    					getNewEntertainments(startNumber);
+	    				}
+	    			}
+	    		}
+	    	}
+
+        @Override
+        public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+
+        }
+    });
+	    
+	    list2.setOnScrollListener(new AbsListView.OnScrollListener() {
+	    	@Override
+	    	public void onScrollStateChanged(AbsListView view, int scrollState) {
+	    		if (scrollState == SCROLL_STATE_IDLE) {
+	    			if (list2.getLastVisiblePosition() >= list2.getCount() - 1 - 0) {
 
 //                    startNumber = startNumber + Constants.ADS_PAGE_SIZE;
 	    				if(startNumber%Constants.ADS_PAGE_SIZE == 0){
@@ -110,20 +152,47 @@ public class EntertainmentFragment extends HomeFragmentBase  implements
     adapter = new EntertainmentItemsAdapter(this.getActivity(),new ArrayList<AdDataItem>());
 //    adapter.clearList();
     adapter.setListener(this);
-    list.setAdapter(adapter);
+    list1.setAdapter(adapter);
+    list2.setAdapter(adapter);
 
-    swipeRefreshlayout = (SwipeRefreshLayout)rootView.findViewById(R.id.swipe_container_ad);
-    swipeRefreshlayout.setColorScheme(android.R.color.holo_purple);
-    swipeRefreshlayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+    swipeRefreshlayout1 = (SwipeRefreshLayout)rootView.findViewById(R.id.swipe_container_ad1);
+    //swipeRefreshlayout.setColorScheme(android.R.color.holo_purple);
+    swipeRefreshlayout1.setColorSchemeResources(android.R.color.holo_blue_bright,
+            android.R.color.holo_green_light, android.R.color.holo_orange_light,
+            android.R.color.holo_red_light);
+    
+    swipeRefreshlayout2 = (SwipeRefreshLayout)rootView.findViewById(R.id.swipe_container_ad2);
+    swipeRefreshlayout2.setColorSchemeResources(android.R.color.holo_blue_bright,
+            android.R.color.holo_green_light, android.R.color.holo_orange_light,
+            android.R.color.holo_red_light);
+    swipeRefreshlayout1.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
 		
 		@Override
 		public void onRefresh() {
 			// TODO Auto-generated method stub
-			swipeRefreshlayout.setRefreshing(true);
+			swipeRefreshlayout1.setRefreshing(true);
             (new Handler()).postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                	swipeRefreshlayout.setRefreshing(false);
+                	swipeRefreshlayout1.setRefreshing(false);
+                	startNumber = 0;
+                    getNewEntertainments(startNumber);
+                    adapter.clearList();
+                }
+            }, 2000);
+		}
+	});
+    
+    swipeRefreshlayout2.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+		
+		@Override
+		public void onRefresh() {
+			// TODO Auto-generated method stub
+			swipeRefreshlayout2.setRefreshing(true);
+            (new Handler()).postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                	swipeRefreshlayout2.setRefreshing(false);
                 	startNumber = 0;
                     getNewEntertainments(startNumber);
                     adapter.clearList();

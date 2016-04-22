@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <TabHost
+        android:id="@android:id/tabhost"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
+
+            <TabWidget
+                android:id="@android:id/tabs"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="11" >
+
+            </TabWidget>
+
+            <FrameLayout
+                android:id="@android:id/tabcontent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1" >
+
+                <RelativeLayout
+                    android:id="@+id/tab1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" 
+                    >
+                    
+                    <android.support.v4.widget.SwipeRefreshLayout
+				        android:id="@+id/swipe_container_ad1"
+				        android:layout_width="match_parent"
+				        android:layout_height="match_parent"
+				        android:layout_marginBottom="4dp" >
+				
+				        <ListView
+				            android:id="@+id/valid_entertainment_list1"
+				            android:layout_width="match_parent"
+				            android:layout_height="match_parent"
+				            android:layout_marginBottom="8dp"
+				            android:padding="4dp"
+				            android:visibility="visible" >
+				        </ListView>
+				    </android.support.v4.widget.SwipeRefreshLayout>
+				
+				    <TextView
+				        android:id="@+id/empty_list1"
+				        android:layout_width="wrap_content"
+				        android:layout_height="wrap_content"
+				        android:layout_centerInParent="true"
+				        android:gravity="center"
+				        android:text="@string/empty_list_entertainment"
+				        android:textColor="@android:color/darker_gray"
+				        android:textSize="22sp"
+				        android:visibility="visible" />
+                    
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/tab2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" 
+                    >
+				    
+                    <android.support.v4.widget.SwipeRefreshLayout
+				        android:id="@+id/swipe_container_ad2"
+				        android:layout_width="match_parent"
+				        android:layout_height="match_parent"
+				        android:layout_marginBottom="4dp" >
+				
+				        <ListView
+				            android:id="@+id/valid_entertainment_list2"
+				            android:layout_width="match_parent"
+				            android:layout_height="match_parent"
+				            android:layout_marginBottom="8dp"
+				            android:padding="4dp"
+				            android:visibility="visible" >
+				        </ListView>
+				    </android.support.v4.widget.SwipeRefreshLayout>
+				
+				    <TextView
+				        android:id="@+id/empty_list2"
+				        android:layout_width="wrap_content"
+				        android:layout_height="wrap_content"
+				        android:layout_centerInParent="true"
+				        android:gravity="center"
+				        android:text="@string/empty_list_entertainment"
+				        android:textColor="@android:color/darker_gray"
+				        android:textSize="22sp"
+				        android:visibility="visible" />
+                    
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/tab3"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    >
+				    
+                    <android.support.v4.widget.SwipeRefreshLayout
+				        android:id="@+id/swipe_container_ad3"
+				        android:layout_width="match_parent"
+				        android:layout_height="match_parent"
+				        android:layout_marginBottom="4dp" >
+				
+				        <ListView
+				            android:id="@+id/valid_entertainment_list3"
+				            android:layout_width="match_parent"
+				            android:layout_height="match_parent"
+				            android:layout_marginBottom="8dp"
+				            android:padding="4dp"
+				            android:visibility="visible" >
+				        </ListView>
+				    </android.support.v4.widget.SwipeRefreshLayout>
+				
+				    <TextView
+				        android:id="@+id/empty_list3"
+				        android:layout_width="wrap_content"
+				        android:layout_height="wrap_content"
+				        android:layout_centerInParent="true"
+				        android:gravity="center"
+				        android:text="@string/empty_list_entertainment"
+				        android:textColor="@android:color/darker_gray"
+				        android:textSize="22sp"
+				        android:visibility="visible" />
+                    
+                </RelativeLayout>
+            </FrameLayout>
+        </LinearLayout>
+    </TabHost>
+
+</RelativeLayout>

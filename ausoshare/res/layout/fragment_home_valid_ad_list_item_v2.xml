@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
+
+    <ImageView
+        android:id="@+id/ad_image"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        android:src="@drawable/app_icon"
+        />
+    
+  <!--   android:background="@color/detail_bg" -->
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="75dp"
+        android:layout_toRightOf="@+id/ad_image"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/ad_simple_des_tv"
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="2"
+            android:background="@drawable/text_view_clicked"
+            android:gravity="center_vertical"
+            android:padding="4dp"
+            android:text="@string/ad_simple_desc_text" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="7" >
+
+            <TextView
+                android:id="@+id/b_title_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|start"
+                android:text="@string/ui_bonus" />
+            
+             <TextView
+                 android:id="@+id/b_value_tv"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_gravity="center|start"
+                 android:layout_marginLeft="10dp"
+                 android:text="1000.00"
+                 android:textColor="@color/red" />
+             
+              <TextView
+                  android:id="@+id/i_title_tv"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_gravity="center|start"
+                  android:layout_marginLeft="20dp"
+                  android:text="@string/ui_income" />
+              
+               <TextView
+                   android:id="@+id/i_value_tv"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_gravity="center|start"
+                   android:layout_marginLeft="10dp"
+                   android:text="0.2"
+                   android:textColor="@color/red" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/line_pattern"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:src="@drawable/line_pattern"
+        android:layout_below="@+id/ad_image"
+        android:scaleType="fitXY"
+        android:layout_marginTop="2dp"
+        android:visibility="gone"
+        />
+
+    <com.auroratechdevelopment.ausoshare.ui.ext.LineProgress
+        android:id="@+id/ad_progress"
+        android:layout_width="match_parent"
+        android:layout_height="15dp"
+        android:layout_below="@id/line_pattern"
+        android:layout_marginTop="8dp"
+        android:paddingLeft="0dp"
+        app:background_color="#9e9e9e"
+        app:background_stroke_width="2dp"
+        app:progress="0"
+        app:progress_color="@color/progress_colorPrimary"
+        app:stroke_width="3dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/ad_info"
+        android:layout_below="@id/ad_progress" >
+
+        <TextView
+            android:id="@+id/ad_location_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="4dp"
+            android:text="@string/ui_location" />
+
+        <TextView
+            android:id="@+id/ad_completed_progress_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_weight="1"
+            android:padding="4dp"
+            android:text="@string/ui_shared" />
+
+    </LinearLayout>
+    
+    
+    
+</RelativeLayout>

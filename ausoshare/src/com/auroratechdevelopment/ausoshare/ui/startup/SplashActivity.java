@@ -10,15 +10,26 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.DisplayMetrics;
+import android.view.GestureDetector;
+import android.view.GestureDetector.OnGestureListener;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
+import android.widget.LinearLayout;
 import android.widget.Toast;
+import android.widget.ViewFlipper;
 
 import java.util.Locale;
 
 import com.auroratechdevelopment.ausoshare.CustomApplication;
 import com.auroratechdevelopment.ausoshare.R;
 import com.auroratechdevelopment.ausoshare.ui.ActivityBase;
+import com.auroratechdevelopment.ausoshare.ui.ext.MyViewFilpper;
+import com.auroratechdevelopment.ausoshare.ui.ext.MyViewFilpper.OnDisplayChagnedListener;
 import com.auroratechdevelopment.ausoshare.ui.home.HomeActivity;
 import com.auroratechdevelopment.ausoshare.ui.login.LoginActivity;
 import com.auroratechdevelopment.ausoshare.util.AppLocationService;
@@ -28,30 +39,70 @@ import com.auroratechdevelopment.common.ViewUtils;
 import com.auroratechdevelopment.common.util.LoadNetPicture;
 import com.auroratechdevelopment.common.webservice.WebServiceConstants;
 
-public class SplashActivity extends Activity {
+public class SplashActivity extends Activity implements OnGestureListener,OnDisplayChagnedListener{
 
     public static final int SPLASH_SECOND = 2;
     boolean isNotFirstTime = true;
     private AppLocationService appLocationService;
-    private ImageView splashAdImage;
+    private ImageView splashAdImage1,splashAdImage2;
     public CheckNetworkStatus checkNetworkStatus;
+    
+    private MyViewFilpper img_vf = null;
+    private ImageView[] indicators;
+    LinearLayout pointLayout = null;
+    private GestureDetector detector;
+    private int nPages = 2;
+    private int m_currentImg = 0;
+    private ImageButton m_BtnSkip;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        splashAdImage = (ImageView)findViewById(R.id.splash_ad_image);
+        //splashAdImage = (ImageView)findViewById(R.id.splash_ad_image);
+        detector = new GestureDetector(this);
+        img_vf = (MyViewFilpper)this.findViewById(R.id.splash_img_vf);
+        splashAdImage1 = new ImageView(this);
+        splashAdImage2 = new ImageView(this);
+        img_vf.addView(splashAdImage1);
+        img_vf.addView(splashAdImage2);
+        pointLayout = (LinearLayout) findViewById(R.id.point_layout);
+        m_BtnSkip = (ImageButton) findViewById(R.id.button_skip);
         
+        m_BtnSkip.setOnClickListener(new OnClickListener() 
+        { 
+			@Override
+			public void onClick(View v) {
+				finish();
+                showHomeOrLogin();
+				
+			} 
+        }); 
         
         checkNetworkStatus = new CheckNetworkStatus(this);
 
         if (checkNetworkStatus.getNetworkStatus()) {
-        	splashAdImage.setScaleType(ScaleType.FIT_CENTER);
-        	new LoadNetPicture().getPicture(WebServiceConstants.splashAdImageURL, splashAdImage);
+        	splashAdImage1.setScaleType(ScaleType.FIT_CENTER);
+        	new LoadNetPicture().getPicture(WebServiceConstants.splashAdImageURL, splashAdImage1);
+        	splashAdImage2.setScaleType(ScaleType.CENTER_INSIDE);
+        	splashAdImage2.setImageDrawable(getResources().getDrawable(R.drawable.splash_share));
+        	
+        	indicators = new ImageView[nPages];
+            for(int i = 0; i< nPages;i++) {
+            	indicators[i] = (ImageView) pointLayout.getChildAt(i);
+            	indicators[i].setEnabled(false);
+            	indicators[i].setTag(i);
+                }
+            indicators[0].setEnabled(true);//初始，第0个img的属性Enable为true
+            
+            img_vf.setOnDisplayChagnedListener(this);
+            img_vf.setAutoStart(true);
+            
+                       
         }else{
-        	splashAdImage.setScaleType(ScaleType.CENTER_INSIDE);
-        	splashAdImage.setImageDrawable(getResources().getDrawable(R.drawable.splash_share));
+        	splashAdImage1.setScaleType(ScaleType.CENTER_INSIDE);
+        	splashAdImage1.setImageDrawable(getResources().getDrawable(R.drawable.splash_share));
         }
 
         isNotFirstTime = CustomApplication.getInstance().getNotFirstTimeUse();
@@ -60,7 +111,7 @@ public class SplashActivity extends Activity {
         
         
         //is not the first time, means from the second times
-//        if(isNotFirstTime){
+        if(isNotFirstTime){
         	new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -68,12 +119,12 @@ public class SplashActivity extends Activity {
                     showHomeOrLogin();
                 }
             }, SPLASH_SECOND * 1000);
-//        }
+        }
         //is the first time
-//        else{
-//        	CustomApplication.getInstance().setNotFirstTimeUse(true);
-//        	showFirstTimeUseGuide();
-//        }
+        else{
+        	CustomApplication.getInstance().setNotFirstTimeUse(true);
+        	//showFirstTimeUseGuide();
+        }
 
     }
     
@@ -131,5 +182,95 @@ public class SplashActivity extends Activity {
 
 
     }
+    
+    public boolean onTouchEvent(MotionEvent event) {
+        return detector.onTouchEvent(event);
+    }
+
+	@Override
+	public boolean onDown(MotionEvent e) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void onShowPress(MotionEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public boolean onSingleTapUp(MotionEvent e) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void onLongPress(MotionEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+		
+		img_vf.setAutoStart(false);
+		if (e1.getX() - e2.getX() > 120) { 
+            if(img_vf.getDisplayedChild() == nPages-1){//如果滑动到最后
+                   img_vf.stopFlipping();                                   //停止切换
+                   return false;
+            }else{
+
+                   //向右切换时，视图进和出的动画
+
+                    img_vf.setInAnimation(getApplicationContext(), R.anim.right_in);
+                    img_vf.setOutAnimation(getApplicationContext(), R.anim.left_out);
+                    ViewChange(img_vf.getDisplayedChild()+1);
+                     img_vf.showNext(); 
+            }
+          return true;
+		} 
+		else if (e1.getX() - e2.getX() < -120) {  
+          if(img_vf.getDisplayedChild() == 0){//如果向前滑动到第一个
+                 img_vf.stopFlipping();                    //停止切换
+               return false;
+          }else{
+
+                  //向左切换时，视图进和出的动画
+
+                 img_vf.setInAnimation(getApplicationContext(), R.anim.left_in);
+                 img_vf.setOutAnimation(getApplicationContext(), R.anim.right_out);
+                  ViewChange(img_vf.getDisplayedChild()-1);
+                  img_vf.showPrevious();     
+          }
+         return true;
+		}
+		return false;
+	}
+	
+	public void  ViewChange(int position) {
+        if(position < 0 || position > nPages -1 || m_currentImg == position) {
+                     return;
+          }
+        indicators[m_currentImg].setEnabled(false);//当前的属性改为false
+        indicators[position].setEnabled(true);//要切换过去的img属性改为true
+        m_currentImg = position;
+	}
+
+	@Override
+	public void OnDisplayChildChanging(ViewFlipper view, int index) {
+		indicators[m_currentImg].setEnabled(false);//当前的属性改为false
+        indicators[index].setEnabled(true);//要切换过去的img属性改为true
+        m_currentImg = index;
+		
+	}
+
+	
 
 }
