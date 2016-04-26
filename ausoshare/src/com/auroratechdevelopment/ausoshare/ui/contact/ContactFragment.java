@@ -34,6 +34,7 @@ import org.w3c.dom.Text;
 
 /**
  * Created by Edward Liu on 2015/11/10.
+ * Updated by Raymond Zhuang 2016/4/26
  */
 public class ContactFragment extends HomeFragmentBase implements View.OnClickListener {
     private TextView contactTCText, contactIncomeRuleText, contactWithdrawRuleText, contactCompanyIntroductionText, contactCustomerText, contactQuestionsAnswersText;
@@ -50,7 +51,7 @@ public class ContactFragment extends HomeFragmentBase implements View.OnClickLis
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View rootView = inflater.inflate(R.layout.fragment_contact, container,
+        View rootView = inflater.inflate(R.layout.fragment_contact_v2, container,
                 false);
         
         contactTCText = (TextView) rootView.findViewById(R.id.contact_t_c_tv);

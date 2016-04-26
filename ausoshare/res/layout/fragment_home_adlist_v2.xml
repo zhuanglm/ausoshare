@@ -45,7 +45,7 @@
         android:paddingRight="15dp" >
 
         <ImageView
-            android:id="@+id/imageView1"
+            android:id="@+id/img_bk"
             android:layout_width="64dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
