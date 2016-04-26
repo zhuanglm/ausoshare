@@ -105,7 +105,7 @@ public class Constants {
     
     public static final String LOGIN_PAGE_FROM_AD_PREPARE_SHARE="ad_prepare_share";
     public static final String LOGIN_PAGE_FROM_LOGIN="my_login";
-    
+       
     public static final String FIRST_TIME_USE ="com.app.first_time_use";
     
     public static final String SHARED_AD_ID = "com.app.shared_ad_id";

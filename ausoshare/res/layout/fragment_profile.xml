@@ -5,6 +5,7 @@
     android:padding="4dp">
 
 
+    
     <RelativeLayout
         android:id="@+id/login_out_profile_layout"
         style="@style/myProfileLayout"
@@ -18,6 +19,7 @@
             android:layout_toRightOf="@+id/login_out_image_thumb"
             style="@style/myProfile"
             android:text="@string/my_log_in" />
+
     </RelativeLayout>
     
     <RelativeLayout
@@ -118,5 +120,7 @@
             style="@style/myProfile"
             android:text="@string/my_withdraw_request" />
     </RelativeLayout>
+
+    
 
 </RelativeLayout>

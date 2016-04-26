@@ -12,6 +12,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.InputMethodManager;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -44,15 +46,18 @@ import org.w3c.dom.Text;
 
 /**
  * Created by happy pan on 2015/10/30.
+ * Updated by Raymond Zhuang 2016/4/25
  */
 public class ProfileFragment extends HomeFragmentBase implements 
     View.OnClickListener, 
     HomeActivity.HomeWithdrawUpdated
     {
     private RelativeLayout userProfileLayout;
-    private ImageView loginOutImageThumb,userImageThumb,myCurrentIncomeImage,myForwardedAdImage,myWithdrawRecordImage, myWithdrawRequestImage;
-    private TextView loginOutProfileText,userProfileText,myCurrentIncomeText,myForwardedAdText,myWithdrawRecordText,myWithdrawRequestText;
-
+    //private ImageView loginOutImageThumb,userImageThumb,myCurrentIncomeImage,myForwardedAdImage,myWithdrawRecordImage, myWithdrawRequestImage;
+    //private TextView loginOutProfileText,userProfileText,myCurrentIncomeText,myForwardedAdText,myWithdrawRecordText,myWithdrawRequestText;
+    private TextView m_tv_username,m_tv_asset,m_leaderboard;
+    private Button m_btn_logout,m_btn_shared,m_btn_withdraw_history,m_btn_withdraw_request;
+    private ImageButton m_btn_profile;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -63,10 +68,10 @@ public class ProfileFragment extends HomeFragmentBase implements
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View rootView = inflater.inflate(R.layout.fragment_profile, container,
+        View rootView = inflater.inflate(R.layout.fragment_profile_v2, container,
                 false);
 
-        userProfileLayout = (RelativeLayout)rootView.findViewById(R.id.user_profile_layout);
+        /*userProfileLayout = (RelativeLayout)rootView.findViewById(R.id.user_profile_layout);
         
         loginOutImageThumb = (ImageView)rootView.findViewById(R.id.login_out_image_thumb);
         loginOutProfileText = (TextView)rootView.findViewById(R.id.login_out_profile_text);
@@ -94,10 +99,10 @@ public class ProfileFragment extends HomeFragmentBase implements
         myForwardedAdImage.setOnClickListener(this);
         myWithdrawRecordImage.setOnClickListener(this);
         userProfileLayout.setOnClickListener(this);
-        myWithdrawRequestImage.setOnClickListener(this);
-        
+        myWithdrawRequestImage.setOnClickListener(this);*/
+                
         Intent loginIntent = getActivity().getIntent();
-        boolean login_status_flag = loginIntent.getBooleanExtra(Constants.LOGIN_STATUS, false);
+        /*boolean login_status_flag = loginIntent.getBooleanExtra(Constants.LOGIN_STATUS, false);
     	if(login_status_flag){
     		loginOutProfileText.setText(getResources().getString(R.string.my_log_out));
         }
@@ -110,7 +115,25 @@ public class ProfileFragment extends HomeFragmentBase implements
         	loginOutProfileText.setText(getResources().getString(R.string.my_log_out));
         }else{
         	loginOutProfileText.setText(getResources().getString(R.string.my_log_in));
-        }
+        }*/
+        
+        //for v2
+        m_tv_username = (TextView)rootView.findViewById(R.id.user_name_tV);
+        m_tv_asset = (TextView)rootView.findViewById(R.id.asset_tV);
+        m_leaderboard = (TextView)rootView.findViewById(R.id.leaderboard_tV);
+        m_tv_username.setText(CustomApplication.getInstance().getUsername());
+        m_leaderboard.setOnClickListener(this);
+        
+        m_btn_logout=(Button)rootView.findViewById(R.id.button_logout);
+        m_btn_profile=(ImageButton)rootView.findViewById(R.id.button_profile);
+        m_btn_shared=(Button)rootView.findViewById(R.id.button_shared_history);
+        m_btn_withdraw_history=(Button)rootView.findViewById(R.id.button_withdraw_history);
+        m_btn_withdraw_request=(Button)rootView.findViewById(R.id.button_withdraw_request);
+        m_btn_logout.setOnClickListener(this);
+        m_btn_profile.setOnClickListener(this);
+        m_btn_shared.setOnClickListener(this);
+        m_btn_withdraw_history.setOnClickListener(this);
+        m_btn_withdraw_request.setOnClickListener(this);
 
         return rootView;
     }
@@ -119,6 +142,11 @@ public class ProfileFragment extends HomeFragmentBase implements
     @Override
     public void onClick(View view){
         switch (view.getId()){
+        	case R.id.button_logout:
+        		Logout_transferToHome();
+        		
+        		break;
+        		
 	        case R.id.login_out_image_thumb:
 	        case R.id.login_out_profile_text:
 	        	if(CustomApplication.getInstance().getEmail().equalsIgnoreCase("")){
@@ -131,6 +159,7 @@ public class ProfileFragment extends HomeFragmentBase implements
             case R.id.user_profile_layout:
             case R.id.user_image_thumb:
             case R.id.user_profile_text:
+            case R.id.button_profile:
             	if(CustomApplication.getInstance().getEmail().equalsIgnoreCase("")){
             		ViewUtils.startPage(null, getActivity(), LoginActivity.class);
 //            		getActivity().finish();
@@ -141,6 +170,7 @@ public class ProfileFragment extends HomeFragmentBase implements
                 break;
             case R.id.my_current_income_tv:
             case R.id.my_current_income_image:
+            case R.id.leaderboard_tV:
             	if(CustomApplication.getInstance().getEmail().equalsIgnoreCase("")){
             		ViewUtils.startPage(null, getActivity(), LoginActivity.class);
 //            		getActivity().finish();
@@ -151,6 +181,7 @@ public class ProfileFragment extends HomeFragmentBase implements
                 break;
             case R.id.my_forwarded_ad_tv:
             case R.id.my_forwarded_ad_image:
+            case R.id.button_shared_history:
             	if(CustomApplication.getInstance().getEmail().equalsIgnoreCase("")){
             		ViewUtils.startPage(null, getActivity(), LoginActivity.class);
 //            		getActivity().finish();
@@ -161,6 +192,7 @@ public class ProfileFragment extends HomeFragmentBase implements
                 break;
             case R.id.my_withdraw_record_tv:
             case R.id.my_withdraw_record_image:
+            case R.id.button_withdraw_history:
             	if(CustomApplication.getInstance().getEmail().equalsIgnoreCase("")){
             		ViewUtils.startPage(null, getActivity(), LoginActivity.class);
 //            		getActivity().finish();
@@ -171,6 +203,7 @@ public class ProfileFragment extends HomeFragmentBase implements
                 break;
             case R.id.my_withdraw_request_tv:
             case R.id.my_withdraw_request_image:
+            case R.id.button_withdraw_request:
             	if(CustomApplication.getInstance().getEmail().equalsIgnoreCase("")){
             		ViewUtils.startPage(null, getActivity(), LoginActivity.class);
 //            		getActivity().finish();
@@ -188,7 +221,38 @@ public class ProfileFragment extends HomeFragmentBase implements
         bundle.putString(Constants.LAST_PAGE, Constants.LOGIN_PAGE_FROM_LOGIN);
         
     	ViewUtils.startPage(bundle, getActivity(), LoginActivity.class);
-//		getActivity().finish();
+
+    }
+    
+    private void Logout_transferToHome(){
+    	final EdwardAlertDialog ad = new EdwardAlertDialog(getActivity());
+    	ad.setTitle(getResources().getString(R.string.my_logout_info_title));
+    	ad.setMessage(getResources().getString(R.string.my_logout_info_content));
+    	ad.setPositiveButton(getResources().getString(R.string.button_ok), new OnClickListener() { 
+    	@Override                  
+    	public void onClick(View v) {
+    	    // TODO Auto-generated method stub
+    	    ad.dismiss();
+    	    CustomApplication.getInstance().setEmail("");
+            CustomApplication.getInstance().setLoginOutStatus(false);
+            
+            HomeActivity pA = (HomeActivity)getActivity();
+    		pA.resetBottomSelected();
+    		pA.showHome();
+
+            //loginOutProfileText.setText(getResources().getString(R.string.my_log_in));
+//    	    Toast.makeText(Test.this, "被点到确定", Toast.LENGTH_LONG).show();        
+    	}
+    	}); 
+    	ad.setNegativeButton(getResources().getString(R.string.button_cancel), new OnClickListener() { 
+    	@Override                  
+    	public void onClick(View v) {
+    	// TODO Auto-generated method stub
+    	ad.dismiss();
+//    	Toast.makeText(Test.this, "被点到取消", Toast.LENGTH_LONG).show();
+    	}
+    	});
+    	
     }
     
     private void transferToLogout(){
@@ -202,7 +266,7 @@ public class ProfileFragment extends HomeFragmentBase implements
     	    ad.dismiss();
     	    CustomApplication.getInstance().setEmail("");
             CustomApplication.getInstance().setLoginOutStatus(false);
-            loginOutProfileText.setText(getResources().getString(R.string.my_log_in));
+            //loginOutProfileText.setText(getResources().getString(R.string.my_log_in));
 //    	    Toast.makeText(Test.this, "被点到确定", Toast.LENGTH_LONG).show();        
     	}
     	}); 

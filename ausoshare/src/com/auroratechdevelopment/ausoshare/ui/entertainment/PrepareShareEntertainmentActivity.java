@@ -57,6 +57,7 @@ import com.tencent.mm.sdk.openapi.WXWebpageObject;
 
 /**
  * Created by happy pan on 2015/11/16.
+ * Updated by Raymond Zhuang 2016/4/25
  */
 public class PrepareShareEntertainmentActivity extends ActivityBase {
 
@@ -305,10 +306,10 @@ public class PrepareShareEntertainmentActivity extends ActivityBase {
     }
     
     private void readyToShare(String whereToShare){
-    	if(CustomApplication.getInstance().getEmail().equalsIgnoreCase("")){
+    	/*if(CustomApplication.getInstance().getEmail().equalsIgnoreCase("")){
     		requestUserLogin();
 		}
-		else{
+		else{*/
 			viewImage_ad_share.setImageBitmap(bitmap);
 			ImageService imageService = new ImageService();
 			WXWebpageObject webpage = new WXWebpageObject();
@@ -341,7 +342,7 @@ public class PrepareShareEntertainmentActivity extends ActivityBase {
 			BitmapRecycle(bmp);
 			//	shareConfirmBtn.setTextColor(getResources().getColor(R.color.gray));
 			//	shareConfirmBtn.setClickable(false);
-		}
+		//}
     }
     
     private void whereToShare(String whereToShare, WXMediaMessage msg){

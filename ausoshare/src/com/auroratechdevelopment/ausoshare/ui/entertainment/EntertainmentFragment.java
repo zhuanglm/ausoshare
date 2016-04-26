@@ -87,18 +87,23 @@ public class EntertainmentFragment extends HomeFragmentBase  implements
 	    tabs.setup(); 
 	    
 	    TabSpec tabSpec = tabs.newTabSpec("page1");
-        tabSpec.setIndicator("page 1");
+        tabSpec.setIndicator(getResources().getString(R.string.page_fun));
         tabSpec.setContent(R.id.tab1);
         tabs.addTab(tabSpec);
         
         tabSpec = tabs.newTabSpec("page2");
-        tabSpec.setIndicator("page 2");
+        tabSpec.setIndicator(getResources().getString(R.string.page_news));
         tabSpec.setContent(R.id.tab2);
         tabs.addTab(tabSpec);
 	   	    
         tabSpec = tabs.newTabSpec("page3");
-        tabSpec.setIndicator("page 3");
+        tabSpec.setIndicator(getResources().getString(R.string.page_tips));
         tabSpec.setContent(R.id.tab3);
+        tabs.addTab(tabSpec);
+        
+        tabSpec = tabs.newTabSpec("page4");
+        tabSpec.setIndicator(getResources().getString(R.string.page_video));
+        tabSpec.setContent(R.id.tab4);
         tabs.addTab(tabSpec);
         
 	    int abt = CustomApplication.getInstance().getSharedADTime();

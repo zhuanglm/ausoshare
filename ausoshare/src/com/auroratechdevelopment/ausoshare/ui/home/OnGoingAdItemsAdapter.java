@@ -27,6 +27,7 @@ import java.util.Random;
 
 /**
  * Created by Edward Liu on 2015/11/1.
+ * updated by Raymond Zhuang 2016/4/19
  */
 public class OnGoingAdItemsAdapter extends BaseAdapter{
     public interface GetItemSelected{
@@ -99,6 +100,8 @@ public class OnGoingAdItemsAdapter extends BaseAdapter{
 	                holder.thumb = (ImageView)convertView.findViewById(R.id.ad_image);
 	                holder.adSimpleDesTv = (TextView)convertView.findViewById(R.id.ad_simple_des_tv);
 	                //holder.adTotalADFundTv = (TextView)convertView.findViewById(R.id.ad_total_fund_tv);
+	                holder.adTotalADFundTv = (TextView)convertView.findViewById(R.id.b_value_tv);
+	                holder.adCurrentIncomeTv = (TextView)convertView.findViewById(R.id.i_value_tv);
 	                holder.adCompletedProgressTv = (TextView)convertView.findViewById(R.id.ad_completed_progress_tv);
 	                holder.click_ad_Progress = (LineProgress)convertView.findViewById(R.id.ad_progress);
 	                holder.click_ad_Progress.setRoundEdge(true);
@@ -132,8 +135,10 @@ public class OnGoingAdItemsAdapter extends BaseAdapter{
 	
 	                //ad total Ad Funds
 	                //holder.adTotalADFundTv.setText(context.getResources().getString(R.string.ongoing_total_ad_funds) + item.totalAdFunds);
+	                holder.adTotalADFundTv.setText(item.totalAdFunds);
 	
 	                //ad completed progress
+	                holder.adCurrentIncomeTv.setText(String.valueOf(Integer.parseInt(item.completedPercentage)*Float.parseFloat(item.perClick)));
 	                //holder.adCompletedProgressTv.setText(context.getResources().getString(R.string.ongoing_ad_completed_percentage)+
 	                        //item.completedPercentage + context.getResources().getString(R.string.ongoing_ad_completed_percentage_suffix));
 	
@@ -168,7 +173,8 @@ public class OnGoingAdItemsAdapter extends BaseAdapter{
         int iTag;
         ImageView thumb;
         TextView adSimpleDesTv;
-        //TextView adTotalADFundTv;
+        TextView adTotalADFundTv;
+        TextView adCurrentIncomeTv;
         TextView adCompletedProgressTv;
         LineProgress click_ad_Progress;
     }

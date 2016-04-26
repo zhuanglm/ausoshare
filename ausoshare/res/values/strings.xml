@@ -49,6 +49,7 @@
     <string name="ongoing_total_ad_funds">总奖金：</string>
     <string name="ongoing_ad_completed_percentage">已分配：</string>
     <string name="ongoing_ad_completed_percentage_suffix">%</string>
+    <string name="ongoing_ad_completed_shared_suffix"> 人已转发</string>
 
     <string name="profile_current_income_text">你当前可提现金额为：CAD </string>
     <string name="profile_top10_info_text">总收入排行榜</string>
@@ -161,10 +162,23 @@
     <string name="login_test_password">1234</string>
     
      <!-- ad list -->
+     <string name="ui_click">点击打开广告</string>
+     <string name="ui_share">在打开的广告页点击分享到微信</string>
+     <string name="ui_view">到朋友圈查看</string>
     <string name="ui_bonus">奖金：$</string>
     <string name="ui_income">现金收益：$</string>
     <string name="ui_location">投放地点：Richmond Hill</string>
     <string name="ui_shared">63人已转发</string>
     <string name="ui_progress">进度：50%</string>
+    
+    <!-- entertainment -->
+    <string name="page_fun">乐味</string>
+    <string name="page_news">乐闻</string>
+    <string name="page_tips">乐知</string>
+    <string name="page_video">乐视</string>
+    
+     <!-- profile -->
+     <string name="ui_logout">【退出登录】</string>
+     <string name="ui_leaderboard">【排行榜】</string>
     
 </resources>

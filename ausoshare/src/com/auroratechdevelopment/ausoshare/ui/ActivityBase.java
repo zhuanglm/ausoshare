@@ -63,7 +63,7 @@ public abstract class ActivityBase extends ActionBarActivity implements
     protected TextView txtInput;
 
     protected CustomAlertDialog customAlertDialog;
-
+ 
     protected TextView txtInfo;
     protected static boolean isShowedPinLock = false;
 

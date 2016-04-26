@@ -31,6 +31,7 @@ import com.auroratechdevelopment.common.webservice.response.ResponseBase;
 
 /**
  * Created by happy pan on 2015/11/5.
+ * Updated by Raymond Zhuang 2016/4/25
  */
 public class LoginActivity extends ActivityBase implements View.OnClickListener{
 
@@ -81,6 +82,10 @@ public class LoginActivity extends ActivityBase implements View.OnClickListener{
             {
             	fromWhichPage = Constants.LOGIN_PAGE_FROM_AD_PREPARE_SHARE;
             	share_adID = urlIntent.getStringExtra(Constants.SHARED_AD_ID);
+            }
+            else if(lastPage.equals(Constants.HOME_PAGE))
+            {
+            	fromWhichPage = Constants.HOME_PAGE;
             }
             else{
             	fromWhichPage = "";
@@ -191,7 +196,8 @@ public class LoginActivity extends ActivityBase implements View.OnClickListener{
                     CustomApplication.getInstance().setAvailableFund(loginResponse.availableFund);
                     CustomApplication.getInstance().setRememberMeChecked(rememberMeCheckBox.isChecked());
                     
-                    if(fromWhichPage.equalsIgnoreCase(Constants.LOGIN_PAGE_FROM_LOGIN)){
+                    if(fromWhichPage.equalsIgnoreCase(Constants.LOGIN_PAGE_FROM_LOGIN) 
+                    		|| fromWhichPage.equalsIgnoreCase(Constants.HOME_PAGE)){
                     	final Bundle bundle = new Bundle(); 
                     	bundle.putString(Constants.LAST_PAGE, Constants.MINE_PAGE);
                     	bundle.putBoolean(Constants.LOGIN_STATUS, true);
@@ -204,6 +210,7 @@ public class LoginActivity extends ActivityBase implements View.OnClickListener{
                     else if(fromWhichPage.equalsIgnoreCase(Constants.LOGIN_PAGE_FROM_AD_PREPARE_SHARE)){
                     	getDetailAd();
                     }
+                    
                     else{
                     	Log.e("Edward", "from non-login");
                     	hideSoftBoard();

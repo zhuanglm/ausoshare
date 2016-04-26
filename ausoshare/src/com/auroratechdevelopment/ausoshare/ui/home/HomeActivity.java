@@ -1,6 +1,8 @@
 package com.auroratechdevelopment.ausoshare.ui.home;
 
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Location;
 import android.location.LocationManager;
@@ -28,6 +30,8 @@ import com.auroratechdevelopment.ausoshare.R;
 import com.auroratechdevelopment.ausoshare.ui.ActivityBase;
 import com.auroratechdevelopment.ausoshare.ui.contact.ContactFragment;
 import com.auroratechdevelopment.ausoshare.ui.entertainment.EntertainmentFragment;
+import com.auroratechdevelopment.ausoshare.ui.ext.CustomAlertDialog;
+import com.auroratechdevelopment.ausoshare.ui.login.LoginActivity;
 import com.auroratechdevelopment.ausoshare.ui.profile.ProfileFragment;
 import com.auroratechdevelopment.ausoshare.ui.yellowpage.YellowPageFragment;
 import com.auroratechdevelopment.ausoshare.util.AppLocationService;
@@ -37,6 +41,7 @@ import com.auroratechdevelopment.ausoshare.util.PushHelper;
 import com.auroratechdevelopment.common.ViewUtils;
 import com.auroratechdevelopment.common.ui.ViewPagerEx;
 import com.auroratechdevelopment.common.webservice.WebServiceHelper;
+import com.auroratechdevelopment.common.webservice.models.AdDataItem;
 import com.auroratechdevelopment.common.webservice.models.UserInfo;
 import com.auroratechdevelopment.common.webservice.response.GetOnGoingAdListResponse;
 import com.auroratechdevelopment.common.webservice.response.GetOnGoingEntertainmentListResponse;
@@ -46,6 +51,7 @@ import com.auroratechdevelopment.common.webservice.response.WithdrawRequestRespo
 
 /**
  * Created by happy pan on 2015/10/29.
+ * updated by Raymond Zhuang 2016/4/22
  */
 public class HomeActivity extends ActivityBase implements
         PushHelper.PushHelperListener
@@ -258,7 +264,7 @@ public class HomeActivity extends ActivityBase implements
         }
     }
     
-    private void resetBottomSelected(){
+    public void resetBottomSelected(){
     	ibtnHome.setSelected(false);
         ibtnYellowPage.setSelected(false);
         ibtnContact.setSelected(false);
@@ -267,13 +273,6 @@ public class HomeActivity extends ActivityBase implements
     }
 
     public void onBottombarItemClicked(View v) {
-        ViewUtils.setBackgroundDrawable(ibtnHome, null);
-        ViewUtils.setBackgroundDrawable(ibtnEntertainment, null);
-        ViewUtils.setBackgroundDrawable(ibtnYellowPage, null);
-        ViewUtils.setBackgroundDrawable(ibtnContact, null);
-        ViewUtils.setBackgroundDrawable(ibtnProfile, null);
-
-        resetBottomSelected();
 
         if (v.isSelected()) {
             v.setSelected(false);
@@ -284,7 +283,18 @@ public class HomeActivity extends ActivityBase implements
 //                            getResources()
 //                                    .getDrawable(
 //                                            R.drawable.bottombar_button_background_selected));
-            v.setSelected(true);
+            if(CustomApplication.getInstance().getEmail().equalsIgnoreCase("") && v.getId()==R.id.bottomtab_profile){
+            	
+            }else{
+            	ViewUtils.setBackgroundDrawable(ibtnHome, null);
+                ViewUtils.setBackgroundDrawable(ibtnEntertainment, null);
+                ViewUtils.setBackgroundDrawable(ibtnYellowPage, null);
+                ViewUtils.setBackgroundDrawable(ibtnContact, null);
+                ViewUtils.setBackgroundDrawable(ibtnProfile, null);
+
+                resetBottomSelected();
+            	v.setSelected(true);
+            }
         }
 
         switch (v.getId()) {
@@ -398,13 +408,93 @@ public class HomeActivity extends ActivityBase implements
     }
 
     public void showProfile() { 
-        backPress = false;
-        iLastTab = Constants.FRAG_PROFILE;
-        showBackButton(false);
-        setTopBarTitle(getResources().getString(R.string.title_infinity_cellphone4));
-        pager.setCurrentItem(Constants.FRAG_PROFILE);
-        setBottomBarSelected(iLastTab);
+    	if(CustomApplication.getInstance().getEmail().equalsIgnoreCase("")){
+			requestUserLogin();
+    	}
+    	else{
+	        backPress = false;
+	        iLastTab = Constants.FRAG_PROFILE;
+	        showBackButton(false);
+	        setTopBarTitle(getResources().getString(R.string.title_infinity_cellphone4));
+	        pager.setCurrentItem(Constants.FRAG_PROFILE);
+	        setBottomBarSelected(iLastTab);
+    	}
     }
+    //userlogin add by Raymond temporarily
+    private void requestUserLogin(){
+		Log.e("Edward", "Did not loginnnn");
+		showCenterScreenOkCancelAlert(this,
+                getResources().getString(R.string.login_prompt_text),
+                getResources().getString(R.string.alert_share_ad_login_prompt_text),
+                getString(R.string.button_ok), getString(R.string.button_cancel), null, true
+				);
+    }
+    public CustomAlertDialog customADialog;
+    public void showCenterScreenOkCancelAlert(final Context context,
+            final CharSequence alertTitle, final String msg,
+            final String okButtonName, final String cancelButtonName,
+            final CustomAlertDialog.AlertCallback callback, final boolean isCancelable) {
+
+    	Log.e("Edward", "showCenterScreenAlert");
+    	
+        this.runOnUiThread(new Runnable() {
+            public void run() {
+                dismissCustomAlertDialog();
+                ((HomeActivity) context).customADialog = new CustomAlertDialog(
+                        context, R.style.alertStyle);
+                customADialog.setContentView(R.layout.alert_center_screen);
+                customADialog.setMessage(msg, R.id.alert_message);
+                customADialog.setTitle(alertTitle, R.id.alert_title);
+                customADialog.setOnCancelListener(alertCancelClicked(callback));
+                customADialog.setOnDismissListener(alertDismissClicked());
+                if (okButtonName != null && okButtonName.length() > 0) {
+                	customADialog.setButton(okButtonName, alertButtonOkayClicked(callback));
+                    
+                }
+
+                if (cancelButtonName != null && cancelButtonName.length() > 0) {
+                	customADialog.setButton2(cancelButtonName,
+                            alertButtonCancelClicked(callback));
+                }
+
+                customADialog.setCancelable(isCancelable);
+                customADialog.show();
+            }
+        });
+    }
+    protected DialogInterface.OnClickListener alertButtonCancelClicked(
+            final CustomAlertDialog.AlertCallback callback) {
+        return new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                try {
+                    callback.GetAlertButton(which);
+                    
+                } catch (Exception e) {
+                    // e.printStackTrace();
+                }
+                
+                return;
+            }
+        };
+    }
+    protected DialogInterface.OnClickListener alertButtonOkayClicked(
+            final CustomAlertDialog.AlertCallback callback) {
+        return new android.content.DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                try {
+                    callback.GetAlertButton(which);
+                } catch (Exception e) {
+                    // e.printStackTrace();
+                }
+                
+                final Bundle bundle = new Bundle(); 
+                bundle.putString(Constants.LAST_PAGE, Constants.HOME_PAGE);
+            	ViewUtils.startPage(bundle, HomeActivity.this, LoginActivity.class);
+
+            }
+        };
+    }
+
     
     public void showEntertainment(){
     	backPress = false;

@@ -11,10 +11,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AbsListView;
-import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.*;
 import android.view.ViewGroup;
+
 
 import com.auroratechdevelopment.ausoshare.CustomApplication;
 import com.auroratechdevelopment.ausoshare.R;
@@ -39,6 +38,7 @@ import java.util.ArrayList;
 
 /**
  * Created by happy pan on 2015/10/30.
+ * Updated by Raymond Zhuang 2016/4/26
  */
 public class HomeFragment extends HomeFragmentBase  implements  
     OnGoingAdItemsAdapter.GetItemSelected,
@@ -50,7 +50,9 @@ public class HomeFragment extends HomeFragmentBase  implements
 	    protected SwipeRefreshLayout swipeRefreshlayout;
 	    private int startNumber = 0;
 	    private static final String KEY_ADS = "ADS";
-	    private TextView forwardMethodText;
+	    //private TextView forwardMethodText;
+	    private LinearLayout forwardMethodImg;
+	    private RelativeLayout forwardMethodText;
 	    
 	    private ViewPagerEx pager;
 	    
@@ -79,13 +81,16 @@ public class HomeFragment extends HomeFragmentBase  implements
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) { 	
     	startNumber = 0;
-        View rootView = inflater.inflate(R.layout.fragment_home_adlist, container, false);
-        forwardMethodText = (TextView) rootView.findViewById(R.id.forward_method_tv);
+        View rootView = inflater.inflate(R.layout.fragment_home_adlist_v2, container, false);
+        //forwardMethodText = (TextView) rootView.findViewById(R.id.forward_method_tv);
+        //forwardMethodImg = (LinearLayout) rootView.findViewById(R.id.forward_method_tv);
+        //forwardMethodText = (RelativeLayout) rootView.findViewById(R.id.description_layout);
         
-        int abt = CustomApplication.getInstance().getSharedADTime();
+        //int abt = CustomApplication.getInstance().getSharedADTime();
         
         if(CustomApplication.getInstance().getSharedADTime()>=3){
-        	forwardMethodText.setVisibility(View.GONE);
+        	//forwardMethodText.setVisibility(View.GONE);
+        	//forwardMethodImg.setVisibility(View.GONE);
         }
         
         

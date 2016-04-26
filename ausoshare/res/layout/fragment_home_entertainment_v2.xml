@@ -133,6 +133,41 @@
 				        android:visibility="visible" />
                     
                 </RelativeLayout>
+                
+                <RelativeLayout
+                    android:id="@+id/tab4"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    >
+				    
+                    <android.support.v4.widget.SwipeRefreshLayout
+				        android:id="@+id/swipe_container_ad4"
+				        android:layout_width="match_parent"
+				        android:layout_height="match_parent"
+				        android:layout_marginBottom="4dp" >
+				
+				        <ListView
+				            android:id="@+id/valid_entertainment_list4"
+				            android:layout_width="match_parent"
+				            android:layout_height="match_parent"
+				            android:layout_marginBottom="8dp"
+				            android:padding="4dp"
+				            android:visibility="visible" >
+				        </ListView>
+				    </android.support.v4.widget.SwipeRefreshLayout>
+				
+				    <TextView
+				        android:id="@+id/empty_list4"
+				        android:layout_width="wrap_content"
+				        android:layout_height="wrap_content"
+				        android:layout_centerInParent="true"
+				        android:gravity="center"
+				        android:text="@string/empty_list_entertainment"
+				        android:textColor="@android:color/darker_gray"
+				        android:textSize="22sp"
+				        android:visibility="visible" />
+                    
+                </RelativeLayout>
             </FrameLayout>
         </LinearLayout>
     </TabHost>
