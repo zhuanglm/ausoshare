@@ -22,7 +22,7 @@ abstract class BaseProgressView extends View {
 	protected int color = getResources().getColor(R.color.progress_colorAccent), backgroundColor = Color.WHITE;
     protected int textColor = getResources().getColor(R.color.progress_colorPrimaryDark);
     protected int shadowColor = getResources().getColor(R.color.progress_shader);
-    protected int textSize = 26;
+    protected int textSize = 16;
     protected Typeface typeface;
     protected String typeface_path = "Roboto-Light.ttf";
     protected int height, width;

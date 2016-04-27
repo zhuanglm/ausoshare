@@ -92,6 +92,15 @@
         android:layout_centerVertical="true"
         android:background="@drawable/text_view_as_button_clicked"
         />
+
+    <ImageView
+        android:id="@+id/button_wechat"
+        android:layout_width="128dp"
+        android:layout_height="128dp"
+        android:layout_below="@+id/forgot_password_tv"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/wechat" />
+
     </RelativeLayout>
     
 

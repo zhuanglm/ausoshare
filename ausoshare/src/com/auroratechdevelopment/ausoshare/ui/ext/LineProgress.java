@@ -67,7 +67,7 @@ public class LineProgress extends BaseProgressView {
 
 
     private void drawRects(Canvas canvas) {
-        int nMiddle = height / 2;
+        int nMiddle = height / 2 ;
         Rect bounds = new Rect();
         String text = "" + progress + "%";
         textPaint.getTextBounds(text, 0, text.length(), bounds);
@@ -86,7 +86,7 @@ public class LineProgress extends BaseProgressView {
         if (progress < maximum_progress)
             canvas.drawRect(rectP.width() + mt, nMiddle, width - getPaddingRight(), nMiddle, backgroundPaint);
 
-        canvas.drawText(text, progressX + 10, nMiddle + backgroundStrokeWidth,
+        canvas.drawText(text, progressX + 10, nMiddle + backgroundStrokeWidth +4,
                 textPaint);
     }
 

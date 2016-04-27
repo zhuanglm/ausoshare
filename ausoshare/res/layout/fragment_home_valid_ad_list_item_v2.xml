@@ -91,7 +91,7 @@
         android:layout_width="match_parent"
         android:layout_height="15dp"
         android:layout_below="@id/line_pattern"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="10dp"
         android:paddingLeft="0dp"
         app:background_color="#9e9e9e"
         app:background_stroke_width="2dp"

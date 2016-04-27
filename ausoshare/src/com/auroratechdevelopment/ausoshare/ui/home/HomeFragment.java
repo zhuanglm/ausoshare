@@ -83,14 +83,14 @@ public class HomeFragment extends HomeFragmentBase  implements
     	startNumber = 0;
         View rootView = inflater.inflate(R.layout.fragment_home_adlist_v2, container, false);
         //forwardMethodText = (TextView) rootView.findViewById(R.id.forward_method_tv);
-        //forwardMethodImg = (LinearLayout) rootView.findViewById(R.id.forward_method_tv);
+        forwardMethodImg = (LinearLayout) rootView.findViewById(R.id.forward_method_tv);
         //forwardMethodText = (RelativeLayout) rootView.findViewById(R.id.description_layout);
         
         //int abt = CustomApplication.getInstance().getSharedADTime();
         
         if(CustomApplication.getInstance().getSharedADTime()>=3){
         	//forwardMethodText.setVisibility(View.GONE);
-        	//forwardMethodImg.setVisibility(View.GONE);
+        	forwardMethodImg.setVisibility(View.GONE);
         }
         
         

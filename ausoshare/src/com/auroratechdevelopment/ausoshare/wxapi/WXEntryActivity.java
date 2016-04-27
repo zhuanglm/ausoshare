@@ -4,6 +4,8 @@ import java.util.logging.LogManager;
 
 //import com.auroratechdevelopment.ausoshare.Constants;
 import com.auroratechdevelopment.ausoshare.R;
+//import com.tencent.mm.sdk.modelbase.BaseReq;
+//import com.tencent.mm.sdk.modelbase.BaseResp;
 import com.tencent.mm.sdk.openapi.BaseReq;
 import com.tencent.mm.sdk.openapi.BaseResp;
 import com.tencent.mm.sdk.openapi.ConstantsAPI;
@@ -29,7 +31,13 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
         super.onCreate(savedInstanceState);  
     }  
 
-    
+    @Override
+	protected void onNewIntent(Intent intent) {
+		super.onNewIntent(intent);
+		
+		setIntent(intent);
+        api.handleIntent(intent, this);
+	}
     
     @Override
 	public void onReq(BaseReq req) {
@@ -67,7 +75,7 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
 		
 		Toast.makeText(this, result, Toast.LENGTH_LONG).show();
 	}
-	
-	
+
+		
   
 }  

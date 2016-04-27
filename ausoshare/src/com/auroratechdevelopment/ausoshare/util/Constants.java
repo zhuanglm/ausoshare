@@ -1,5 +1,6 @@
 package com.auroratechdevelopment.ausoshare.util;
 
+import com.tencent.mm.sdk.openapi.BaseResp;
 
 public class Constants {
 
@@ -8,6 +9,8 @@ public class Constants {
      */
 	
     public static final String APP_ID = "wx6bb3add97b7da9f9";
+    public static final String WX_APP_SECRET = "wx6bb3add97b7da9f9";
+    public static BaseResp	WXresp;
     
     public static class ShowMsgActivity {
 		public static final String STitle = "showmsg_title";
