@@ -36,7 +36,10 @@ import com.auroratechdevelopment.common.webservice.response.ResponseBase;
 import com.tencent.mm.sdk.openapi.BaseResp;
 import com.tencent.mm.sdk.openapi.ConstantsAPI;
 import com.tencent.mm.sdk.openapi.IWXAPI;
-import com.tencent.mm.sdk.modelmsg.SendAuth;
+//import com.tencent.mm.sdk.constants.ConstantsAPI;
+//import com.tencent.mm.sdk.modelbase.BaseResp;
+//import com.tencent.mm.sdk.modelmsg.SendAuth;
+import com.tencent.mm.sdk.openapi.SendAuth;
 
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
 
@@ -87,22 +90,25 @@ public class LoginActivity extends ActivityBase implements View.OnClickListener{
     @Override
 	protected void onResume() {
 		super.onResume();
-		BaseResp resp = Constants.WXresp;
 		
-		if (Constants.WXresp.getType() == ConstantsAPI.COMMAND_SENDAUTH) {
-			// code返回
-			weixinCode =  ((SendAuth.Resp)resp).code;
+		if(Constants.WXresp != null){
+			BaseResp resp = Constants.WXresp;
 			
-			 //将你前面得到的AppID、AppSecret、code，拼接成URL
-			 
-			get_access_token = getCodeRequest(weixinCode);
-			Thread thread=new Thread(downloadRun);
-			thread.start();
-			try {
-				thread.join();
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			if (resp.getType() == ConstantsAPI.COMMAND_SENDAUTH) {
+				// code返回
+				weixinCode = ((SendAuth.Resp) resp).token;
+				
+				 //将你前面得到的AppID、AppSecret、code，拼接成URL
+				 
+				get_access_token = getCodeRequest(weixinCode);
+				Thread thread=new Thread(downloadRun);
+				thread.start();
+				try {
+					thread.join();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		}
     }

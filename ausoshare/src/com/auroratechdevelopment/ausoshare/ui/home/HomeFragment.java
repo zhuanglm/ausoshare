@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,7 +33,7 @@ import com.auroratechdevelopment.common.webservice.models.OnGoingAdItem;
 import com.auroratechdevelopment.common.webservice.models.UserInfo;
 import com.auroratechdevelopment.common.webservice.response.GetOnGoingAdListResponse;
 import com.auroratechdevelopment.common.webservice.response.ResponseBase;
-import com.tencent.mm.sdk.platformtools.Log;
+//import com.tencent.mm.sdk.platformtools.Log;
 
 import java.util.ArrayList;
 

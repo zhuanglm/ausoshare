@@ -8,6 +8,6 @@
 	<classpathentry kind="lib" path="F:/zlm Java/workspace/google-play-services_lib/libs/google-play-services.jar"/>
 	<classpathentry kind="lib" path="F:/zlm Java/workspace/ausoshare/libs/gson-2.4.jar"/>
 	<classpathentry kind="lib" path="F:/zlm Java/ausoshare/git/ausoshare/libs/org.apache.http.legacy.jar"/>
-	<classpathentry kind="lib" path="F:/zlm Java/ausoshare/git/ausoshare/libs/libammsdk.jar"/>
+	<classpathentry kind="lib" path="libs/libammsdk.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

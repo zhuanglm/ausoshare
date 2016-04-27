@@ -4,6 +4,7 @@ import java.util.logging.LogManager;
 
 //import com.auroratechdevelopment.ausoshare.Constants;
 import com.auroratechdevelopment.ausoshare.R;
+//import com.tencent.mm.sdk.constants.ConstantsAPI;
 //import com.tencent.mm.sdk.modelbase.BaseReq;
 //import com.tencent.mm.sdk.modelbase.BaseResp;
 import com.tencent.mm.sdk.openapi.BaseReq;
@@ -11,10 +12,10 @@ import com.tencent.mm.sdk.openapi.BaseResp;
 import com.tencent.mm.sdk.openapi.ConstantsAPI;
 import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.IWXAPIEventHandler;
-import com.tencent.mm.sdk.openapi.ShowMessageFromWX;
+//import com.tencent.mm.sdk.openapi.ShowMessageFromWX;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
-import com.tencent.mm.sdk.openapi.WXAppExtendObject;
-import com.tencent.mm.sdk.openapi.WXMediaMessage;
+//import com.tencent.mm.sdk.openapi.WXAppExtendObject;
+//import com.tencent.mm.sdk.openapi.WXMediaMessage;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -39,7 +40,9 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
         api.handleIntent(intent, this);
 	}
     
-    @Override
+   	
+
+	@Override
 	public void onReq(BaseReq req) {
 		switch (req.getType()) {
 		case ConstantsAPI.COMMAND_GETMESSAGE_FROM_WX:
@@ -51,9 +54,9 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
 		default:
 			break;
 		}
+		
 	}
 
-	
 	@Override
 	public void onResp(BaseResp resp) {
 		int result = 0;
@@ -74,6 +77,7 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
 		}
 		
 		Toast.makeText(this, result, Toast.LENGTH_LONG).show();
+		
 	}
 
 		

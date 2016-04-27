@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.provider.Settings;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,7 +42,7 @@ import com.auroratechdevelopment.common.webservice.response.GetOnGoingEntertainm
 import com.auroratechdevelopment.common.webservice.response.GetURLResponse;
 import com.auroratechdevelopment.common.webservice.response.LoginResponse;
 import com.auroratechdevelopment.common.webservice.response.ResponseBase;
-import com.tencent.mm.sdk.platformtools.Log;
+//import com.tencent.mm.sdk.platformtools.Log;
 
 import java.util.ArrayList;
 
@@ -49,16 +50,17 @@ import org.w3c.dom.Text;
 
 /**
  * Created by Edward Liu on 2015/11/10.
+ * Updated by Raymond Zhuang 2016/4/27
  */
 public class EntertainmentFragment extends HomeFragmentBase  implements  
 	EntertainmentItemsAdapter.GetItemSelected,
 	SwipeRefreshLayout.OnRefreshListener,
 	HomeActivity.HomeEntertainmentListUpdated
 	{
-		private ListView list1,list2;
+		private ListView list1,list2,list3;
 		
 		private EntertainmentItemsAdapter adapter;
-		protected SwipeRefreshLayout swipeRefreshlayout1,swipeRefreshlayout2;
+		protected SwipeRefreshLayout swipeRefreshlayout1,swipeRefreshlayout2,swipeRefreshlayout3;
 		private int startNumber = 0;
 		private static final String KEY_ADS = "ENTERTAINMENT";
 		
@@ -112,6 +114,8 @@ public class EntertainmentFragment extends HomeFragmentBase  implements
         list1.setEmptyView(rootView.findViewById(R.id.empty_list1));
         list2 = (ListView) rootView.findViewById(R.id.valid_entertainment_list2);
         list2.setEmptyView(rootView.findViewById(R.id.empty_list2));
+        list3 = (ListView) rootView.findViewById(R.id.valid_entertainment_list3);
+        list3.setEmptyView(rootView.findViewById(R.id.empty_list3));
 
 	    list1.setOnScrollListener(new AbsListView.OnScrollListener() {
 	    	@Override
@@ -121,7 +125,7 @@ public class EntertainmentFragment extends HomeFragmentBase  implements
 
 //                    startNumber = startNumber + Constants.ADS_PAGE_SIZE;
 	    				if(startNumber%Constants.ADS_PAGE_SIZE == 0){
-	    					getNewEntertainments(startNumber);
+	    					getNewEntertainments(startNumber,Constants.TAG_LIFE);
 	    				}
 	    			}
 	    		}
@@ -141,7 +145,27 @@ public class EntertainmentFragment extends HomeFragmentBase  implements
 
 //                    startNumber = startNumber + Constants.ADS_PAGE_SIZE;
 	    				if(startNumber%Constants.ADS_PAGE_SIZE == 0){
-	    					getNewEntertainments(startNumber);
+	    					getNewEntertainments(startNumber,Constants.TAG_NEWS);
+	    				}
+	    			}
+	    		}
+	    	}
+
+        @Override
+        public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+
+        }
+    });
+	    
+	    list3.setOnScrollListener(new AbsListView.OnScrollListener() {
+	    	@Override
+	    	public void onScrollStateChanged(AbsListView view, int scrollState) {
+	    		if (scrollState == SCROLL_STATE_IDLE) {
+	    			if (list3.getLastVisiblePosition() >= list3.getCount() - 1 - 0) {
+
+//                    startNumber = startNumber + Constants.ADS_PAGE_SIZE;
+	    				if(startNumber%Constants.ADS_PAGE_SIZE == 0){
+	    					getNewEntertainments(startNumber,Constants.TAG_TIPS);
 	    				}
 	    			}
 	    		}
@@ -153,12 +177,13 @@ public class EntertainmentFragment extends HomeFragmentBase  implements
         }
     });
 
-    getNewEntertainments(startNumber);
+    getNewEntertainments(startNumber,Constants.TAG_LIFE);	//first page
     adapter = new EntertainmentItemsAdapter(this.getActivity(),new ArrayList<AdDataItem>());
 //    adapter.clearList();
     adapter.setListener(this);
     list1.setAdapter(adapter);
     list2.setAdapter(adapter);
+    list3.setAdapter(adapter);
 
     swipeRefreshlayout1 = (SwipeRefreshLayout)rootView.findViewById(R.id.swipe_container_ad1);
     //swipeRefreshlayout.setColorScheme(android.R.color.holo_purple);
@@ -170,6 +195,12 @@ public class EntertainmentFragment extends HomeFragmentBase  implements
     swipeRefreshlayout2.setColorSchemeResources(android.R.color.holo_blue_bright,
             android.R.color.holo_green_light, android.R.color.holo_orange_light,
             android.R.color.holo_red_light);
+    
+    swipeRefreshlayout3 = (SwipeRefreshLayout)rootView.findViewById(R.id.swipe_container_ad3);
+    swipeRefreshlayout3.setColorSchemeResources(android.R.color.holo_blue_bright,
+            android.R.color.holo_green_light, android.R.color.holo_orange_light,
+            android.R.color.holo_red_light);
+    
     swipeRefreshlayout1.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
 		
 		@Override
@@ -181,7 +212,7 @@ public class EntertainmentFragment extends HomeFragmentBase  implements
                 public void run() {
                 	swipeRefreshlayout1.setRefreshing(false);
                 	startNumber = 0;
-                    getNewEntertainments(startNumber);
+                    getNewEntertainments(startNumber,Constants.TAG_LIFE);
                     adapter.clearList();
                 }
             }, 2000);
@@ -199,7 +230,7 @@ public class EntertainmentFragment extends HomeFragmentBase  implements
                 public void run() {
                 	swipeRefreshlayout2.setRefreshing(false);
                 	startNumber = 0;
-                    getNewEntertainments(startNumber);
+                    getNewEntertainments(startNumber,Constants.TAG_NEWS);
                     adapter.clearList();
                 }
             }, 2000);
@@ -222,12 +253,12 @@ public class EntertainmentFragment extends HomeFragmentBase  implements
 	    return userInfo;
 	}
 	
-	private void getNewEntertainments(int startNumber){
+	private void getNewEntertainments(int startNumber,String sTag ){
 //		homeActivity.showWaiting();
 		
 		Log.e("Edward", "entertainment: startNumber = " + startNumber);
 	    UserInfo user_info = setUserInfo(startNumber);
-	    WebServiceHelper.getInstance().onGoingEntertainmentList(user_info, Constants.TAG_LIFE);
+	    WebServiceHelper.getInstance().onGoingEntertainmentList(user_info, sTag);
 	}
 	
 	public void checkLoginStatus(){

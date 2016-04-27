@@ -7,6 +7,7 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +24,7 @@ import com.auroratechdevelopment.common.webservice.models.OnGoingAdItem;
 import com.auroratechdevelopment.common.webservice.models.ProductItem;
 import com.auroratechdevelopment.common.webservice.response.GetOnGoingAdListResponse;
 import com.auroratechdevelopment.common.webservice.response.ResponseBase;
-import com.tencent.mm.sdk.platformtools.Log;
+//import com.tencent.mm.sdk.platformtools.Log;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;

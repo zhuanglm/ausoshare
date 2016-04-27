@@ -7,6 +7,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.provider.Settings;
+import android.util.Log;
 
 import com.auroratechdevelopment.ausoshare.CustomApplication;
 import com.auroratechdevelopment.ausoshare.R;
@@ -25,7 +26,7 @@ import com.auroratechdevelopment.common.webservice.response.CurrentIncomeRespons
 import com.auroratechdevelopment.common.webservice.response.GetOnGoingAdListResponse;
 import com.auroratechdevelopment.common.webservice.response.ResponseBase;
 import com.auroratechdevelopment.common.webservice.response.UpdateUserProfileResponse;
-import com.tencent.mm.sdk.platformtools.Log;
+//import com.tencent.mm.sdk.platformtools.Log;
 
 import java.util.ArrayList;
 import java.util.Arrays;

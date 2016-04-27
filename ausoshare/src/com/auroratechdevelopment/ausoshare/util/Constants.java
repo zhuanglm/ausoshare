@@ -1,5 +1,7 @@
 package com.auroratechdevelopment.ausoshare.util;
 
+//import com.tencent.mm.sdk.modelbase.BaseResp;
+
 import com.tencent.mm.sdk.openapi.BaseResp;
 
 public class Constants {
@@ -131,6 +133,10 @@ public class Constants {
     //advertisement or entertainment
     public static final String TAG_ADVERT = "advert";
     public static final String TAG_LIFE = "life";
+    public static final String TAG_FUN = "fun";
+    public static final String TAG_NEWS = "news";
+    public static final String TAG_TIPS = "tips";
+    public static final String TAG_VIDEO = "video";
     
     public static final String SHARE_TO_FRIENDS ="friends";
     public static final String SHARE_TO_MOMENTS="moments";

@@ -13,7 +13,7 @@ import android.widget.TextView;
 import com.auroratechdevelopment.ausoshare.R;
 import com.auroratechdevelopment.common.DebugLogUtil;
 import com.auroratechdevelopment.common.ThemesSetting;
-import com.tencent.mm.sdk.platformtools.Log;
+//import com.tencent.mm.sdk.platformtools.Log;
 
 import java.util.ArrayList;
 

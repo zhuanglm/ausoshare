@@ -112,6 +112,12 @@
             android:name=".ui.entertainment.PrepareShareEntertainmentActivity"
             android:screenOrientation="portrait"
             ></activity>
+        
+         <activity 
+            android:name=".wxapi.WXEntryActivity"
+            android:label="@string/app_name"
+            android:exported="true"
+            ></activity>
 
       <!--   <supports-screens
             android:smallScreens="true"

@@ -48,6 +48,11 @@ import com.auroratechdevelopment.common.util.ImageService;
 import com.auroratechdevelopment.common.util.LoadNetPicture;
 import com.auroratechdevelopment.common.webservice.models.AdDataItem;
 import com.auroratechdevelopment.common.webservice.models.OnGoingAdItem;
+
+//import com.tencent.mm.sdk.modelmsg.SendMessageToWX;
+//import com.tencent.mm.sdk.modelmsg.WXMediaMessage;
+//import com.tencent.mm.sdk.modelmsg.WXWebpageObject;
+import com.tencent.mm.sdk.openapi.BaseReq;
 import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.SendMessageToWX;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;

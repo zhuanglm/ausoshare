@@ -1,13 +1,14 @@
 package com.auroratechdevelopment.common.webservice;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.auroratechdevelopment.ausoshare.CustomApplication;
 import com.auroratechdevelopment.common.DebugLogUtil;
 import com.auroratechdevelopment.common.webservice.request.RequestBase;
 import com.auroratechdevelopment.common.webservice.response.ResponseBase;
 import com.auroratechdevelopment.common.webservice.response.ResponseErrorNumber;
-import com.tencent.mm.sdk.platformtools.Log;
+//import com.tencent.mm.sdk.platformtools.Log;
 
 //import org.apache.http.client.HttpResponseException;
 import org.xml.sax.SAXException;
