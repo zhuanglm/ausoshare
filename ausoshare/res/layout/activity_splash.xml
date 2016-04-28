@@ -86,7 +86,7 @@
             android:src="@drawable/splash_dot_bg" />
     </LinearLayout>
 
-    <ImageButton
+    <ImageView
         android:id="@+id/button_skip"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

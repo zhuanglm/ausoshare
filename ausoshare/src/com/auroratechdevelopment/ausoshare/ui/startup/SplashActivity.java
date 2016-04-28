@@ -53,7 +53,7 @@ public class SplashActivity extends Activity implements OnGestureListener,OnDisp
     private GestureDetector detector;
     private int nPages = 2;
     private int m_currentImg = 0;
-    private ImageButton m_BtnSkip;
+    private ImageView m_BtnSkip;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -68,7 +68,7 @@ public class SplashActivity extends Activity implements OnGestureListener,OnDisp
         img_vf.addView(splashAdImage1);
         img_vf.addView(splashAdImage2);
         pointLayout = (LinearLayout) findViewById(R.id.point_layout);
-        m_BtnSkip = (ImageButton) findViewById(R.id.button_skip);
+        m_BtnSkip = (ImageView) findViewById(R.id.button_skip);
         
         m_BtnSkip.setOnClickListener(new OnClickListener() 
         { 

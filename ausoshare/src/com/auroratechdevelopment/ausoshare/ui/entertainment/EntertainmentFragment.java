@@ -2,6 +2,7 @@ package com.auroratechdevelopment.ausoshare.ui.entertainment;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -11,6 +12,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.AbsListView;
@@ -18,7 +20,9 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TabHost;
+import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TabHost.TabSpec;
+import android.widget.TabWidget;
 import android.widget.TextView;
 
 import com.auroratechdevelopment.ausoshare.CustomApplication;
@@ -50,17 +54,18 @@ import org.w3c.dom.Text;
 
 /**
  * Created by Edward Liu on 2015/11/10.
- * Updated by Raymond Zhuang 2016/4/27
+ * Updated by Raymond Zhuang 2016/4/24
  */
 public class EntertainmentFragment extends HomeFragmentBase  implements  
 	EntertainmentItemsAdapter.GetItemSelected,
 	SwipeRefreshLayout.OnRefreshListener,
 	HomeActivity.HomeEntertainmentListUpdated
 	{
-		private ListView list1,list2,list3;
+		private ListView list1,list2,list3,list4;
+		private TextView m_tVEmpty;
 		
 		private EntertainmentItemsAdapter adapter;
-		protected SwipeRefreshLayout swipeRefreshlayout1,swipeRefreshlayout2,swipeRefreshlayout3;
+		protected SwipeRefreshLayout swipeRefreshlayout1,swipeRefreshlayout2,swipeRefreshlayout3,swipeRefreshlayout4;
 		private int startNumber = 0;
 		private static final String KEY_ADS = "ENTERTAINMENT";
 		
@@ -85,37 +90,86 @@ public class EntertainmentFragment extends HomeFragmentBase  implements
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) { 	
 		startNumber = 0;
 	    View rootView = inflater.inflate(R.layout.fragment_home_entertainment_v2, container, false);
-	    TabHost tabs = (TabHost) rootView.findViewById(android.R.id.tabhost);
+	    m_tVEmpty = (TextView)rootView.findViewById(R.id.empty_list);
+	    
+	    final TabHost tabs = (TabHost) rootView.findViewById(android.R.id.tabhost);
+	    TabWidget mTabWidget = tabs.getTabWidget(); 
 	    tabs.setup(); 
 	    
-	    TabSpec tabSpec = tabs.newTabSpec("page1");
+	    TabSpec tabSpec = tabs.newTabSpec("page_fun");
         tabSpec.setIndicator(getResources().getString(R.string.page_fun));
         tabSpec.setContent(R.id.tab1);
         tabs.addTab(tabSpec);
         
-        tabSpec = tabs.newTabSpec("page2");
+        tabSpec = tabs.newTabSpec("page_news");
         tabSpec.setIndicator(getResources().getString(R.string.page_news));
         tabSpec.setContent(R.id.tab2);
         tabs.addTab(tabSpec);
 	   	    
-        tabSpec = tabs.newTabSpec("page3");
+        tabSpec = tabs.newTabSpec("page_tips");
         tabSpec.setIndicator(getResources().getString(R.string.page_tips));
         tabSpec.setContent(R.id.tab3);
         tabs.addTab(tabSpec);
         
-        tabSpec = tabs.newTabSpec("page4");
+        tabSpec = tabs.newTabSpec("page_video");
         tabSpec.setIndicator(getResources().getString(R.string.page_video));
         tabSpec.setContent(R.id.tab4);
         tabs.addTab(tabSpec);
         
+        /*View v = mTabWidget.getChildTabViewAt(2);  
+        v.setOnClickListener(new OnClickListener(){  
+            @Override  
+            public void onClick(View v) {  
+                // TODO Auto-generated method stub  
+                
+            }  
+              
+        });  */
+        tabs.setCurrentTab(0);
+        updateTab(tabs);
+        tabs.setOnTabChangedListener(new OnTabChangeListener(){  
+            @Override  
+            public void onTabChanged(String tabId){  
+               //Log.d("Raymond", tabId);	//page2  ....
+            	if(tabId.equalsIgnoreCase("page_news")){
+            		startNumber = 0;
+            		adapter.clearList();
+            		m_tVEmpty.setVisibility(View.VISIBLE);
+            		getNewEntertainments(startNumber,Constants.TAG_NEWS);
+            		
+            		updateTab(tabs);
+            	}else if(tabId.equalsIgnoreCase("page_tips")){
+            		startNumber = 0;
+            		adapter.clearList();
+            		m_tVEmpty.setVisibility(View.VISIBLE);
+            		getNewEntertainments(startNumber,Constants.TAG_TIPS);
+            		
+            		updateTab(tabs);
+            	}else if(tabId.equalsIgnoreCase("page_video")){
+            		startNumber = 0;
+            		adapter.clearList();
+            		m_tVEmpty.setVisibility(View.VISIBLE);
+            		getNewEntertainments(startNumber,Constants.TAG_VIDEO);
+            		updateTab(tabs);
+            		
+            	}else if(tabId.equalsIgnoreCase("page_fun")){
+            		startNumber = 0;
+            		adapter.clearList();
+            		m_tVEmpty.setVisibility(View.VISIBLE);
+            		m_tVEmpty.setVisibility(View.VISIBLE);
+            		getNewEntertainments(startNumber,Constants.TAG_LIFE);
+            		
+            		updateTab(tabs);
+            	}
+            }  
+        }); 
+        
 	    int abt = CustomApplication.getInstance().getSharedADTime();
 	
 	    list1 = (ListView) rootView.findViewById(R.id.valid_entertainment_list1);
-        list1.setEmptyView(rootView.findViewById(R.id.empty_list1));
         list2 = (ListView) rootView.findViewById(R.id.valid_entertainment_list2);
-        list2.setEmptyView(rootView.findViewById(R.id.empty_list2));
         list3 = (ListView) rootView.findViewById(R.id.valid_entertainment_list3);
-        list3.setEmptyView(rootView.findViewById(R.id.empty_list3));
+        list4 = (ListView) rootView.findViewById(R.id.valid_entertainment_list4);
 
 	    list1.setOnScrollListener(new AbsListView.OnScrollListener() {
 	    	@Override
@@ -176,14 +230,39 @@ public class EntertainmentFragment extends HomeFragmentBase  implements
 
         }
     });
+	    
+	    list4.setOnScrollListener(new AbsListView.OnScrollListener() {
+	    	@Override
+	    	public void onScrollStateChanged(AbsListView view, int scrollState) {
+	    		if (scrollState == SCROLL_STATE_IDLE) {
+	    			if (list4.getLastVisiblePosition() >= list4.getCount() - 1 - 0) {
 
-    getNewEntertainments(startNumber,Constants.TAG_LIFE);	//first page
+//                    startNumber = startNumber + Constants.ADS_PAGE_SIZE;
+	    				if(startNumber%Constants.ADS_PAGE_SIZE == 0){
+	    					getNewEntertainments(startNumber,Constants.TAG_VIDEO);
+	    				}
+	    			}
+	    		}
+	    	}
+
+        @Override
+        public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+
+        }
+    });
+
+	
+	
     adapter = new EntertainmentItemsAdapter(this.getActivity(),new ArrayList<AdDataItem>());
-//    adapter.clearList();
+    adapter.clearList();
     adapter.setListener(this);
+    
     list1.setAdapter(adapter);
     list2.setAdapter(adapter);
     list3.setAdapter(adapter);
+    list4.setAdapter(adapter);
+    
+    getNewEntertainments(startNumber,Constants.TAG_LIFE);	//first page
 
     swipeRefreshlayout1 = (SwipeRefreshLayout)rootView.findViewById(R.id.swipe_container_ad1);
     //swipeRefreshlayout.setColorScheme(android.R.color.holo_purple);
@@ -201,11 +280,16 @@ public class EntertainmentFragment extends HomeFragmentBase  implements
             android.R.color.holo_green_light, android.R.color.holo_orange_light,
             android.R.color.holo_red_light);
     
+    swipeRefreshlayout4 = (SwipeRefreshLayout)rootView.findViewById(R.id.swipe_container_ad4);
+    swipeRefreshlayout4.setColorSchemeResources(android.R.color.holo_blue_bright,
+            android.R.color.holo_green_light, android.R.color.holo_orange_light,
+            android.R.color.holo_red_light);
+    
     swipeRefreshlayout1.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
 		
 		@Override
 		public void onRefresh() {
-			// TODO Auto-generated method stub
+
 			swipeRefreshlayout1.setRefreshing(true);
             (new Handler()).postDelayed(new Runnable() {
                 @Override
@@ -223,19 +307,58 @@ public class EntertainmentFragment extends HomeFragmentBase  implements
 		
 		@Override
 		public void onRefresh() {
-			// TODO Auto-generated method stub
+			
 			swipeRefreshlayout2.setRefreshing(true);
             (new Handler()).postDelayed(new Runnable() {
                 @Override
                 public void run() {
                 	swipeRefreshlayout2.setRefreshing(false);
                 	startNumber = 0;
+                	adapter.clearList();
                     getNewEntertainments(startNumber,Constants.TAG_NEWS);
-                    adapter.clearList();
+                    
                 }
             }, 2000);
 		}
 	});
+    
+    swipeRefreshlayout3.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+		
+		@Override
+		public void onRefresh() {
+			
+			swipeRefreshlayout3.setRefreshing(true);
+            (new Handler()).postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                	swipeRefreshlayout3.setRefreshing(false);
+                	startNumber = 0;
+                	adapter.clearList();
+                    getNewEntertainments(startNumber,Constants.TAG_TIPS);
+                    
+                }
+            }, 2000);
+		}
+	});
+
+    swipeRefreshlayout4.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+	
+	@Override
+	public void onRefresh() {
+		
+		swipeRefreshlayout4.setRefreshing(true);
+        (new Handler()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+            	swipeRefreshlayout4.setRefreshing(false);
+            	startNumber = 0;
+            	adapter.clearList();
+                getNewEntertainments(startNumber,Constants.TAG_VIDEO);
+                
+            }
+        }, 2000);
+	}
+});
 
     return rootView;
 	}
@@ -283,16 +406,39 @@ public class EntertainmentFragment extends HomeFragmentBase  implements
                 	
                 	if(tag == -1){
                 		adapter.clearList();
+                		m_tVEmpty.setVisibility(View.VISIBLE);
                 	}
 
                 	startNumber = startNumber + adList.data.size();
                 	Log.e("Edward", "at ResponseSuccessCallBack, startNumber is: " + startNumber);
+                	m_tVEmpty.setVisibility(View.GONE);
                     adapter.setList(adList.data);
                     adapter.notifyDataSetChanged();
                 }
             });
         }
 	}
+	
+	/**
+     * 更新Tab标签的颜色，和字体的颜色
+     * @param tabHost
+     */ 
+    private void updateTab(final TabHost tabHost) { 
+        for (int i = 0; i < tabHost.getTabWidget().getChildCount(); i++) { 
+            View view = tabHost.getTabWidget().getChildAt(i); 
+            TextView tv = (TextView) tabHost.getTabWidget().getChildAt(i).findViewById(android.R.id.title); 
+            tv.setTextSize(18); 
+            tv.setTypeface(Typeface.SERIF, 2); // 设置字体和风格  
+            if (tabHost.getCurrentTab() == i) {//选中  
+                //view.setBackgroundDrawable(getResources().getDrawable(R.drawable.category_current));//选中后的背景  
+            	tv.setTextColor(this.getResources().getColor(R.color.blue)); 
+            } else {//不选中  
+                //view.setBackgroundDrawable(getResources().getDrawable(R.drawable.category_bg));//非选择的背景  
+            	tv.setTextColor(this.getResources().getColor(R.color.black)); 
+            } 
+        } 
+    } 
+ 
 
     private HomeFragmentBase getCurrentFragment() {
         FragmentStatePagerAdapter a = (FragmentStatePagerAdapter) pager.getAdapter();

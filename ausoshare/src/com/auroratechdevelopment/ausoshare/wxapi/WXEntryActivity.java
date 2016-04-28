@@ -32,13 +32,13 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
         super.onCreate(savedInstanceState);  
     }  
 
-    @Override
+    /*@Override
 	protected void onNewIntent(Intent intent) {
 		super.onNewIntent(intent);
 		
 		setIntent(intent);
         api.handleIntent(intent, this);
-	}
+	}*/
     
    	
 

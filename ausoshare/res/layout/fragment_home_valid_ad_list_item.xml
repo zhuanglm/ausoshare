@@ -8,8 +8,9 @@
         android:id="@+id/ad_image"
         android:layout_width="72dp"
         android:layout_height="72dp"
-        android:src="@drawable/app_icon"
-        />
+        android:padding="3dp"
+        android:src="@drawable/app_icon" />
+
     <TextView
         android:id="@+id/ad_simple_des_tv"
         android:layout_width="match_parent"

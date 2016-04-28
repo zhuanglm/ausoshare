@@ -2,6 +2,17 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
+    
+     <TextView
+		android:id="@+id/empty_list"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_centerInParent="true"
+		android:gravity="center"
+		android:text="@string/empty_list_entertainment"
+		android:textColor="@android:color/darker_gray"
+		android:textSize="22sp"
+		android:visibility="visible" />
 
     <TabHost
         android:id="@android:id/tabhost"
@@ -51,16 +62,7 @@
 				        </ListView>
 				    </android.support.v4.widget.SwipeRefreshLayout>
 				
-				    <TextView
-				        android:id="@+id/empty_list1"
-				        android:layout_width="wrap_content"
-				        android:layout_height="wrap_content"
-				        android:layout_centerInParent="true"
-				        android:gravity="center"
-				        android:text="@string/empty_list_entertainment"
-				        android:textColor="@android:color/darker_gray"
-				        android:textSize="22sp"
-				        android:visibility="visible" />
+				    
                     
                 </RelativeLayout>
 
@@ -86,17 +88,7 @@
 				        </ListView>
 				    </android.support.v4.widget.SwipeRefreshLayout>
 				
-				    <TextView
-				        android:id="@+id/empty_list2"
-				        android:layout_width="wrap_content"
-				        android:layout_height="wrap_content"
-				        android:layout_centerInParent="true"
-				        android:gravity="center"
-				        android:text="@string/empty_list_entertainment"
-				        android:textColor="@android:color/darker_gray"
-				        android:textSize="22sp"
-				        android:visibility="visible" />
-                    
+				                        
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -121,17 +113,7 @@
 				        </ListView>
 				    </android.support.v4.widget.SwipeRefreshLayout>
 				
-				    <TextView
-				        android:id="@+id/empty_list3"
-				        android:layout_width="wrap_content"
-				        android:layout_height="wrap_content"
-				        android:layout_centerInParent="true"
-				        android:gravity="center"
-				        android:text="@string/empty_list_entertainment"
-				        android:textColor="@android:color/darker_gray"
-				        android:textSize="22sp"
-				        android:visibility="visible" />
-                    
+				                        
                 </RelativeLayout>
                 
                 <RelativeLayout
@@ -155,17 +137,7 @@
 				            android:visibility="visible" >
 				        </ListView>
 				    </android.support.v4.widget.SwipeRefreshLayout>
-				
-				    <TextView
-				        android:id="@+id/empty_list4"
-				        android:layout_width="wrap_content"
-				        android:layout_height="wrap_content"
-				        android:layout_centerInParent="true"
-				        android:gravity="center"
-				        android:text="@string/empty_list_entertainment"
-				        android:textColor="@android:color/darker_gray"
-				        android:textSize="22sp"
-				        android:visibility="visible" />
+		
                     
                 </RelativeLayout>
             </FrameLayout>

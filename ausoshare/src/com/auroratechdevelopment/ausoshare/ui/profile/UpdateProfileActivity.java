@@ -34,6 +34,7 @@ import java.util.List;
 
 /**
  * Created by happy pan on 2015/11/12.
+ * Updated by Raymond Zhuang 2016/4/28
  */
 public class UpdateProfileActivity extends ActivityBase {
 
@@ -102,6 +103,13 @@ public class UpdateProfileActivity extends ActivityBase {
         	showAlert(CustomApplication.getInstance().getCurrentActivity(),
                 getString(R.string.title_update_profile),
                 getResources().getString(R.string.validate_empty_username));
+        	return;
+        }
+        
+        if(email.equals("")){
+        	showAlert(CustomApplication.getInstance().getCurrentActivity(),
+                getString(R.string.title_update_profile),
+                getResources().getString(R.string.validate_empty_email));
         	return;
         }
 //        if (!runValidation(UsernameValidator.class, username)) {

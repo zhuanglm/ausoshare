@@ -43,7 +43,7 @@
     <string name="empty_list_no_info">暂无信息，请稍后刷新</string>
     <string name="empty_forwarded_ad">亲，您当前无转发广告，加油啊！</string>
     <string name="register_email_prompt">为了您以后提取现金，请使用真实邮箱注册！</string>
-    <string name="alert_share_ad_login_prompt_text">请用email注册或登录（为了方便以后提现，建议使用Paypal关联邮箱注册或登录）</string>  
+    <string name="alert_share_ad_login_prompt_text">请用email注册或登录</string>  
     <string name="alert_mine_login_prompt_text">查看个人相关资料请，请先注册或登录。</string>
 
     <string name="ongoing_total_ad_funds">总奖金：</string>

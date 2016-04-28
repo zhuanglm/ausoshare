@@ -99,7 +99,8 @@
         android:layout_height="128dp"
         android:layout_below="@+id/forgot_password_tv"
         android:layout_centerHorizontal="true"
-        android:src="@drawable/wechat" />
+        android:src="@drawable/wechat"
+        android:visibility="gone" />
 
     </RelativeLayout>
     

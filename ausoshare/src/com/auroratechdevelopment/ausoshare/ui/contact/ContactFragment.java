@@ -51,8 +51,7 @@ public class ContactFragment extends HomeFragmentBase implements View.OnClickLis
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View rootView = inflater.inflate(R.layout.fragment_contact_v2, container,
-                false);
+        View rootView = inflater.inflate(R.layout.fragment_contact_v2, container,false);
         
         contactTCText = (TextView) rootView.findViewById(R.id.contact_t_c_tv);
         contactTCImage = (ImageView) rootView.findViewById(R.id.contact_t_c_image);
