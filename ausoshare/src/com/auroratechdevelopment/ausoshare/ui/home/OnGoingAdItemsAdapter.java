@@ -103,6 +103,8 @@ public class OnGoingAdItemsAdapter extends BaseAdapter{
 	                holder.adTotalADFundTv = (TextView)convertView.findViewById(R.id.b_value_tv);
 	                holder.adCurrentIncomeTv = (TextView)convertView.findViewById(R.id.i_value_tv);
 	                holder.adCompletedProgressTv = (TextView)convertView.findViewById(R.id.ad_completed_progress_tv);
+	                holder.adPublishedArea=(TextView)convertView.findViewById(R.id.ad_location_value);
+	                holder.adSharedPersonNumber= (TextView)convertView.findViewById(R.id.ad_completed_shared);
 	                holder.click_ad_Progress = (LineProgress)convertView.findViewById(R.id.ad_progress);
 	                holder.click_ad_Progress.setRoundEdge(true);
 	                holder.click_ad_Progress.setShadow(true);
@@ -130,8 +132,8 @@ public class OnGoingAdItemsAdapter extends BaseAdapter{
 	                //ad description
 	                holder.adSimpleDesTv.setText(item.description);
 	                
-	                //holder.click_ad_Progress.setProgress(Integer.parseInt(item.completedPercentage) );
-	                holder.click_ad_Progress.setProgress(new Random().nextInt(100));
+	                holder.click_ad_Progress.setProgress(Integer.parseInt(item.completedPercentage) );
+	                //holder.click_ad_Progress.setProgress(new Random().nextInt(100));
 	
 	                //ad total Ad Funds
 	                //holder.adTotalADFundTv.setText(context.getResources().getString(R.string.ongoing_total_ad_funds) + item.totalAdFunds);
@@ -141,6 +143,12 @@ public class OnGoingAdItemsAdapter extends BaseAdapter{
 	                holder.adCurrentIncomeTv.setText(String.valueOf(Integer.parseInt(item.completedPercentage)*Float.parseFloat(item.perClick)));
 	                //holder.adCompletedProgressTv.setText(context.getResources().getString(R.string.ongoing_ad_completed_percentage)+
 	                        //item.completedPercentage + context.getResources().getString(R.string.ongoing_ad_completed_percentage_suffix));
+	                
+	                //location 
+	                //holder.adPublishedArea.setText(item.location);
+	                
+	                //shared number
+	                //holder.adSharedPersonNumber.setText(item.person_number);
 	
 	                CustomApplication.getInstance().setSharedAdUrl(item.shareURL);
 //	                CustomApplication.getInstance().setSharedAdThumb(item.thumb);
@@ -176,6 +184,8 @@ public class OnGoingAdItemsAdapter extends BaseAdapter{
         TextView adTotalADFundTv;
         TextView adCurrentIncomeTv;
         TextView adCompletedProgressTv;
+        TextView adPublishedArea;
+        TextView adSharedPersonNumber;
         LineProgress click_ad_Progress;
     }
 }

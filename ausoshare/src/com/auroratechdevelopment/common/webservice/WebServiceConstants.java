@@ -9,7 +9,8 @@ public class WebServiceConstants {
     
     public static final boolean DoDebug = BuildConfig.DEBUG;
  
-    public static final String WebHost = "http://auroratech.applinzi.com";     //"http://api.ausomedia.com";
+    //public static final String WebHost = "http://auroratech.applinzi.com";     //"http://api.ausomedia.com";
+    public static final String WebHost = "http://api.ausoshare.com";
     
     public static final String splashAdImageURL = "http://api.ausomedia.com/splash_ad_image.jpg";
 

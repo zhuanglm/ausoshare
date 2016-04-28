@@ -16,6 +16,8 @@ public class AdDataItem implements Parcelable {
     public String reviewURL;
     public String shareURL;
     public String description_long;
+    public String location;
+    public String person_number;
 
     @Override
     public int describeContents() {

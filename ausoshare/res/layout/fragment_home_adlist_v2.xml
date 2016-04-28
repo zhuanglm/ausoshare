@@ -40,6 +40,7 @@
         android:layout_height="128dp"
         android:layout_alignParentTop="true"
         android:layout_centerInParent="false"
+        android:background="@color/whitesmoke"
         android:orientation="horizontal"
         android:paddingLeft="15dp"
         android:paddingRight="15dp" >
@@ -59,7 +60,7 @@
                 android:src="@drawable/page1_1" />
 
             <TextView
-                android:id="@+id/textView1"
+                android:id="@+id/ad_location_value"
                 android:layout_width="fill_parent"
                 android:layout_height="match_parent"
                 android:layout_marginRight="0dp"
