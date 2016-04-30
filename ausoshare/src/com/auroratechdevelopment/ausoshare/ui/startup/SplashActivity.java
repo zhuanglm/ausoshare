@@ -53,7 +53,7 @@ public class SplashActivity extends Activity implements OnGestureListener,OnDisp
     private GestureDetector detector;
     private int nPages = 2;
     private int m_currentImg = 0;
-    private ImageView m_BtnSkip;
+    private Button m_BtnSkip;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -68,7 +68,7 @@ public class SplashActivity extends Activity implements OnGestureListener,OnDisp
         img_vf.addView(splashAdImage1);
         img_vf.addView(splashAdImage2);
         pointLayout = (LinearLayout) findViewById(R.id.point_layout);
-        m_BtnSkip = (ImageView) findViewById(R.id.button_skip);
+        m_BtnSkip = (Button) findViewById(R.id.button_skip);
         
         m_BtnSkip.setOnClickListener(new OnClickListener() 
         { 
@@ -112,13 +112,14 @@ public class SplashActivity extends Activity implements OnGestureListener,OnDisp
         
         //is not the first time, means from the second times
         if(isNotFirstTime){
+        	pointLayout.setVisibility(View.INVISIBLE);
         	new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     finish();
                     showHomeOrLogin();
                 }
-            }, SPLASH_SECOND * 1000);
+            }, SPLASH_SECOND * 2500);
         }
         //is the first time
         else{

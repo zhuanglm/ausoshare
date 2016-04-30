@@ -1,5 +1,6 @@
 package com.auroratechdevelopment.ausoshare.ui.profile;
 
+import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -34,6 +35,8 @@ import com.auroratechdevelopment.common.ViewUtils;
 import com.auroratechdevelopment.common.webservice.WebService;
 import com.auroratechdevelopment.common.webservice.WebServiceConstants;
 import com.auroratechdevelopment.common.webservice.WebServiceHelper;
+import com.auroratechdevelopment.common.webservice.WebServiceHelper.WebServiceListener;
+import com.auroratechdevelopment.common.webservice.models.Top10Item;
 import com.auroratechdevelopment.common.webservice.request.ForwardedAdHistoryRequest;
 import com.auroratechdevelopment.common.webservice.response.CurrentIncomeResponse;
 import com.auroratechdevelopment.common.webservice.response.ForwardedAdHistoryResponse;
@@ -42,21 +45,26 @@ import com.auroratechdevelopment.common.webservice.response.GetURLResponse;
 import com.auroratechdevelopment.common.webservice.response.ResponseBase;
 import com.auroratechdevelopment.common.webservice.response.WithdrawRequestResponse;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import org.w3c.dom.Text;
 
 /**
  * Created by happy pan on 2015/10/30.
  * Updated by Raymond Zhuang 2016/4/25
  */
-public class ProfileFragment extends HomeFragmentBase implements 
+//public class ProfileFragment extends HomeFragmentBase implements
+public class ProfileFragment extends HomeFragmentBase implements
     View.OnClickListener, 
     HomeActivity.HomeWithdrawUpdated
     {
     private RelativeLayout userProfileLayout;
     //private ImageView loginOutImageThumb,userImageThumb,myCurrentIncomeImage,myForwardedAdImage,myWithdrawRecordImage, myWithdrawRequestImage;
     //private TextView loginOutProfileText,userProfileText,myCurrentIncomeText,myForwardedAdText,myWithdrawRecordText,myWithdrawRequestText;
-    private TextView m_tv_username,m_tv_asset,m_leaderboard;
-    private Button m_btn_logout,m_btn_shared,m_btn_withdraw_history,m_btn_withdraw_request;
+    private TextView m_tv_username,m_tv_asset,m_leaderboard,m_tV_shared,m_tV_withdraw_history,m_tV_withdraw_request;
+    private Button m_btn_logout;
     private ImageButton m_btn_profile;
 
     @Override
@@ -119,26 +127,26 @@ public class ProfileFragment extends HomeFragmentBase implements
         
         //for v2
         m_tv_username = (TextView)rootView.findViewById(R.id.user_name_tV);
-        m_tv_asset = (TextView)rootView.findViewById(R.id.asset_tV);
+        //m_tv_asset = (TextView)rootView.findViewById(R.id.asset_tV);
         m_leaderboard = (TextView)rootView.findViewById(R.id.leaderboard_tV);
         m_tv_username.setText(CustomApplication.getInstance().getUsername());
         m_leaderboard.setOnClickListener(this);
         
         m_btn_logout=(Button)rootView.findViewById(R.id.button_logout);
         m_btn_profile=(ImageButton)rootView.findViewById(R.id.button_profile);
-        m_btn_shared=(Button)rootView.findViewById(R.id.button_shared_history);
-        m_btn_withdraw_history=(Button)rootView.findViewById(R.id.button_withdraw_history);
-        m_btn_withdraw_request=(Button)rootView.findViewById(R.id.button_withdraw_request);
+        m_tV_shared=(TextView)rootView.findViewById(R.id.shared_history);
+        m_tV_withdraw_history=(TextView)rootView.findViewById(R.id.withdraw_history);
+        m_tV_withdraw_request=(TextView)rootView.findViewById(R.id.withdraw_request);
         m_btn_logout.setOnClickListener(this);
         m_btn_profile.setOnClickListener(this);
-        m_btn_shared.setOnClickListener(this);
-        m_btn_withdraw_history.setOnClickListener(this);
-        m_btn_withdraw_request.setOnClickListener(this);
-
+        m_tV_shared.setOnClickListener(this);
+        m_tV_withdraw_history.setOnClickListener(this);
+        m_tV_withdraw_request.setOnClickListener(this);
+        
         return rootView;
     }
-
     
+        
     @Override
     public void onClick(View view){
         switch (view.getId()){
@@ -181,7 +189,7 @@ public class ProfileFragment extends HomeFragmentBase implements
                 break;
             case R.id.my_forwarded_ad_tv:
             case R.id.my_forwarded_ad_image:
-            case R.id.button_shared_history:
+            //case R.id.button_shared_history:
             	if(CustomApplication.getInstance().getEmail().equalsIgnoreCase("")){
             		ViewUtils.startPage(null, getActivity(), LoginActivity.class);
 //            		getActivity().finish();
@@ -192,7 +200,7 @@ public class ProfileFragment extends HomeFragmentBase implements
                 break;
             case R.id.my_withdraw_record_tv:
             case R.id.my_withdraw_record_image:
-            case R.id.button_withdraw_history:
+            //case R.id.button_withdraw_history:
             	if(CustomApplication.getInstance().getEmail().equalsIgnoreCase("")){
             		ViewUtils.startPage(null, getActivity(), LoginActivity.class);
 //            		getActivity().finish();
@@ -203,7 +211,7 @@ public class ProfileFragment extends HomeFragmentBase implements
                 break;
             case R.id.my_withdraw_request_tv:
             case R.id.my_withdraw_request_image:
-            case R.id.button_withdraw_request:
+            //case R.id.button_withdraw_request:
             	if(CustomApplication.getInstance().getEmail().equalsIgnoreCase("")){
             		ViewUtils.startPage(null, getActivity(), LoginActivity.class);
 //            		getActivity().finish();
@@ -317,67 +325,8 @@ public class ProfileFragment extends HomeFragmentBase implements
         getActivity().finish();
     }
 
-    @Override
-    public boolean ResponseFailedCallBack(int tag, final ResponseBase response) {
-        homeActivity.dismissWaiting();
-//        dismissDialogWaiting();
-        super.ResponseFailedCallBack(tag, response);
-
-        return false;
-    }
-
-    @Override
-    public boolean ResponseSuccessCallBack(int tag, final ResponseBase response) {
-        homeActivity.dismissWaiting();
-//    	dismissDialogWaiting();
-
-        if (response instanceof CurrentIncomeResponse) {
-            final GetURLResponse getURLResponse = (GetURLResponse) response;
-
-            homeActivity.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-
-
-                }
-            });
-        }
-        else if (response instanceof ForwardedAdHistoryResponse){
-            final ForwardedAdHistoryResponse forwardedAdHistoryResponse = (ForwardedAdHistoryResponse) response;
-
-            homeActivity.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-
-                }
-            });
-        }
-        else if(response instanceof GetURLResponse){
-            final GetURLResponse getURLResponse = (GetURLResponse) response;
-
-            homeActivity.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-
-
-                }
-            });
-        }
-        else if(response instanceof WithdrawRequestResponse){
-        	final WithdrawRequestResponse withdrawRequestResponse = (WithdrawRequestResponse) response;
-        	homeActivity.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                	homeActivity.showAlert(getActivity(),
-                            getResources().getString(R.string.my_withdraw_request),
-                            response.responseMessage);
-                }
-            });
-        	
-        }
-
-        return true;
-    }
+    
+    
 
 	@Override
 	public void onHomeWithdrawUpdated(int tag, final WithdrawRequestResponse response) {
@@ -394,5 +343,7 @@ public class ProfileFragment extends HomeFragmentBase implements
         }
 		
 	}
+
+
 
 }

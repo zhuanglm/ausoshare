@@ -29,6 +29,7 @@
             android:layout_below="@id/button_logout"
             android:layout_centerHorizontal="true"
             android:layout_centerInParent="false"
+            android:layout_marginLeft="10dp"
             android:text="用户姓名"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@color/white" />
@@ -51,7 +52,8 @@
             android:layout_marginTop="5dp"
             android:text="知名企业家，万贯资产"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            android:visibility="invisible" />
 
         <ImageButton
             android:id="@+id/button_profile"
@@ -63,6 +65,15 @@
             android:layout_toRightOf="@+id/imageView2"
             android:src="@drawable/button_detail" />
 
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/imageView2"
+            android:layout_below="@+id/imageView2"
+            android:layout_marginLeft="5dp"
+            android:text="【上传图片】" />
+
     </RelativeLayout>
 
 	<RelativeLayout
@@ -72,84 +83,60 @@
 	    android:layout_below="@+id/login_out_profile_layout"
 	    android:background="@color/lightgray" >
 
-	    <TableRow
-	        android:id="@+id/amount_tR"
+	    <LinearLayout
+	        android:id="@+id/amount_layout"
 	        android:layout_width="match_parent"
-	        android:layout_height="50dp"
-	        android:layout_alignParentTop="true"
-	        android:layout_centerHorizontal="true"
-	        android:layout_marginLeft="20dp"
-	        android:layout_marginRight="20dp"
-	        android:layout_marginTop="15dp"
-	        android:background="@drawable/table_row1"
-	        android:gravity="center_vertical|center_horizontal" >
+	        android:layout_height="wrap_content"
+	        android:orientation="horizontal" >
 
 	        <TextView
-	            android:id="@+id/ad_location_value"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:text="总资产  " />
-
-	        <TextView
-	            android:id="@+id/asset_tV"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:text="$ 2，000，000.00 " />
+	            android:id="@+id/amount_tR"
+	            style="@style/myProfile"
+	            android:layout_marginLeft="0dp"
+	            android:layout_weight="1"
+	            android:text="当前收入  $ " />
 
 	        <TextView
 	            android:id="@+id/leaderboard_tV"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:layout_marginLeft="10dp"
+	            style="@style/myProfile"
+	            android:layout_width="match_parent"
+	            android:layout_height="48dp"
+	            android:layout_marginLeft="0dp"
+	            android:layout_weight="3"
 	            android:text="@string/ui_leaderboard"
 	            android:textColor="@color/text_dark_Red" />
 
-	    </TableRow>
-
-	    <LinearLayout
-	        android:layout_width="wrap_content"
-	        android:layout_height="150dp"
-	        android:layout_below="@+id/amount_tR"
-	        android:layout_centerHorizontal="true"
-	        android:layout_marginLeft="28dp"
-	        android:layout_marginRight="28dp"
-	        android:layout_marginTop="30dp"
-	        android:background="@drawable/table_row3"
-	        android:orientation="vertical" >
-	        
-	        <Button
-	            android:id="@+id/button_shared_history"
-	            style="?android:attr/buttonBarStyle"
-	            android:layout_width="match_parent"
-	            android:layout_height="match_parent"
-	            android:layout_below="@+id/amount_tR"
-	            android:layout_centerHorizontal="true"
-	            android:layout_marginTop="10dp"
-	            android:layout_weight="1"
-	            android:text="转发广告记录" />
-
-		    <Button
-		        android:id="@+id/button_withdraw_history"
-		        style="?android:attr/buttonBarStyle"
-		        android:layout_width="match_parent"
-		        android:layout_height="match_parent"
-		        android:layout_below="@+id/button_shared_history"
-		        android:layout_centerHorizontal="true"
-		        android:layout_weight="1"
-		        android:text="我的提现记录" />
-	
-		    <Button
-		        android:id="@+id/button_withdraw_request"
-		        style="?android:attr/buttonBarStyle"
-		        android:layout_width="match_parent"
-		        android:layout_height="match_parent"
-		        android:layout_below="@+id/button_withdraw_history"
-		        android:layout_centerHorizontal="true"
-		        android:layout_marginBottom="10dp"
-		        android:layout_weight="1"
-		        android:text="提现请求" />
-
 	    </LinearLayout>
+	    
+	    <TextView
+	        android:id="@+id/shared_history"
+	        style="@style/myProfile"
+	        android:layout_width="match_parent"
+	        android:layout_height="48dp"
+	        android:layout_below="@+id/amount_layout"
+	        android:layout_marginLeft="0dp"
+	        android:layout_marginTop="5dp"
+	        android:text="转发广告记录" />
+	    
+	    <TextView
+	        android:id="@+id/withdraw_history"
+	        style="@style/myProfile"
+	        android:layout_width="match_parent"
+	        android:layout_height="48dp"
+	        android:layout_below="@+id/shared_history"
+	        android:layout_marginLeft="0dp"
+	        android:layout_marginTop="5dp"
+	        android:text="我的提现记录" />
+	    
+	    <TextView
+	        android:id="@+id/withdraw_request"
+	        style="@style/myProfile"
+	        android:layout_width="match_parent"
+	        android:layout_height="48dp"
+	        android:layout_below="@+id/withdraw_history"
+	        android:layout_marginLeft="0dp"
+	        android:layout_marginTop="5dp"
+	        android:text="提现请求" />
 	    
 	</RelativeLayout>
 

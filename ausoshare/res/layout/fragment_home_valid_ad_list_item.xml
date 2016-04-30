@@ -8,7 +8,8 @@
         android:id="@+id/ad_image"
         android:layout_width="72dp"
         android:layout_height="72dp"
-        android:padding="3dp"
+        android:padding="5dp"
+        android:background="@drawable/bg_border_img" 
         android:src="@drawable/app_icon" />
 
     <TextView

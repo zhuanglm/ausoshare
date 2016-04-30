@@ -115,10 +115,12 @@
     <string name="ws_error_exist_email">email已经注册过</string>
 
     <!-- register -->
+    <string name="old_password">旧密码</string>
+    <string name="new_password">新密码(6+ characters)</string>
     <string name="nick_name_text">用户名</string>
     <string name="email_tv">Email</string>
     <string name="register_email_tv">Email(请用真实邮箱，提现凭证)</string>
-    <string name="password_text">密码(6+ characters)</string>
+    <string name="password_text">密码</string>
     <string name="password_login_text">密码</string>
     <string name="confirm_password_text">确认密码</string>
     <string name="confirm_button_text">确认</string>
@@ -134,6 +136,7 @@
 
     <!-- -->
     <string name="update_btn">更新</string>
+    <string name="update_pwd_btn">修改密码</string>
 
     <string name="validate_empty_password">抱歉，密码不能为空</string>
     <string name="validate_outofrange">长度至少%1$d - %2$d个字符</string>

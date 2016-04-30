@@ -22,6 +22,9 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -32,7 +35,9 @@ import com.auroratechdevelopment.ausoshare.ui.contact.ContactFragment;
 import com.auroratechdevelopment.ausoshare.ui.entertainment.EntertainmentFragment;
 import com.auroratechdevelopment.ausoshare.ui.ext.CustomAlertDialog;
 import com.auroratechdevelopment.ausoshare.ui.login.LoginActivity;
+import com.auroratechdevelopment.ausoshare.ui.profile.CurrentIncomeActivity;
 import com.auroratechdevelopment.ausoshare.ui.profile.ProfileFragment;
+import com.auroratechdevelopment.ausoshare.ui.profile.Top10IncomeAdapter;
 import com.auroratechdevelopment.ausoshare.ui.yellowpage.YellowPageFragment;
 import com.auroratechdevelopment.ausoshare.util.AppLocationService;
 import com.auroratechdevelopment.ausoshare.util.Constants;
@@ -42,7 +47,9 @@ import com.auroratechdevelopment.common.ViewUtils;
 import com.auroratechdevelopment.common.ui.ViewPagerEx;
 import com.auroratechdevelopment.common.webservice.WebServiceHelper;
 import com.auroratechdevelopment.common.webservice.models.AdDataItem;
+import com.auroratechdevelopment.common.webservice.models.Top10Item;
 import com.auroratechdevelopment.common.webservice.models.UserInfo;
+import com.auroratechdevelopment.common.webservice.response.CurrentIncomeResponse;
 import com.auroratechdevelopment.common.webservice.response.GetOnGoingAdListResponse;
 import com.auroratechdevelopment.common.webservice.response.GetOnGoingEntertainmentListResponse;
 import com.auroratechdevelopment.common.webservice.response.ResponseBase;
@@ -671,4 +678,6 @@ public class HomeActivity extends ActivityBase implements
             System.exit(0);
         }
     }
+    
+    
 }

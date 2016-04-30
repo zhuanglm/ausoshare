@@ -267,8 +267,8 @@ public class LoginActivity extends ActivityBase implements View.OnClickListener{
         forgotPasswordTv = (TextView)findViewById(R.id.forgot_password_tv);
         rememberMeCheckBox = (CheckBox)findViewById(R.id.remember_me);
         
-        m_btn_wechat = (ImageView)findViewById(R.id.button_wechat);
-        m_btn_wechat.setOnClickListener(this);
+        //m_btn_wechat = (ImageView)findViewById(R.id.button_wechat);
+        //m_btn_wechat.setOnClickListener(this);
 
         loginConfirmBtm.setOnClickListener(this);
         registerNewUserTv.setOnClickListener(this);
@@ -339,13 +339,13 @@ public class LoginActivity extends ActivityBase implements View.OnClickListener{
                 }
                 break;
                 
-            case R.id.button_wechat:
+            /*case R.id.button_wechat:
             	final SendAuth.Req req = new SendAuth.Req();
             	req.scope = "snsapi_userinfo";
             	req.state = "raymond_wx_login";
             	m_WXapi.sendReq(req);
             	//SendAuth.Resp code;
-            	break;
+            	break;*/
 
             default:
                 break;

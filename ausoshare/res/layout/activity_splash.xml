@@ -86,13 +86,17 @@
             android:src="@drawable/splash_dot_bg" />
     </LinearLayout>
 
-    <ImageView
+    <Button
         android:id="@+id/button_skip"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="10dp"
-        android:src="@drawable/close_small" />
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="15dp"
+        android:background="#A0FF0000"
+        android:minHeight="36dp"
+        android:text="skip"
+        android:textColor="@color/white" />
 
 </RelativeLayout>

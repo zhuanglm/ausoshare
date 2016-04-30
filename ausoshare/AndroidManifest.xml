@@ -86,8 +86,6 @@
         <activity android:name=".ui.contact.ContactURLActivity"
             android:screenOrientation="portrait"/>
 
-        <activity android:name=".ui.profile.UpdateUserProfileActivity"
-            android:screenOrientation="portrait"/>
         <activity android:name=".ui.profile.UpdateProfileActivity"
             android:screenOrientation="portrait"/>
 
