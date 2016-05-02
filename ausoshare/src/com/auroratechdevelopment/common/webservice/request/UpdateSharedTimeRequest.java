@@ -5,27 +5,26 @@ import com.auroratechdevelopment.common.webservice.response.UpdateUserProfileRes
 import com.auroratechdevelopment.common.webservice.util.WebUtils;
 
 /**
- * Created by Edward liu on 1/14/2015.
- * Updated by Raymond Zhuang 2016/5/2
+ * Created by Raymond Zhuang 2016/5/2
  */
-public class UpdateUserProfileRequest extends RequestBase<UpdateUserProfileResponse> {
+public class UpdateSharedTimeRequest extends RequestBase<UpdateUserProfileResponse> {
 
     public String deviceID;
-    public String nickname;
+    public String adID;
     public String email;
-    public String password;
+    
 
-    public UpdateUserProfileRequest(String token, String deviceID, String nickName, String email,String pwd) {
+    public UpdateSharedTimeRequest(String token, String deviceID,String email,String adId) {
         this.token = token;
         this.deviceID = deviceID;
-        this.nickname = nickName;
+        adID = adId;
         this.email = email;
-        this.password = pwd;
+        
     }
 
     @Override
     public String getUri() {
-        return WebUtils.getURI(String.format(WebServiceConstants.updateUserProfile));
+        return WebUtils.getURI(String.format(WebServiceConstants.updateSharedTime));
     }
 
     @Override

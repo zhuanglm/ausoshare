@@ -1,0 +1,16 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    
+    <!-- 主体背景颜色值 -->
+    <item android:bottom="1dp" android:right="1dp" android:top="1dp" android:left="1dp">
+        <shape>
+            <gradient android:startColor="#F8B62C" android:centerColor="#F8B62C"
+                android:endColor="#F8B62C" android:type="linear" android:angle="90"
+                android:centerX="0.5" android:centerY="0.5" />
+
+            <padding android:left="20dp" android:top="2dp" android:right="20dp"
+                android:bottom="2dp" />
+            <!-- 应该是圆角 -->
+            <corners android:radius="10dp" />
+        </shape>
+    </item>
+</layer-list>

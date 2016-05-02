@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/profile_bg"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:clickable="true" >
 
     <include
         android:id="@+id/topbar"
@@ -17,12 +19,22 @@
     	android:layout_marginTop="8dp"
     	android:layout_marginLeft="16dp"
     	android:layout_marginRight="16dp">
+
+         <TextView
+             android:id="@+id/text_profile"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:padding="5dp"
+             android:text="@string/my_update_profile"
+             android:textColor="@color/blue"
+             android:textSize="18sp" />
     
 	    <EditText
 	        android:id="@+id/text_username"
 	        android:layout_width="match_parent"
 	        android:layout_height="@dimen/common_height_size"
-	        android:layout_marginTop="12dp"
+	        android:layout_below="@+id/text_profile"
+	        android:layout_marginTop="0dp"
 	        android:hint="@string/nick_name_text" />
 	
 	    <EditText
@@ -37,7 +49,7 @@
 	        />
 	
 	    <EditText
-	        android:id="@+id/text_password"
+	        android:id="@+id/text_update_password"
 	        android:layout_width="match_parent"
 	        android:layout_height="@dimen/common_height_size"
 	        android:layout_below="@+id/text_register_email"
@@ -50,22 +62,35 @@
 	        android:id="@+id/btn_register"
 	        android:layout_width="match_parent"
 	        android:layout_height="@dimen/common_height_size"
-	        android:layout_below="@+id/text_password"
-	        android:onClick="onUpdateButtonClicked"
+	        android:layout_below="@+id/text_update_password"
+	        android:onClick="onUpdateProfileClicked"
 	        android:textColor="@color/white"
 	        android:layout_marginTop="@dimen/activity_vertical_margin"
 	        android:text="@string/update_btn"
 	        android:textAllCaps="false"
 	        android:background="@drawable/btn_shape"
 	        />
+
+	    <TextView
+	        android:id="@+id/update_password"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_below="@+id/btn_register"
+	        android:layout_marginTop="10dp"
+	        android:padding="5dp"
+	        android:text="@string/my_update_password"
+	        android:textColor="@color/blue"
+	        android:textSize="18sp" />
 	    
 	    <EditText
 	        android:id="@+id/text_old_password"
 	        android:layout_width="match_parent"
 	        android:layout_height="@dimen/common_height_size"
-	        android:layout_below="@+id/btn_register"
-	        android:layout_marginTop="20dp"
-	        android:hint="@string/old_password" />
+	        android:layout_below="@+id/update_password"
+	        android:layout_marginTop="0dp"
+	        android:inputType="textPassword"
+	        android:hint="@string/old_password" 
+	        android:imeOptions="actionNext"/>
 	
 	    <EditText
 	        android:id="@+id/text_new_password"
@@ -73,9 +98,11 @@
 	        android:layout_height="@dimen/common_height_size"
 	        android:layout_below="@+id/text_old_password"
 	        android:hint="@string/new_password" 
-	        android:clickable="false"
-	        android:focusable="false"
+	        android:clickable="true"
+	        android:focusable="true"
 	        android:visibility="visible"
+	        android:inputType="textPassword"
+	        android:imeOptions="actionNext"
 	        />
 	
 	    <EditText
@@ -85,7 +112,9 @@
 	        android:layout_below="@+id/text_new_password"
 	        android:password="true"
 	        android:visibility="visible"
-	        android:hint="@string/confirm_password_text" />
+	        android:hint="@string/confirm_password_text" 
+	        android:inputType="textPassword"
+	        android:imeOptions="actionDone"/>
 
 
 	    <Button
@@ -93,7 +122,7 @@
 	        android:layout_width="match_parent"
 	        android:layout_height="@dimen/common_height_size"
 	        android:layout_below="@+id/text_confirm_password"
-	        android:onClick="onUpdateButtonClicked"
+	        android:onClick="onUpdatePasswordClicked"
 	        android:textColor="@color/white"
 	        android:layout_marginTop="@dimen/activity_vertical_margin"
 	        android:text="@string/update_pwd_btn"

@@ -69,7 +69,7 @@ public class RegisterActivity extends ActivityBase implements View.OnClickListen
         setContentView(R.layout.activity_user_register);
 
         txtUserName = (EditText) findViewById(R.id.text_username);
-        txtPassWord = (EditText) findViewById(R.id.text_password);
+        txtPassWord = (EditText) findViewById(R.id.text_update_password);
         txtEmail = (EditText) findViewById(R.id.text_register_email);
         txtPasswordConfirm = (EditText) findViewById(R.id.text_password_confirm);
         textBirthday = (TextView) findViewById(R.id.text_birthday);

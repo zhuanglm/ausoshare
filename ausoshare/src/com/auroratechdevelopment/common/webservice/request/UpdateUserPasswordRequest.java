@@ -5,27 +5,28 @@ import com.auroratechdevelopment.common.webservice.response.UpdateUserProfileRes
 import com.auroratechdevelopment.common.webservice.util.WebUtils;
 
 /**
- * Created by Edward liu on 1/14/2015.
- * Updated by Raymond Zhuang 2016/5/2
+ * Created by Raymond Zhuang 2016/5/2
  */
-public class UpdateUserProfileRequest extends RequestBase<UpdateUserProfileResponse> {
+public class UpdateUserPasswordRequest extends RequestBase<UpdateUserProfileResponse> {
 
     public String deviceID;
-    public String nickname;
+    
     public String email;
     public String password;
+    public String new_password;
 
-    public UpdateUserProfileRequest(String token, String deviceID, String nickName, String email,String pwd) {
+    public UpdateUserPasswordRequest(String token, String deviceID,String email,String pwd,String new_pwd) {
         this.token = token;
         this.deviceID = deviceID;
-        this.nickname = nickName;
+        
         this.email = email;
         this.password = pwd;
+        this.new_password = new_pwd;
     }
 
     @Override
     public String getUri() {
-        return WebUtils.getURI(String.format(WebServiceConstants.updateUserProfile));
+        return WebUtils.getURI(String.format(WebServiceConstants.updateUserPassword));
     }
 
     @Override

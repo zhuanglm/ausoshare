@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -44,8 +45,11 @@ import com.auroratechdevelopment.ausoshare.util.Constants;
 import com.auroratechdevelopment.common.ViewUtils;
 import com.auroratechdevelopment.common.util.ImageService;
 import com.auroratechdevelopment.common.util.LoadNetPicture;
+import com.auroratechdevelopment.common.webservice.WebServiceHelper;
 import com.auroratechdevelopment.common.webservice.models.AdDataItem;
 import com.auroratechdevelopment.common.webservice.models.OnGoingAdItem;
+import com.auroratechdevelopment.common.webservice.response.ResponseBase;
+import com.auroratechdevelopment.common.webservice.response.UpdateUserProfileResponse;
 //import com.tencent.mm.sdk.modelmsg.SendMessageToWX;
 //import com.tencent.mm.sdk.modelmsg.WXMediaMessage;
 //import com.tencent.mm.sdk.modelmsg.WXWebpageObject;
@@ -416,11 +420,33 @@ public class PrepareShareAdActivity extends ActivityBase {
 	
 	private void updatedSharedTimes(){
 		int shared_ad_times = 0;
+		
+		//send to backend
+		WebServiceHelper.getInstance().updateSharedTime(
+                Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID),
+                CustomApplication.getInstance().getEmail(),adDataItem.adID
+        );
+		
 		shared_ad_times = CustomApplication.getInstance().getSharedADTime();
 		if (shared_ad_times < 3){
 			CustomApplication.getInstance().setSharedADTime(shared_ad_times + 1);
 		}
 	}
+	
+	@Override
+    public void ResponseFailedCallBack(int tag, final ResponseBase response) {
+        //dismissWaiting();
+        super.ResponseFailedCallBack(tag, response);
+    }
+	
+	@Override
+    public void ResponseSuccessCallBack(int tag, ResponseBase response) {
+        //dismissWaiting();
+
+        //final UpdateUserProfileResponse updateUserProfileResponse;
+
+        //if (response instanceof UpdateUserProfileResponse) {}
+    }
 	
 	private String buildTransaction(final String type) {
 		return (type == null) ? String.valueOf(System.currentTimeMillis()) : type + System.currentTimeMillis();

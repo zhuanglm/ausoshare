@@ -94,9 +94,15 @@ public class HomeActivity extends ActivityBase implements
     	public void onHomeWithdrawUpdated(int tag, WithdrawRequestResponse response);
     }
     
+    public interface HomeIncomeUpdated{
+    	public void onHomeCurrentIncomeUpdated(int tag, CurrentIncomeResponse response);
+    }
+    
     private HomeAdListUpdated HomeAdListUpdatedListener;
     private HomeEntertainmentListUpdated HomeEntertainmentListUpdatedListener;
     private HomeWithdrawUpdated HomeWithdrawUpdatedListener;
+    
+    private HomeIncomeUpdated HomeIncomeUpdatedListener;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -190,6 +196,8 @@ public class HomeActivity extends ActivityBase implements
         
         getRegisteredUserInfo();
         setBottomBarSelected(iLastTab);
+        
+        fetchCurrentIncome();
         
     }
     
@@ -569,6 +577,7 @@ public class HomeActivity extends ActivityBase implements
                     fg = new ProfileFragment();
                     fg.setHomeActivity(HomeActivity.this);
                     HomeActivity.this.HomeWithdrawUpdatedListener = (ProfileFragment) fg;
+                    HomeActivity.this.HomeIncomeUpdatedListener = (ProfileFragment) fg;
                     return fg;
                     
                 case Constants.FRAG_ENTERTAINMENT:
@@ -625,6 +634,13 @@ public class HomeActivity extends ActivityBase implements
         		HomeWithdrawUpdatedListener.onHomeWithdrawUpdated(tag, (WithdrawRequestResponse) response);
         	}
         }
+        else if (response instanceof CurrentIncomeResponse) {
+        	
+        	if (HomeIncomeUpdatedListener != null){
+        		HomeIncomeUpdatedListener.onHomeCurrentIncomeUpdated(tag, (CurrentIncomeResponse) response);
+        	}
+            
+        }
         
     }
         
@@ -677,6 +693,13 @@ public class HomeActivity extends ActivityBase implements
             finish();
             System.exit(0);
         }
+    }
+    
+    public void fetchCurrentIncome(){
+        WebServiceHelper.getInstance().getCurrentIncome(CustomApplication.getInstance().getEmail(),
+                        CustomApplication.getInstance().getAndroidID(),
+                        Constants.CURRENT_INCOME_TOP_USER_MAXNUMBER);
+        //showWaiting();
     }
     
     

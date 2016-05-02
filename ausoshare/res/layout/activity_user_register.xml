@@ -55,7 +55,7 @@
 	        android:hint="@string/register_email_tv" />
 	
 	    <EditText
-	        android:id="@+id/text_password"
+	        android:id="@+id/text_update_password"
 	        android:layout_width="match_parent"
 	        android:layout_height="@dimen/common_height_size"
 	        android:layout_below="@+id/text_register_email"
@@ -68,7 +68,7 @@
 	        android:id="@+id/text_password_confirm"
 	        android:layout_width="match_parent"
 	        android:layout_height="@dimen/common_height_size"
-	        android:layout_below="@+id/text_password"
+	        android:layout_below="@+id/text_update_password"
 	        android:password="true"
 	        android:singleLine="true"
 	        android:imeOptions="actionDone"
@@ -89,12 +89,22 @@
 	        android:layout_below="@+id/text_gender"
 	        android:visibility="gone"
 	        android:hint="@string/birthday_text" />
+	    
+	    	    
+	    <EditText
+	        android:id="@+id/promotion_code"
+	        android:layout_width="match_parent"
+	        android:layout_height="@dimen/common_height_size"
+	        android:layout_below="@+id/text_password_confirm"
+	        android:singleLine="true"
+	        android:imeOptions="actionDone"
+	        android:hint="@string/promotion_code" />
 
 	    <Button
 	        android:id="@+id/btn_register"
 	        android:layout_width="match_parent"
 	        android:layout_height="@dimen/common_height_size"
-	        android:layout_below="@+id/text_birthday"
+	        android:layout_below="@+id/promotion_code"
 	        android:onClick="onRegisterButtonClicked"
 	        android:textColor="@color/white"
 	        android:layout_marginTop="@dimen/activity_vertical_margin"

@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -38,7 +39,8 @@ import org.w3c.dom.Text;
  */
 public class ContactFragment extends HomeFragmentBase implements View.OnClickListener {
     private TextView contactTCText, contactIncomeRuleText, contactWithdrawRuleText, contactCompanyIntroductionText, contactCustomerText, contactQuestionsAnswersText;
-    private ImageView contactTCImage, contactIncomeRuleImage, contactWithdrawRuleImage, contactCompanyIntroductionImage, contactCustomerImage, contactQuestionsAnswersImage;
+    private ImageButton  contactIncomeRuleImage, contactCompanyIntroductionImage, contactQuestionsAnswersImage;
+    private ImageButton contactTCImage, contactWithdrawRuleImage, contactCustomerImage;
     protected HomeActivity homeActivity;
 
     @Override
@@ -54,17 +56,17 @@ public class ContactFragment extends HomeFragmentBase implements View.OnClickLis
         View rootView = inflater.inflate(R.layout.fragment_contact_v2, container,false);
         
         contactTCText = (TextView) rootView.findViewById(R.id.contact_t_c_tv);
-        contactTCImage = (ImageView) rootView.findViewById(R.id.contact_t_c_image);
+        contactTCImage = (ImageButton) rootView.findViewById(R.id.contact_t_c_image);
         contactIncomeRuleText = (TextView) rootView.findViewById(R.id.contact_income_rule_tv);
-        contactIncomeRuleImage = (ImageView) rootView.findViewById(R.id.contact_income_rule_image);
+        contactIncomeRuleImage = (ImageButton) rootView.findViewById(R.id.contact_income_rule_image);
         contactWithdrawRuleText = (TextView) rootView.findViewById(R.id.contact_withdraw_rule_tv);
-        contactWithdrawRuleImage = (ImageView) rootView.findViewById(R.id.contact_withdraw_rule_image);
+        contactWithdrawRuleImage = (ImageButton) rootView.findViewById(R.id.contact_withdraw_rule_image);
         contactCompanyIntroductionText = (TextView) rootView.findViewById(R.id.contact_company_introduction_tv);
-        contactCompanyIntroductionImage = (ImageView) rootView.findViewById(R.id.contact_company_introduction_image);
+        contactCompanyIntroductionImage = (ImageButton) rootView.findViewById(R.id.contact_company_introduction_image);
         contactQuestionsAnswersText = (TextView)rootView.findViewById(R.id.contact_questions_answers_tv);
-        contactQuestionsAnswersImage = (ImageView)rootView.findViewById(R.id.contact_questions_answers_image);
+        contactQuestionsAnswersImage = (ImageButton)rootView.findViewById(R.id.contact_questions_answers_image);
         contactCustomerText = (TextView) rootView.findViewById(R.id.contact_customer_tv);
-        contactCustomerImage = (ImageView) rootView.findViewById(R.id.contact_customer_image);
+        contactCustomerImage = (ImageButton) rootView.findViewById(R.id.contact_customer_image);
 
         contactTCText.setOnClickListener(this);
         contactTCImage.setOnClickListener(this);

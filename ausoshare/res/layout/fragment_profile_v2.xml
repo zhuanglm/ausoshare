@@ -55,18 +55,20 @@
             android:textColor="@color/white"
             android:visibility="invisible" />
 
-        <ImageButton
+        <Button
             android:id="@+id/button_profile"
             android:layout_width="112dp"
             android:layout_height="30dp"
             android:layout_below="@+id/user_info_tV"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="30dp"
             android:layout_marginTop="15dp"
             android:layout_toRightOf="@+id/imageView2"
-            android:src="@drawable/button_detail" />
+            android:background="@drawable/btn_round_corner"
+            android:text="@string/ui_detail"
+            android:textColor="#DC4F45" />
 
         <TextView
-            android:id="@+id/textView1"
+            android:id="@+id/text_profile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/imageView2"
@@ -87,14 +89,16 @@
 	        android:id="@+id/amount_layout"
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
+	        android:background="@color/white"
 	        android:orientation="horizontal" >
 
 	        <TextView
-	            android:id="@+id/amount_tR"
+	            android:id="@+id/current_income_tV"
 	            style="@style/myProfile"
-	            android:layout_marginLeft="0dp"
+	            android:layout_marginLeft="8dp"
 	            android:layout_weight="1"
-	            android:text="当前收入  $ " />
+	            android:gravity="left|center_vertical"
+	            android:text="@string/ui_current_income" />
 
 	        <TextView
 	            android:id="@+id/leaderboard_tV"
@@ -108,35 +112,94 @@
 
 	    </LinearLayout>
 	    
-	    <TextView
-	        android:id="@+id/shared_history"
-	        style="@style/myProfile"
-	        android:layout_width="match_parent"
-	        android:layout_height="48dp"
+	    <LinearLayout
+	        android:id="@+id/shared_history_layout"
 	        android:layout_below="@+id/amount_layout"
-	        android:layout_marginLeft="0dp"
-	        android:layout_marginTop="5dp"
-	        android:text="转发广告记录" />
-	    
-	    <TextView
-	        android:id="@+id/withdraw_history"
-	        style="@style/myProfile"
 	        android:layout_width="match_parent"
-	        android:layout_height="48dp"
-	        android:layout_below="@+id/shared_history"
-	        android:layout_marginLeft="0dp"
-	        android:layout_marginTop="5dp"
-	        android:text="我的提现记录" />
+	        android:layout_height="wrap_content"
+	        android:orientation="horizontal" >
+	        
+	        <TextView
+	            android:id="@+id/shared_history"
+	            style="@style/myProfile"
+	            android:layout_width="match_parent"
+	            android:layout_height="48dp"
+	            android:layout_marginLeft="0dp"
+	            android:layout_marginTop="5dp"
+	            android:layout_weight="1"
+	            android:text="  转发广告记录" />
+
+	        <TextView
+	            android:id="@+id/textView1"
+	            style="@style/myProfile"
+	            android:layout_width="match_parent"
+	            android:layout_height="48dp"
+	            android:layout_marginLeft="0dp"
+	            android:layout_marginTop="5dp"
+	            android:layout_weight="12"
+	            android:text=">" />
+	        
+	    </LinearLayout>
 	    
-	    <TextView
-	        android:id="@+id/withdraw_request"
-	        style="@style/myProfile"
+	    
+	    <LinearLayout
+	        android:id="@+id/withdraw_history_layout"
+	        android:layout_below="@+id/shared_history_layout"
 	        android:layout_width="match_parent"
-	        android:layout_height="48dp"
-	        android:layout_below="@+id/withdraw_history"
-	        android:layout_marginLeft="0dp"
-	        android:layout_marginTop="5dp"
-	        android:text="提现请求" />
+	        android:layout_height="wrap_content"
+	        android:orientation="horizontal" >
+	        
+			<TextView
+		        android:id="@+id/withdraw_history"
+		        style="@style/myProfile"
+		        android:layout_width="match_parent"
+		        android:layout_height="48dp"
+		        android:layout_weight="1"
+		        android:layout_marginLeft="0dp"
+		        android:layout_marginTop="5dp"
+		        android:text="  我的提现记录" />	
+		        
+			<TextView
+	            android:id="@+id/textView2"
+	            style="@style/myProfile"
+	            android:layout_width="match_parent"
+	            android:layout_height="48dp"
+	            android:layout_marginLeft="0dp"
+	            android:layout_marginTop="5dp"
+	            android:layout_weight="12"
+	            android:text=">" />
+	        
+	    </LinearLayout>
+	    
+	    <LinearLayout
+	        android:id="@+id/withdraw_request_layout"
+	        android:layout_below="@+id/withdraw_history_layout"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:orientation="horizontal" >
+	        
+			<TextView
+		        android:id="@+id/withdraw_request"
+		        style="@style/myProfile"
+		        android:layout_width="match_parent"
+		        android:layout_height="48dp"
+		      	android:layout_weight="1"
+		        android:layout_marginLeft="0dp"
+		        android:layout_marginTop="5dp"
+		        android:text="  提现请求" />
+			
+			<TextView
+	            android:id="@+id/textView3"
+	            style="@style/myProfile"
+	            android:layout_width="match_parent"
+	            android:layout_height="48dp"
+	            android:layout_marginLeft="0dp"
+	            android:layout_marginTop="5dp"
+	            android:layout_weight="12"
+	            android:text=">" />
+	        
+	    </LinearLayout>
+	    
 	    
 	</RelativeLayout>
 

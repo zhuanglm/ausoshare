@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -58,14 +59,17 @@ import org.w3c.dom.Text;
 //public class ProfileFragment extends HomeFragmentBase implements
 public class ProfileFragment extends HomeFragmentBase implements
     View.OnClickListener, 
-    HomeActivity.HomeWithdrawUpdated
+    HomeActivity.HomeWithdrawUpdated,
+    HomeActivity.HomeIncomeUpdated
     {
     private RelativeLayout userProfileLayout;
     //private ImageView loginOutImageThumb,userImageThumb,myCurrentIncomeImage,myForwardedAdImage,myWithdrawRecordImage, myWithdrawRequestImage;
     //private TextView loginOutProfileText,userProfileText,myCurrentIncomeText,myForwardedAdText,myWithdrawRecordText,myWithdrawRequestText;
     private TextView m_tv_username,m_tv_asset,m_leaderboard,m_tV_shared,m_tV_withdraw_history,m_tV_withdraw_request;
-    private Button m_btn_logout;
-    private ImageButton m_btn_profile;
+    private TextView m_tV_shared_l,m_tV_withdraw_history_l,m_tV_withdraw_request_l;
+    private LinearLayout m_layout_shared,m_layout_withdraw,m_layout_request;
+    private Button m_btn_logout,m_btn_profile;
+    private TextView m_tv_currentIncome;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -126,6 +130,7 @@ public class ProfileFragment extends HomeFragmentBase implements
         }*/
         
         //for v2
+        m_tv_currentIncome = (TextView)rootView.findViewById(R.id.current_income_tV);
         m_tv_username = (TextView)rootView.findViewById(R.id.user_name_tV);
         //m_tv_asset = (TextView)rootView.findViewById(R.id.asset_tV);
         m_leaderboard = (TextView)rootView.findViewById(R.id.leaderboard_tV);
@@ -133,15 +138,28 @@ public class ProfileFragment extends HomeFragmentBase implements
         m_leaderboard.setOnClickListener(this);
         
         m_btn_logout=(Button)rootView.findViewById(R.id.button_logout);
-        m_btn_profile=(ImageButton)rootView.findViewById(R.id.button_profile);
+        m_btn_profile=(Button)rootView.findViewById(R.id.button_profile);
         m_tV_shared=(TextView)rootView.findViewById(R.id.shared_history);
+        m_tV_shared_l=(TextView)rootView.findViewById(R.id.textView1);
         m_tV_withdraw_history=(TextView)rootView.findViewById(R.id.withdraw_history);
+        m_tV_withdraw_history_l=(TextView)rootView.findViewById(R.id.textView2);
         m_tV_withdraw_request=(TextView)rootView.findViewById(R.id.withdraw_request);
+        m_tV_withdraw_request_l=(TextView)rootView.findViewById(R.id.textView3);
+        m_layout_shared = (LinearLayout)rootView.findViewById(R.id.shared_history_layout);
+        m_layout_withdraw = (LinearLayout)rootView.findViewById(R.id.withdraw_history_layout);
+        m_layout_request = (LinearLayout)rootView.findViewById(R.id.withdraw_request_layout);
         m_btn_logout.setOnClickListener(this);
         m_btn_profile.setOnClickListener(this);
+        m_layout_shared.setOnClickListener(this);
+        m_layout_withdraw.setOnClickListener(this);
+        m_layout_request.setOnClickListener(this);
         m_tV_shared.setOnClickListener(this);
+        m_tV_shared_l.setOnClickListener(this);
         m_tV_withdraw_history.setOnClickListener(this);
+        m_tV_withdraw_history_l.setOnClickListener(this);
         m_tV_withdraw_request.setOnClickListener(this);
+        m_tV_withdraw_request_l.setOnClickListener(this);
+        
         
         return rootView;
     }
@@ -189,7 +207,9 @@ public class ProfileFragment extends HomeFragmentBase implements
                 break;
             case R.id.my_forwarded_ad_tv:
             case R.id.my_forwarded_ad_image:
-            //case R.id.button_shared_history:
+            case R.id.shared_history_layout:
+            case R.id.shared_history:
+            case R.id.textView1:
             	if(CustomApplication.getInstance().getEmail().equalsIgnoreCase("")){
             		ViewUtils.startPage(null, getActivity(), LoginActivity.class);
 //            		getActivity().finish();
@@ -200,7 +220,9 @@ public class ProfileFragment extends HomeFragmentBase implements
                 break;
             case R.id.my_withdraw_record_tv:
             case R.id.my_withdraw_record_image:
-            //case R.id.button_withdraw_history:
+            case R.id.withdraw_history_layout:
+            case R.id.withdraw_history:
+            case R.id.textView2:
             	if(CustomApplication.getInstance().getEmail().equalsIgnoreCase("")){
             		ViewUtils.startPage(null, getActivity(), LoginActivity.class);
 //            		getActivity().finish();
@@ -211,7 +233,9 @@ public class ProfileFragment extends HomeFragmentBase implements
                 break;
             case R.id.my_withdraw_request_tv:
             case R.id.my_withdraw_request_image:
-            //case R.id.button_withdraw_request:
+            case R.id.withdraw_request_layout:
+            case R.id.withdraw_request:
+            case R.id.textView3:
             	if(CustomApplication.getInstance().getEmail().equalsIgnoreCase("")){
             		ViewUtils.startPage(null, getActivity(), LoginActivity.class);
 //            		getActivity().finish();
@@ -338,6 +362,22 @@ public class ProfileFragment extends HomeFragmentBase implements
                 	homeActivity.showAlert(getActivity(),
                             getResources().getString(R.string.my_withdraw_request),
                             response.responseMessage);
+                }
+            });
+        }
+		
+	}
+
+	@Override
+	public void onHomeCurrentIncomeUpdated(int tag, CurrentIncomeResponse response) {
+		final CurrentIncomeResponse currentIncome = response;
+		
+		if(homeActivity != null){
+            homeActivity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                	m_tv_currentIncome.setText(getResources().getString(R.string.ui_current_income)+
+                            currentIncome.data.currentIncome);
                 }
             });
         }

@@ -11,7 +11,16 @@
         android:layout_height="214dp"
         android:layout_alignParentTop="true"
         android:scaleType="center"
-        android:src="@drawable/background_p2" />
+        android:src="@drawable/background" />
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="20dp"
+        android:paddingLeft="60dp"
+        android:paddingTop="20dp"
+        android:src="@drawable/zi" />
 
     <ScrollView
         android:id="@+id/scrollView1"
@@ -38,12 +47,14 @@
                  android:layout_weight="11"
                  android:orientation="vertical" >
 
-                 <ImageView
+                 <ImageButton
                      android:id="@+id/contact_t_c_image"
                      android:layout_width="96dp"
                      android:layout_height="96dp"
                      android:layout_gravity="center_horizontal"
-                     android:src="@drawable/icon_declare" />
+                     android:focusable="true" 
+                     
+                     android:background="@drawable/btn_declare_bg" />
 
                  <TextView
                      android:id="@+id/contact_t_c_tv"
@@ -63,12 +74,12 @@
                  android:layout_weight="10"
                  android:orientation="vertical" >
 
-                 <ImageView
+                 <ImageButton
                      android:id="@+id/contact_withdraw_rule_image"
                      android:layout_width="96dp"
                      android:layout_height="96dp"
                      android:layout_gravity="center_horizontal"
-                     android:src="@drawable/icon_withdraw_rule" />
+                     android:background="@drawable/btn_withdraw_bg" />
 
                  <TextView
                      android:id="@+id/contact_withdraw_rule_tv"
@@ -88,12 +99,12 @@
                  android:layout_weight="10"
                  android:orientation="vertical" >
 
-                 <ImageView
+                 <ImageButton
                      android:id="@+id/contact_income_rule_image"
                      android:layout_width="96dp"
                      android:layout_height="96dp"
                      android:layout_gravity="center_horizontal"
-                     android:src="@drawable/icon_income_rule" />
+                     android:background="@drawable/btn_income_bg" />
 
                  <TextView
                      android:id="@+id/contact_income_rule_tv"
@@ -120,12 +131,12 @@
                  android:layout_weight="11"
                  android:orientation="vertical" >
 
-                 <ImageView
+                 <ImageButton
                      android:id="@+id/contact_company_introduction_image"
                      android:layout_width="96dp"
                      android:layout_height="96dp"
                      android:layout_gravity="center_horizontal"
-                     android:src="@drawable/icon_bulb" />
+                     android:background="@drawable/btn_bulb_bg" />
 
                  <TextView
                      android:id="@+id/contact_company_introduction_tv"
@@ -145,12 +156,12 @@
                  android:layout_weight="10"
                  android:orientation="vertical" >
 
-                 <ImageView
+                 <ImageButton
                      android:id="@+id/contact_questions_answers_image"
                      android:layout_width="96dp"
                      android:layout_height="96dp"
                      android:layout_gravity="center_horizontal"
-                     android:src="@drawable/icon_message" />
+                     android:background="@drawable/btn_message_bg" />
 
                  <TextView
                      android:id="@+id/contact_questions_answers_tv"
@@ -170,12 +181,12 @@
                  android:layout_weight="10"
                  android:orientation="vertical" >
 
-                 <ImageView
+                 <ImageButton
                      android:id="@+id/contact_customer_image"
                      android:layout_width="96dp"
                      android:layout_height="96dp"
                      android:layout_gravity="center_horizontal"
-                     android:src="@drawable/icon_phone" />
+                     android:background="@drawable/btn_phone_bg" />
 
                  <TextView
                      android:id="@+id/contact_customer_tv"

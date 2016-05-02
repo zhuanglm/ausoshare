@@ -61,12 +61,14 @@
     <string name="my_log_in">登入</string>
     <string name="my_log_out">注销</string>
     <string name="my_update_profile">修改个人资料</string>
+    <string name="my_update_password">修改登录密码</string>
     <string name="my_forwarded_ad">转发广告记录</string>
     <string name="my_current_income">我的当前收入</string>
     <string name="my_incoming_record">我的收入详情</string>
     <string name="my_withdraw_record">我的提现记录</string>
     <string name="my_withdraw_request">提现请求</string>
     <string name="my_update_profile_success">修改个人资料成功！</string>
+    <string name="my_update_password_success">修改登录密码成功！</string>
     <string name="my_logout_info_title">注销提示</string>
     <string name="my_logout_info_content">您确定要注销吗？</string>
     
@@ -129,6 +131,7 @@
     <string name="label_remember_me">记住我</string>
     <string name="gender_text">性别</string>
     <string name="birthday_text">生日</string>
+    <string name="promotion_code">推荐码</string>
     <string name="male_text">男</string>
     <string name="female_text">女</string>
     <string name="share_button_text">分享到朋友圈</string>
@@ -158,6 +161,7 @@
     
     <!-- splash page -->
     <string name="splash_name_text">Ausomedia</string>
+    <string name="skip">跳过</string>
     <string name="splash_copyright">&#169;2015-2016 Ausomedia.com All rights reserved.</string>
 
     <!-- login -->
@@ -169,13 +173,13 @@
      <string name="ui_share">在打开的广告页点击分享到微信</string>
      <string name="ui_view">到朋友圈查看</string>
     <string name="ui_bonus">奖金：$</string>
-    <string name="ui_income">现金收益：$</string>
+    <string name="ui_income">每次点击：$</string>
     <string name="ui_location">投放地点：</string>
     <string name="ui_shared">人已转发</string>
     <string name="ui_progress">进度：50%</string>
     
     <!-- entertainment -->
-    <string name="page_fun">乐味</string>
+    <string name="page_fun">乐趣</string>
     <string name="page_news">乐闻</string>
     <string name="page_tips">乐知</string>
     <string name="page_video">乐视</string>
@@ -183,5 +187,12 @@
      <!-- profile -->
      <string name="ui_logout">【退出登录】</string>
      <string name="ui_leaderboard">【排行榜】</string>
+     <string name="ui_detail">详细资料</string>
+     <string name="ui_current_income">当前收入    $</string> 
+     
+     <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
     
 </resources>

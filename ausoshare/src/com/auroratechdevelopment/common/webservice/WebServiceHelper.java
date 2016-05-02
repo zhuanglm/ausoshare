@@ -12,6 +12,8 @@ import com.auroratechdevelopment.common.webservice.request.GetURLRequest;
 import com.auroratechdevelopment.common.webservice.request.LoginRequest;
 import com.auroratechdevelopment.common.webservice.request.OnGoingAdDetailRequest;
 import com.auroratechdevelopment.common.webservice.request.RegisterRequest;
+import com.auroratechdevelopment.common.webservice.request.UpdateSharedTimeRequest;
+import com.auroratechdevelopment.common.webservice.request.UpdateUserPasswordRequest;
 import com.auroratechdevelopment.common.webservice.request.UpdateUserProfileRequest;
 import com.auroratechdevelopment.common.webservice.request.UserProfileRequest;
 import com.auroratechdevelopment.common.webservice.request.WithdrawRequestRequest;
@@ -36,6 +38,7 @@ import android.util.Log;
 /**
 *
 * @author Edward Liu
+* Updated by Raymond Zhuang 2016/5/2
 */
 public class WebServiceHelper {
 
@@ -168,9 +171,33 @@ private boolean validateWebServiceConnection(ResponseBase response) {
         });
     }
 
-    public void updateUserProfile(String deviceID, String nickname, String email){
+    public void updateUserProfile(String deviceID, String nickname, String email, String pwd){
         UpdateUserProfileRequest req = new UpdateUserProfileRequest(CustomApplication.getInstance().getUserToken(),
-                deviceID, nickname,email);
+                deviceID, nickname,email,pwd);
+
+        WebService.sendRequestAsync(req, new WebService.WebServiceCallback<UpdateUserProfileResponse>(){
+            @Override
+            public void ResponseReady(int id, int tag, UpdateUserProfileResponse response){
+                validateResponse(tag, response);
+            }
+        });
+    }
+    
+    public void updateUserPassword(String deviceID, String email,String pwd, String new_pwd){
+        UpdateUserPasswordRequest req = new UpdateUserPasswordRequest(CustomApplication.getInstance().getUserToken(),
+                deviceID, email,pwd,new_pwd);
+
+        WebService.sendRequestAsync(req, new WebService.WebServiceCallback<UpdateUserProfileResponse>(){
+            @Override
+            public void ResponseReady(int id, int tag, UpdateUserProfileResponse response){
+                validateResponse(tag, response);
+            }
+        });
+    }
+    
+    public void updateSharedTime(String deviceID, String email, String adID){
+    	UpdateSharedTimeRequest req = new UpdateSharedTimeRequest(CustomApplication.getInstance().getUserToken(),
+                deviceID, email,adID);
 
         WebService.sendRequestAsync(req, new WebService.WebServiceCallback<UpdateUserProfileResponse>(){
             @Override
