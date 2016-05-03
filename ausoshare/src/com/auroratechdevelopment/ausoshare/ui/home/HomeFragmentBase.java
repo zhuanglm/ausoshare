@@ -3,7 +3,9 @@
  */
 package com.auroratechdevelopment.ausoshare.ui.home;
 
+import android.app.FragmentManager;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -31,6 +33,7 @@ import java.util.ArrayList;
 
 /**
  * @author Edward Liu
+ * Updated by Raymond Zhuang 2016/5/3
  */
 public class HomeFragmentBase extends Fragment
         implements
@@ -47,6 +50,8 @@ public class HomeFragmentBase extends Fragment
     protected int startNumber = 0;
     
 	public ProgressDialog myDialog;
+	public FragmentManager fragmentManager;
+	public String curFragmentTag = "";
 	
 
     public void onItemDetails(AdDataItem item) {
@@ -78,11 +83,7 @@ public class HomeFragmentBase extends Fragment
         super.onSaveInstanceState(outState);
     }
 
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-    }
-
+    
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
@@ -269,4 +270,15 @@ public class HomeFragmentBase extends Fragment
     public void onRefresh() {
         onRegreshStartedOverride();
     }
+    
+    @Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        android.app.Fragment f = fragmentManager.findFragmentByTag(curFragmentTag);
+
+        f.onActivityResult(requestCode, resultCode, data);
+    }
+
+
 }

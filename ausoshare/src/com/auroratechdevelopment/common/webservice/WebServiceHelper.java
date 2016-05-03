@@ -12,9 +12,11 @@ import com.auroratechdevelopment.common.webservice.request.GetURLRequest;
 import com.auroratechdevelopment.common.webservice.request.LoginRequest;
 import com.auroratechdevelopment.common.webservice.request.OnGoingAdDetailRequest;
 import com.auroratechdevelopment.common.webservice.request.RegisterRequest;
+import com.auroratechdevelopment.common.webservice.request.RequestBase;
 import com.auroratechdevelopment.common.webservice.request.UpdateSharedTimeRequest;
 import com.auroratechdevelopment.common.webservice.request.UpdateUserPasswordRequest;
 import com.auroratechdevelopment.common.webservice.request.UpdateUserProfileRequest;
+import com.auroratechdevelopment.common.webservice.request.UploadAvatarRequest;
 import com.auroratechdevelopment.common.webservice.request.UserProfileRequest;
 import com.auroratechdevelopment.common.webservice.request.WithdrawRequestRequest;
 import com.auroratechdevelopment.common.webservice.response.CurrentIncomeResponse;
@@ -29,6 +31,7 @@ import com.auroratechdevelopment.common.webservice.response.RegisterResponse;
 import com.auroratechdevelopment.common.webservice.response.ResponseBase;
 import com.auroratechdevelopment.common.webservice.response.ResponseErrorNumber;
 import com.auroratechdevelopment.common.webservice.response.UpdateUserProfileResponse;
+import com.auroratechdevelopment.common.webservice.response.UploadAvatarResponse;
 import com.auroratechdevelopment.common.webservice.response.UserProfileResponse;
 import com.auroratechdevelopment.common.webservice.response.WithdrawRequestResponse;
 
@@ -257,6 +260,18 @@ private boolean validateWebServiceConnection(ResponseBase response) {
         WebService.sendRequestAsync(req, new WebService.WebServiceCallback<CurrentIncomeResponse>(){
             @Override
             public void ResponseReady(int id, int tag, CurrentIncomeResponse response){
+                validateResponse(tag,response);
+            }
+        });
+    }
+    
+    public void UploadAvatar(String email, String deviceID, String img_base64 ){
+    	UploadAvatarRequest req = new UploadAvatarRequest(email, deviceID,
+                CustomApplication.getInstance().getUserToken(),img_base64,"jpg");
+
+        WebService.sendRequestAsync(req, new WebService.WebServiceCallback<UploadAvatarResponse>(){
+            @Override
+            public void ResponseReady(int id, int tag, UploadAvatarResponse response){
                 validateResponse(tag,response);
             }
         });

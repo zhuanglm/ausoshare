@@ -110,6 +110,8 @@ public class Constants {
     
     public static final String LOGIN_PAGE_FROM_AD_PREPARE_SHARE="ad_prepare_share";
     public static final String LOGIN_PAGE_FROM_LOGIN="my_login";
+    
+    public static final String PICKER_PAGE_FROM_PROFILE="my_photo_selector";
        
     public static final String FIRST_TIME_USE ="com.app.first_time_use";
     

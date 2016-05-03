@@ -28,6 +28,7 @@ public class WebServiceConstants {
     public static String updateSharedTime = "advert/addShare";
 
     public static String statsUserIncomeToplist = "stats/user_income_toplist";
+    public static String uploadAvatar = "stats/upload_avatar";
 
     public static String statsForwardedAdHistory = "stats/forwarded_ad_history";
     public static String statsWithdrawHistory= "stats/withdraw_history";

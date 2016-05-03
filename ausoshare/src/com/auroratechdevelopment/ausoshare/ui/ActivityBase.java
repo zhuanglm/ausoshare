@@ -40,6 +40,7 @@ import com.auroratechdevelopment.common.webservice.response.ResponseBase;
 
 /**
  * @author Edward
+ * Updated by Raymond Zhuang 2016/5/3
 ActionBarActivity
  */
 public abstract class ActivityBase extends ActionBarActivity implements
@@ -86,6 +87,13 @@ public abstract class ActivityBase extends ActionBarActivity implements
     public void setSlidingMenuListener(OnSlidingMenuListener listener) {
         this.slidingMenuListener = listener;
     }
+    
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // TODO Auto-generated method stub
+        super.onActivityResult(requestCode, resultCode, data);
+        
+      }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

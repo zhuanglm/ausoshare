@@ -34,7 +34,7 @@ public class UpdateUserPasswordRequest extends RequestBase<UpdateUserProfileResp
         return "POST";
     }
 
-
+    //same format with update profile
     @Override
     public UpdateUserProfileResponse getResponse() {
         return new UpdateUserProfileResponse();

@@ -1,9 +1,12 @@
 package com.auroratechdevelopment.ausoshare.ui.home;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Bitmap.CompressFormat;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -13,6 +16,7 @@ import android.provider.Settings;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
@@ -22,6 +26,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -75,6 +80,8 @@ public class HomeActivity extends ActivityBase implements
     private ImageButton ibtnPromotion;
 
     private AppLocationService appLocationService;
+    
+    private static final int REQUEST_PICK_PICTURE = 0xaf;
 
     private int iLastTab = -1;
 
@@ -98,11 +105,17 @@ public class HomeActivity extends ActivityBase implements
     	public void onHomeCurrentIncomeUpdated(int tag, CurrentIncomeResponse response);
     }
     
+    public interface HomeAvatarUpdated{
+    	public void onHomeAvatarUpdated(Intent data);
+    }
+    
     private HomeAdListUpdated HomeAdListUpdatedListener;
     private HomeEntertainmentListUpdated HomeEntertainmentListUpdatedListener;
     private HomeWithdrawUpdated HomeWithdrawUpdatedListener;
     
     private HomeIncomeUpdated HomeIncomeUpdatedListener;
+    private HomeAvatarUpdated HomeAvatarUpdatedListener;
+    
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -578,6 +591,7 @@ public class HomeActivity extends ActivityBase implements
                     fg.setHomeActivity(HomeActivity.this);
                     HomeActivity.this.HomeWithdrawUpdatedListener = (ProfileFragment) fg;
                     HomeActivity.this.HomeIncomeUpdatedListener = (ProfileFragment) fg;
+                    HomeActivity.this.HomeAvatarUpdatedListener = (ProfileFragment) fg;
                     return fg;
                     
                 case Constants.FRAG_ENTERTAINMENT:
@@ -701,6 +715,53 @@ public class HomeActivity extends ActivityBase implements
                         Constants.CURRENT_INCOME_TOP_USER_MAXNUMBER);
         //showWaiting();
     }
+    
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+        case REQUEST_PICK_PICTURE:
+            if (resultCode != Activity.RESULT_OK) {
+                return;
+            }else{
+            	Bundle extras = data.getExtras();
+        		if (extras != null) {
+        			Bitmap photo = extras.getParcelable("data");
+        			if (HomeAvatarUpdatedListener != null){
+        				HomeAvatarUpdatedListener.onHomeAvatarUpdated(data);
+        			}
+        			
+        			UploadAvatar(photo);
+        		}
+            }
+            break;
+
+        default:
+            break;
+        }
+        
+      }
+    
+    public void UploadAvatar(Bitmap src){
+    	String img_base64 = Bitmap2StrByBase64(src);
+    	
+        WebServiceHelper.getInstance().UploadAvatar(CustomApplication.getInstance().getAndroidID(),
+        		CustomApplication.getInstance().getEmail(),img_base64);
+        //showWaiting();
+    }
+    
+    /** 
+	 * 通过Base32将Bitmap转换成Base64字符串 
+	 * @param bit 
+	 * @return 
+	 */  
+	public String Bitmap2StrByBase64(Bitmap bit){  
+	   ByteArrayOutputStream bos=new ByteArrayOutputStream();  
+	   bit.compress(CompressFormat.JPEG, 40, bos);//参数100表示不压缩  
+	   byte[] bytes=bos.toByteArray();  
+	   return Base64.encodeToString(bytes, Base64.DEFAULT);  
+	}
     
     
 }

@@ -1,12 +1,16 @@
 package com.auroratechdevelopment.ausoshare.ui.profile;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Bitmap.CompressFormat;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +23,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.auroratechdevelopment.ausoshare.CustomApplication;
 import com.auroratechdevelopment.ausoshare.R;
@@ -27,10 +32,13 @@ import com.auroratechdevelopment.ausoshare.ui.contact.ContactURLActivity;
 import com.auroratechdevelopment.ausoshare.ui.ext.CustomAlertDialog;
 import com.auroratechdevelopment.ausoshare.ui.ext.EdwardAlertDialog;
 import com.auroratechdevelopment.ausoshare.ui.home.HomeActivity;
+import com.auroratechdevelopment.ausoshare.ui.home.HomeActivity.HomeAvatarUpdated;
+import com.auroratechdevelopment.ausoshare.ui.home.HomeActivity.HomeIncomeUpdated;
 import com.auroratechdevelopment.ausoshare.ui.home.HomeFragmentBase;
 import com.auroratechdevelopment.ausoshare.ui.home.PrepareShareAdActivity;
 import com.auroratechdevelopment.ausoshare.ui.login.LoginActivity;
 import com.auroratechdevelopment.ausoshare.ui.login.RegisterActivity;
+import com.auroratechdevelopment.ausoshare.ui.photopicker.PhotoPickerActivity;
 import com.auroratechdevelopment.ausoshare.util.Constants;
 import com.auroratechdevelopment.common.ViewUtils;
 import com.auroratechdevelopment.common.webservice.WebService;
@@ -46,6 +54,7 @@ import com.auroratechdevelopment.common.webservice.response.GetURLResponse;
 import com.auroratechdevelopment.common.webservice.response.ResponseBase;
 import com.auroratechdevelopment.common.webservice.response.WithdrawRequestResponse;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -59,8 +68,7 @@ import org.w3c.dom.Text;
 //public class ProfileFragment extends HomeFragmentBase implements
 public class ProfileFragment extends HomeFragmentBase implements
     View.OnClickListener, 
-    HomeActivity.HomeWithdrawUpdated,
-    HomeActivity.HomeIncomeUpdated
+    HomeActivity.HomeWithdrawUpdated,HomeIncomeUpdated, HomeAvatarUpdated
     {
     private RelativeLayout userProfileLayout;
     //private ImageView loginOutImageThumb,userImageThumb,myCurrentIncomeImage,myForwardedAdImage,myWithdrawRecordImage, myWithdrawRequestImage;
@@ -70,6 +78,10 @@ public class ProfileFragment extends HomeFragmentBase implements
     private LinearLayout m_layout_shared,m_layout_withdraw,m_layout_request;
     private Button m_btn_logout,m_btn_profile;
     private TextView m_tv_currentIncome;
+    private ImageView m_img_avatar;
+    private TextView m_tv_avatar;
+    
+    private static final int REQUEST_PICK_PICTURE = 0xaf;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -130,6 +142,11 @@ public class ProfileFragment extends HomeFragmentBase implements
         }*/
         
         //for v2
+        m_img_avatar = (ImageView)rootView.findViewById(R.id.img_avatar);
+        m_tv_avatar = (TextView)rootView.findViewById(R.id.text_upload_avatar);
+        m_img_avatar.setOnClickListener(this);
+        m_tv_avatar.setOnClickListener(this);
+        
         m_tv_currentIncome = (TextView)rootView.findViewById(R.id.current_income_tV);
         m_tv_username = (TextView)rootView.findViewById(R.id.user_name_tV);
         //m_tv_asset = (TextView)rootView.findViewById(R.id.asset_tV);
@@ -164,12 +181,30 @@ public class ProfileFragment extends HomeFragmentBase implements
         return rootView;
     }
     
+    public void  SelectPhoto() {
+    	
+		final Bundle bundle = new Bundle(); 
+        bundle.putString(Constants.LAST_PAGE, Constants.LOGIN_PAGE_FROM_LOGIN);
+        ViewUtils.startPageForResult(bundle, getActivity(),REQUEST_PICK_PICTURE, PhotoPickerActivity.class);
+    	//Intent intent = new Intent();
+		//intent.setClass(getActivity(), PhotoPickerActivity.class);
+    	//startActivityForResult(intent,REQUEST_PICK_PICTURE);
+    
+    }
+    
         
     @Override
     public void onClick(View view){
         switch (view.getId()){
         	case R.id.button_logout:
         		Logout_transferToHome();
+        		
+        		break;
+        		
+        	case R.id.img_avatar:
+        	case R.id.text_upload_avatar:
+        		
+        		SelectPhoto();
         		
         		break;
         		
@@ -383,7 +418,16 @@ public class ProfileFragment extends HomeFragmentBase implements
         }
 		
 	}
+	
 
-
+	@Override
+	public void onHomeAvatarUpdated(Intent data) {
+		Bundle extras = data.getExtras();
+		if (extras != null) {
+			Bitmap photo = extras.getParcelable("data");
+			m_img_avatar.setImageBitmap(photo);
+		}
+		
+	} 
 
 }
