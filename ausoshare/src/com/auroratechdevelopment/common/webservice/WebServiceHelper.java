@@ -30,6 +30,7 @@ import com.auroratechdevelopment.common.webservice.response.OnGoingAdDetailRespo
 import com.auroratechdevelopment.common.webservice.response.RegisterResponse;
 import com.auroratechdevelopment.common.webservice.response.ResponseBase;
 import com.auroratechdevelopment.common.webservice.response.ResponseErrorNumber;
+import com.auroratechdevelopment.common.webservice.response.UpdatePasswordResponse;
 import com.auroratechdevelopment.common.webservice.response.UpdateUserProfileResponse;
 import com.auroratechdevelopment.common.webservice.response.UploadAvatarResponse;
 import com.auroratechdevelopment.common.webservice.response.UserProfileResponse;
@@ -154,8 +155,8 @@ private boolean validateWebServiceConnection(ResponseBase response) {
         });
     }
 
-    public void register(String nickName, String email, String password, String deviceID) {
-        RegisterRequest req = new RegisterRequest(nickName, email, password, deviceID);
+    public void register(String nickName, String email, String password, String deviceID, String PromotionCode) {
+        RegisterRequest req = new RegisterRequest(nickName, email, password, deviceID, PromotionCode);
         WebService.sendRequestAsync(req, new WebService.WebServiceCallback<RegisterResponse>() {
             @Override
             public void ResponseReady(int id, int tag, RegisterResponse response) {
@@ -190,9 +191,9 @@ private boolean validateWebServiceConnection(ResponseBase response) {
         UpdateUserPasswordRequest req = new UpdateUserPasswordRequest(CustomApplication.getInstance().getUserToken(),
                 deviceID, email,pwd,new_pwd);
 
-        WebService.sendRequestAsync(req, new WebService.WebServiceCallback<UpdateUserProfileResponse>(){
+        WebService.sendRequestAsync(req, new WebService.WebServiceCallback<UpdatePasswordResponse>(){
             @Override
-            public void ResponseReady(int id, int tag, UpdateUserProfileResponse response){
+            public void ResponseReady(int id, int tag, UpdatePasswordResponse response){
                 validateResponse(tag, response);
             }
         });

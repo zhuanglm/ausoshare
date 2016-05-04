@@ -30,6 +30,7 @@ import com.auroratechdevelopment.common.webservice.models.Top10Item;
 import com.auroratechdevelopment.common.webservice.response.CurrentIncomeResponse;
 import com.auroratechdevelopment.common.webservice.response.GetOnGoingAdListResponse;
 import com.auroratechdevelopment.common.webservice.response.ResponseBase;
+import com.auroratechdevelopment.common.webservice.response.UpdatePasswordResponse;
 import com.auroratechdevelopment.common.webservice.response.UpdateUserProfileResponse;
 //import com.tencent.mm.sdk.platformtools.Log;
 
@@ -211,6 +212,7 @@ public class UpdateProfileActivity extends ActivityBase implements OnClickListen
         dismissWaiting();
 
         final UpdateUserProfileResponse updateUserProfileResponse;
+        final UpdatePasswordResponse updatePasswordResponse;
 
         if (response instanceof UpdateUserProfileResponse) {
             updateUserProfileResponse = (UpdateUserProfileResponse) response;
@@ -231,6 +233,23 @@ public class UpdateProfileActivity extends ActivityBase implements OnClickListen
                     	
                     }
 //                    ViewUtils.startPageWithClearStack(null, UpdateProfileActivity.this, HomeActivity.class);
+                }
+            });
+        }
+        else if (response instanceof UpdatePasswordResponse) {
+        	updatePasswordResponse = (UpdatePasswordResponse) response;
+            runOnUiThread(new Runnable() {
+
+                @Override
+                public void run() {
+                    if(updatePasswordResponse.responseMessage.equalsIgnoreCase("Success") || updatePasswordResponse.reasonCode == 0){
+
+                    	showAlert(CustomApplication.getInstance().getCurrentActivity(),
+                                getString(R.string.title_update_profile),
+                                getResources().getString(R.string.my_update_password_success));
+                    	
+                    }
+
                 }
             });
         }

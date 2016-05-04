@@ -41,7 +41,7 @@ import java.util.Date;
  * Created by happy pan on 2015/11/6.
  */
 public class RegisterActivity extends ActivityBase implements View.OnClickListener {
-    private EditText txtUserName;
+    private EditText txtUserName,txtCode;
     private EditText txtEmail, txtPassWord, txtPasswordConfirm;
     private TextView textBirthday, textGender;
     private Button btnRegister;
@@ -55,7 +55,7 @@ public class RegisterActivity extends ActivityBase implements View.OnClickListen
 
     private RadioOnClick radioOnClick = new RadioOnClick(1);
 
-    private String email;
+    private String email,promotion_code;
     private String username;
     private String password;
 
@@ -74,6 +74,7 @@ public class RegisterActivity extends ActivityBase implements View.OnClickListen
         txtPasswordConfirm = (EditText) findViewById(R.id.text_password_confirm);
         textBirthday = (TextView) findViewById(R.id.text_birthday);
         textGender = (TextView) findViewById(R.id.text_gender);
+        txtCode = (EditText) findViewById(R.id.promotion_code);
         btnRegister = (Button) findViewById(R.id.btn_register);
 
    //     btnRegister.setOnClickListener(this);
@@ -215,6 +216,7 @@ public class RegisterActivity extends ActivityBase implements View.OnClickListen
         password = txtPassWord.getText().toString().trim();
         String passwordConfirm = txtPasswordConfirm.getText().toString().trim();
         email = txtEmail.getText().toString().trim();
+        promotion_code = txtCode.getText().toString().trim();
 
 //        if (!runValidation(UsernameValidator.class, username)) {
 //            return;
@@ -231,7 +233,7 @@ public class RegisterActivity extends ActivityBase implements View.OnClickListen
         showWaiting();
 
         WebServiceHelper.getInstance().register(username, email, password,
-                Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID));
+                Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID),promotion_code);
 //        Toast.makeText(this, "Register information sent out", Toast.LENGTH_LONG).show();
     }
 

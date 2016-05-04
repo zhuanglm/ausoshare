@@ -554,4 +554,6 @@ public abstract class ActivityBase extends ActionBarActivity implements
 		// TODO Auto-generated method stub
 		return false;
 	}
+
+
 }

@@ -27,6 +27,8 @@ import com.auroratechdevelopment.ausoshare.util.Constants;
 import com.auroratechdevelopment.ausoshare.validation.EmailValidator;
 import com.auroratechdevelopment.ausoshare.validation.PasswordValidator;
 import com.auroratechdevelopment.common.ViewUtils;
+import com.auroratechdevelopment.common.util.Bimp;
+import com.auroratechdevelopment.common.util.FileUtils;
 import com.auroratechdevelopment.common.webservice.WebServiceHelper;
 import com.auroratechdevelopment.common.webservice.models.AdDataItem;
 import com.auroratechdevelopment.common.webservice.response.ForgotPasswordResponse;
@@ -45,6 +47,7 @@ import com.tencent.mm.sdk.openapi.WXAPIFactory;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
@@ -398,8 +401,27 @@ public class LoginActivity extends ActivityBase implements View.OnClickListener{
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    String user_name = loginResponse.nickname;
+                    final String user_name = loginResponse.nickname;
                     String available_fund = loginResponse.availableFund;
+                    
+                    if(loginResponse.avatar.equals("")){
+                    	if(FileUtils.isFileExist(user_name,"JPG"))
+                    		FileUtils.delFile(user_name,"JPG");
+                    }else{
+                    	new Thread(new Runnable(){
+
+							@Override
+							public void run() {
+								Bitmap avatar = Bimp.getHttpBitmap(loginResponse.avatar);
+								if(avatar != null)
+		                    		FileUtils.saveBitmap(avatar,user_name);
+							}
+                    		
+                    	}).start();
+                    	
+                    	
+                    	
+                    }
 
                     CustomApplication.getInstance().setUsername(loginResponse.nickname);
                     CustomApplication.getInstance().setEmail(emailInputed);

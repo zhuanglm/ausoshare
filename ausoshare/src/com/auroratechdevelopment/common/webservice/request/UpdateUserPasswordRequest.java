@@ -1,19 +1,20 @@
 package com.auroratechdevelopment.common.webservice.request;
 
 import com.auroratechdevelopment.common.webservice.WebServiceConstants;
+import com.auroratechdevelopment.common.webservice.response.UpdatePasswordResponse;
 import com.auroratechdevelopment.common.webservice.response.UpdateUserProfileResponse;
 import com.auroratechdevelopment.common.webservice.util.WebUtils;
 
 /**
  * Created by Raymond Zhuang 2016/5/2
  */
-public class UpdateUserPasswordRequest extends RequestBase<UpdateUserProfileResponse> {
+public class UpdateUserPasswordRequest extends RequestBase<UpdatePasswordResponse> {
 
     public String deviceID;
     
     public String email;
     public String password;
-    public String new_password;
+    public String newPassword;
 
     public UpdateUserPasswordRequest(String token, String deviceID,String email,String pwd,String new_pwd) {
         this.token = token;
@@ -21,7 +22,7 @@ public class UpdateUserPasswordRequest extends RequestBase<UpdateUserProfileResp
         
         this.email = email;
         this.password = pwd;
-        this.new_password = new_pwd;
+        this.newPassword = new_pwd;
     }
 
     @Override
@@ -36,8 +37,8 @@ public class UpdateUserPasswordRequest extends RequestBase<UpdateUserProfileResp
 
     //same format with update profile
     @Override
-    public UpdateUserProfileResponse getResponse() {
-        return new UpdateUserProfileResponse();
+    public UpdatePasswordResponse getResponse() {
+        return new UpdatePasswordResponse();
     }
 
 }

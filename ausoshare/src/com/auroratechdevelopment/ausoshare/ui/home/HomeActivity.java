@@ -27,6 +27,10 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -588,6 +592,7 @@ public class HomeActivity extends ActivityBase implements
 
                 case Constants.FRAG_PROFILE:
                     fg = new ProfileFragment();
+                    fg.setArguments(getIntent().getExtras());
                     fg.setHomeActivity(HomeActivity.this);
                     HomeActivity.this.HomeWithdrawUpdatedListener = (ProfileFragment) fg;
                     HomeActivity.this.HomeIncomeUpdatedListener = (ProfileFragment) fg;
@@ -716,6 +721,7 @@ public class HomeActivity extends ActivityBase implements
         //showWaiting();
     }
     
+    
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         
@@ -743,6 +749,7 @@ public class HomeActivity extends ActivityBase implements
         
       }
     
+    
     public void UploadAvatar(Bitmap src){
     	String img_base64 = Bitmap2StrByBase64(src);
     	
@@ -762,6 +769,8 @@ public class HomeActivity extends ActivityBase implements
 	   byte[] bytes=bos.toByteArray();  
 	   return Base64.encodeToString(bytes, Base64.DEFAULT);  
 	}
+	
+	
     
     
 }

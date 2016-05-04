@@ -41,6 +41,7 @@ import com.auroratechdevelopment.ausoshare.ui.login.RegisterActivity;
 import com.auroratechdevelopment.ausoshare.ui.photopicker.PhotoPickerActivity;
 import com.auroratechdevelopment.ausoshare.util.Constants;
 import com.auroratechdevelopment.common.ViewUtils;
+import com.auroratechdevelopment.common.util.FileUtils;
 import com.auroratechdevelopment.common.webservice.WebService;
 import com.auroratechdevelopment.common.webservice.WebServiceConstants;
 import com.auroratechdevelopment.common.webservice.WebServiceHelper;
@@ -55,6 +56,10 @@ import com.auroratechdevelopment.common.webservice.response.ResponseBase;
 import com.auroratechdevelopment.common.webservice.response.WithdrawRequestResponse;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -80,8 +85,49 @@ public class ProfileFragment extends HomeFragmentBase implements
     private TextView m_tv_currentIncome;
     private ImageView m_img_avatar;
     private TextView m_tv_avatar;
+    private Bitmap m_bm_Avatar;
     
     private static final int REQUEST_PICK_PICTURE = 0xaf;
+    
+    
+    @Override
+	public void onSaveInstanceState(Bundle outState) {
+       super.onSaveInstanceState(outState);
+       
+       if(m_bm_Avatar != null){
+    	   	FileUtils.saveBitmap(m_bm_Avatar,CustomApplication.getInstance().getUsername());
+    	   	m_bm_Avatar.recycle(); 
+   			m_bm_Avatar = null; 
+   			System.gc();
+       }
+       
+    }
+    
+    @Override
+    public void onDestroyView(){
+    	super.onDestroyView();
+    	
+    	if(m_bm_Avatar != null){
+    		FileUtils.saveBitmap(m_bm_Avatar,CustomApplication.getInstance().getUsername());
+     	   	m_bm_Avatar.recycle(); 
+ 			m_bm_Avatar = null; 
+ 			System.gc();
+        }
+    }
+    
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+       super.onActivityCreated(savedInstanceState);
+       
+       if(m_bm_Avatar != null){
+    	   m_img_avatar.setImageBitmap(m_bm_Avatar);
+       }else if(FileUtils.isFileExist(CustomApplication.getInstance().getUsername(),"JPG")){
+	       m_bm_Avatar = FileUtils.loadBitmap(CustomApplication.getInstance().getUsername(),"JPG");
+	       m_img_avatar.setImageBitmap(m_bm_Avatar);
+       }
+       
+    }
+    
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -146,7 +192,7 @@ public class ProfileFragment extends HomeFragmentBase implements
         m_tv_avatar = (TextView)rootView.findViewById(R.id.text_upload_avatar);
         m_img_avatar.setOnClickListener(this);
         m_tv_avatar.setOnClickListener(this);
-        
+                        
         m_tv_currentIncome = (TextView)rootView.findViewById(R.id.current_income_tV);
         m_tv_username = (TextView)rootView.findViewById(R.id.user_name_tV);
         //m_tv_asset = (TextView)rootView.findViewById(R.id.asset_tV);
@@ -424,10 +470,26 @@ public class ProfileFragment extends HomeFragmentBase implements
 	public void onHomeAvatarUpdated(Intent data) {
 		Bundle extras = data.getExtras();
 		if (extras != null) {
-			Bitmap photo = extras.getParcelable("data");
-			m_img_avatar.setImageBitmap(photo);
+			m_bm_Avatar = extras.getParcelable("data");
+			m_img_avatar.setImageBitmap(m_bm_Avatar);
+			
+			
 		}
 		
-	} 
+	}
+	
+	@Override
+	public void onDestroy(){
+		super.onDestroy();
+		
+		if(m_bm_Avatar != null && !m_bm_Avatar.isRecycled()){ 
+        // 回收并且置为null
+		m_bm_Avatar.recycle(); 
+		m_bm_Avatar = null; 
+		} 
+		System.gc();
+		
+	}
+	
 
 }

@@ -53,6 +53,68 @@ public class HomeFragmentBase extends Fragment
 	public FragmentManager fragmentManager;
 	public String curFragmentTag = "";
 	
+	private Bundle savedState;
+	private String internalSavedViewState_key = "8954201239547";
+	
+	@Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        // Restore State Here
+        //if (!restoreStateFromArguments()) {
+            // First Time, Initialize something here
+          //  onFirstTimeLaunched();
+        //}
+    }
+	
+	protected void onFirstTimeLaunched() {
+		 
+    }
+	
+	private void saveStateToArguments() {
+        if (getView() != null)
+            savedState = saveState();
+        if (savedState != null) {
+            Bundle b = getArguments();
+            if(b != null){
+            	b.putBundle(internalSavedViewState_key, savedState);
+            }
+        }
+    }
+	
+	private boolean restoreStateFromArguments() {
+        Bundle b = getArguments();
+        
+        if(b != null){
+        	savedState = b.getBundle(internalSavedViewState_key);
+       
+	        if (savedState != null) {
+	            restoreState();
+	            return true;
+	        }
+        }
+        return false;
+    }
+	
+	private Bundle saveState() {
+        Bundle state = new Bundle();
+        // For Example
+        //state.putString(text, tv1.getText().toString());
+        onSaveState(state);
+        return state;
+    }
+	
+	protected void onSaveState(Bundle outState) {
+		 
+    }
+	
+	private void restoreState() {
+        if (savedState != null) {
+            // For Example
+            //tv1.setText(savedState.getString(text));
+            onRestoreState(savedState);
+        }
+    }
+	
 
     public void onItemDetails(AdDataItem item) {
 
@@ -81,6 +143,19 @@ public class HomeFragmentBase extends Fragment
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+        
+        //saveStateToArguments();
+    }
+    
+    protected void onRestoreState(Bundle savedInstanceState) {
+    	 
+    }
+    
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        // Save State Here
+        //saveStateToArguments();
     }
 
     
