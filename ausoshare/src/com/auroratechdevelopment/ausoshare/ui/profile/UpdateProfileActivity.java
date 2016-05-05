@@ -230,6 +230,10 @@ public class UpdateProfileActivity extends ActivityBase implements OnClickListen
                     	if(!sNmae.equals("")){
                     		CustomApplication.getInstance().setUsername(sNmae);
                     	}
+                    	String email = textRegisterEmail.getText().toString().trim();
+                    	if(!email.equals("")){
+                    		CustomApplication.getInstance().setEmail(email);
+                    	}
                     	
                     }
 //                    ViewUtils.startPageWithClearStack(null, UpdateProfileActivity.this, HomeActivity.class);

@@ -425,9 +425,9 @@ public class EntertainmentFragment extends HomeFragmentBase  implements
      */ 
     private void updateTab(final TabHost tabHost) { 
         for (int i = 0; i < tabHost.getTabWidget().getChildCount(); i++) { 
-            View view = tabHost.getTabWidget().getChildAt(i); 
+            View view = tabHost.getTabWidget().getChildAt(i);
             TextView tv = (TextView) tabHost.getTabWidget().getChildAt(i).findViewById(android.R.id.title); 
-            tv.setTextSize(18); 
+            tv.setTextSize(16); 
             tv.setTypeface(Typeface.SERIF, 2); // 设置字体和风格  
             if (tabHost.getCurrentTab() == i) {//选中  
                 //view.setBackgroundDrawable(getResources().getDrawable(R.drawable.category_current));//选中后的背景  

@@ -94,7 +94,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginRight="5dp"
         android:layout_marginTop="15dp"
-        android:background="@drawable/btn_shape"
+        android:background="@drawable/btn_grey_shape"
         android:minHeight="36dp"
         android:text="@string/skip"
         

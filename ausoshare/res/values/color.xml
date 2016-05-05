@@ -20,6 +20,9 @@
     <color name="theme_color_unpressed">#e74724</color>
     <color name="theme_color_pressed">#ce250f</color>
     <color name="theme_color_pressed_transparent">#66ce250f</color>
+    
+    <color name="grey_color_unpressed">#606C6C6C</color>
+    <color name="grey_color_pressed">#806C6C6C</color>
 
     <color name="radio_button_selected_color">#ff33b5e5</color>
     <color name="radio_button_unselected_color">@android:color/transparent</color>

@@ -115,7 +115,7 @@ public class ProfileFragment extends HomeFragmentBase implements
         }
     }
     
-    @Override
+    /*@Override
     public void onActivityCreated(Bundle savedInstanceState) {
        super.onActivityCreated(savedInstanceState);
        
@@ -126,6 +126,17 @@ public class ProfileFragment extends HomeFragmentBase implements
 	       m_img_avatar.setImageBitmap(m_bm_Avatar);
        }
        
+    }*/
+    
+    public void onResume(){
+    	super.onResume();
+    	
+    	if(m_bm_Avatar != null){
+     	   m_img_avatar.setImageBitmap(m_bm_Avatar);
+        }else if(FileUtils.isFileExist(CustomApplication.getInstance().getUsername(),"JPG")){
+ 	       m_bm_Avatar = FileUtils.loadBitmap(CustomApplication.getInstance().getUsername(),"JPG");
+ 	       m_img_avatar.setImageBitmap(m_bm_Avatar);
+        }
     }
     
 
@@ -169,10 +180,10 @@ public class ProfileFragment extends HomeFragmentBase implements
         myForwardedAdImage.setOnClickListener(this);
         myWithdrawRecordImage.setOnClickListener(this);
         userProfileLayout.setOnClickListener(this);
-        myWithdrawRequestImage.setOnClickListener(this);*/
+        myWithdrawRequestImage.setOnClickListener(this);
                 
         Intent loginIntent = getActivity().getIntent();
-        /*boolean login_status_flag = loginIntent.getBooleanExtra(Constants.LOGIN_STATUS, false);
+        boolean login_status_flag = loginIntent.getBooleanExtra(Constants.LOGIN_STATUS, false);
     	if(login_status_flag){
     		loginOutProfileText.setText(getResources().getString(R.string.my_log_out));
         }
