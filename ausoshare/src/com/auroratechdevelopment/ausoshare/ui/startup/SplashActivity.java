@@ -55,7 +55,7 @@ public class SplashActivity extends Activity implements OnGestureListener,OnDisp
     private GestureDetector detector;
     private int m_nPages;
     private int m_currentImg = 0;
-    private Button m_BtnSkip;
+    private Button m_BtnSkip,m_BtnStart;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -73,6 +73,7 @@ public class SplashActivity extends Activity implements OnGestureListener,OnDisp
         img_vf.addView(splashAdImage2);
         pointLayout = (LinearLayout) findViewById(R.id.point_layout);
         m_BtnSkip = (Button) findViewById(R.id.button_skip);
+        m_BtnStart = (Button) findViewById(R.id.button_start);
         
         m_BtnSkip.setOnClickListener(new OnClickListener() 
         { 
@@ -82,24 +83,34 @@ public class SplashActivity extends Activity implements OnGestureListener,OnDisp
                 showHomeOrLogin();
 				
 			} 
-        }); 
+        });
+        
+        m_BtnStart.setOnClickListener(new OnClickListener() 
+        { 
+			@Override
+			public void onClick(View v) {
+				finish();
+                showHomeOrLogin();
+				
+			} 
+        });
         
         checkNetworkStatus = new CheckNetworkStatus(this);
         
         isNotFirstTime = CustomApplication.getInstance().getNotFirstTimeUse();
 
         if (isNotFirstTime && checkNetworkStatus.getNetworkStatus()) {
-        	splashAdImage1.setScaleType(ScaleType.FIT_CENTER);
+        	splashAdImage1.setScaleType(ScaleType.FIT_XY);
         	new LoadNetPicture().getPicture(WebServiceConstants.splashAdImageURL, splashAdImage1);
         	//splashAdImage2.setScaleType(ScaleType.CENTER_INSIDE);
         	//splashAdImage2.setImageDrawable(getResources().getDrawable(R.drawable.splash_share));
             
             img_vf.setOnDisplayChagnedListener(this);
-            img_vf.setAutoStart(true);
+            
             
                        
         }else{
-        	splashAdImage1.setScaleType(ScaleType.CENTER_INSIDE);
+        	splashAdImage1.setScaleType(ScaleType.FIT_XY);
         	splashAdImage1.setImageDrawable(getResources().getDrawable(R.drawable.firsttime_launch_app_1));
         	//splashAdImage1.setImageDrawable(getResources().getDrawable(R.drawable.splash_share));
         	
@@ -118,6 +129,7 @@ public class SplashActivity extends Activity implements OnGestureListener,OnDisp
         //is not the first time, means from the second times
         if(isNotFirstTime){
         	pointLayout.setVisibility(View.INVISIBLE);
+        	m_BtnSkip.setVisibility(View.VISIBLE);
         	
         	new Handler().postDelayed(new Runnable() {
                 @Override
@@ -130,8 +142,9 @@ public class SplashActivity extends Activity implements OnGestureListener,OnDisp
         //is the first time
         else{
         	// the first time should show 2 pages
-        	splashAdImage2.setScaleType(ScaleType.CENTER_INSIDE);
+        	splashAdImage2.setScaleType(ScaleType.FIT_XY);
         	splashAdImage2.setImageDrawable(getResources().getDrawable(R.drawable.firsttime_launch_app_2));
+        	//img_vf.setAutoStart(true);
         	
         	CustomApplication.getInstance().setNotFirstTimeUse(true);
         	//showFirstTimeUseGuide();
@@ -235,6 +248,7 @@ public class SplashActivity extends Activity implements OnGestureListener,OnDisp
 		if (e1.getX() - e2.getX() > 120) { 
             if(img_vf.getDisplayedChild() == m_nPages-1){//如果滑动到最后
                    img_vf.stopFlipping();                                   //停止切换
+                   
                    return false;
             }else{
 
@@ -272,6 +286,8 @@ public class SplashActivity extends Activity implements OnGestureListener,OnDisp
         indicators[m_currentImg].setEnabled(false);//当前的属性改为false
         indicators[position].setEnabled(true);//要切换过去的img属性改为true
         m_currentImg = position;
+        
+        m_BtnStart.setVisibility(View.VISIBLE);
 	}
 
 	@Override
@@ -279,6 +295,8 @@ public class SplashActivity extends Activity implements OnGestureListener,OnDisp
 		indicators[m_currentImg].setEnabled(false);//当前的属性改为false
         indicators[index].setEnabled(true);//要切换过去的img属性改为true
         m_currentImg = index;
+        
+        
 		
 	}
 

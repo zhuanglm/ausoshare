@@ -163,6 +163,7 @@
     <!-- splash page -->
     <string name="splash_name_text">Ausomedia</string>
     <string name="skip">跳过</string>
+    <string name="start">开始体验</string>
     <string name="splash_copyright">&#169;2015-2016 Ausomedia.com All rights reserved.</string>
 
     <!-- login -->
