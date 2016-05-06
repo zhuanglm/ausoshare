@@ -15,6 +15,7 @@ import java.util.Locale;
 
 /**
  * @author Edward
+ * Updated by Raymond Zhuang May 6 2016
  * 
  */
 public class CustomApplication extends Application {
@@ -70,6 +71,13 @@ public class CustomApplication extends Application {
     }
     public String getEmail() {
         return  SharedPreferenceManager.getString(Constants.PREF_EMAIL);
+    }
+    
+    public void setPaypal(String email) {
+        SharedPreferenceManager.setString(Constants.PREF_PAYPAL, email);
+    }
+    public String getPaypal() {
+        return  SharedPreferenceManager.getString(Constants.PREF_PAYPAL);
     }
     
     public void setLoginOutStatus(boolean loginOutFlag){

@@ -11,6 +11,7 @@ public class Constants {
      */
 	
     public static final String APP_ID = "wx6bb3add97b7da9f9";
+	//public static final String APP_ID = "79aed7dc241794397dd9fe18fe77a99e";
     public static final String WX_APP_SECRET = "wx6bb3add97b7da9f9";
     public static BaseResp	WXresp;
     
@@ -46,7 +47,9 @@ public class Constants {
 
     public static final String PREF_EMAIL = "com.app.email";
     public static final String PREF_LOGINOUT_STATUS = "com.app.loginout_status";
-
+    
+    public static final String PREF_PAYPAL = "com.app.paypal";
+    
     public static final String PREF_USER_SCREENWIDTH = "com.app.screenwidth";
 
     public static final String PREF_REMEMBERME = "com.app.rememberme";
@@ -142,5 +145,7 @@ public class Constants {
     
     public static final String SHARE_TO_FRIENDS ="friends";
     public static final String SHARE_TO_MOMENTS="moments";
+    
+    public static final String TMP_CLIP_IMG="small.jpg";
     
 }

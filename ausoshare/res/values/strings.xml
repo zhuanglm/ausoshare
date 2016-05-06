@@ -60,7 +60,7 @@
     <!-- my profile -->
     <string name="my_log_in">登入</string>
     <string name="my_log_out">注销</string>
-    <string name="my_update_profile">修改个人资料</string>
+    <string name="my_update_profile">更新个人资料</string>
     <string name="my_update_password">修改登录密码</string>
     <string name="my_forwarded_ad">转发广告记录</string>
     <string name="my_current_income">我的当前收入</string>
@@ -118,9 +118,10 @@
 
     <!-- register -->
     <string name="old_password">旧密码</string>
-    <string name="new_password">新密码(6+ characters)</string>
+    <string name="new_password">新密码(6-16个字符)</string>
     <string name="nick_name_text">用户名</string>
     <string name="email_tv">Email</string>
+    <string name="paypal_tv">Paypal账户关联Email</string>
     <string name="register_email_tv">Email(请用真实邮箱，提现凭证)</string>
     <string name="password_text">密码</string>
     <string name="password_login_text">密码</string>
@@ -145,7 +146,7 @@
     <string name="validate_outofrange">长度至少%1$d - %2$d个字符</string>
     <string name="validate_password_nomatch">密码不匹配</string>
     <string name="validate_empty_email">Email不能为空.</string>
-    <string name="validate_email_failure">Email不正确.</string>
+    <string name="validate_email_failure">输入的Email格式不正确.</string>
     <string name="validate_email_nomatch">Email不正确.</string>
 
     <string name="validate_empty_username">用户名不能为空</string>
@@ -179,10 +180,10 @@
     <string name="ui_progress">进度：50%</string>
     
     <!-- entertainment -->
-    <string name="page_fun">乐趣</string>
-    <string name="page_news">乐闻</string>
-    <string name="page_tips">乐知</string>
-    <string name="page_video">乐视</string>
+    <string name="page_fun">乐趣  </string>
+    <string name="page_news">乐闻  </string>
+    <string name="page_tips">乐知  </string>
+    <string name="page_video">乐视  </string>
     
      <!-- profile -->
      <string name="ui_logout">【退出登录】</string>

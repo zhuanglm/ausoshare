@@ -35,17 +35,19 @@
 	        android:layout_height="@dimen/common_height_size"
 	        android:layout_below="@+id/text_upload_avatar"
 	        android:layout_marginTop="0dp"
-	        android:hint="@string/nick_name_text" />
+	        android:hint="@string/nick_name_text" 
+	        android:imeOptions="actionNext"/>
 	
 	    <EditText
 	        android:id="@+id/text_register_email"
 	        android:layout_width="match_parent"
 	        android:layout_height="@dimen/common_height_size"
 	        android:layout_below="@+id/text_username"
-	        android:hint="@string/email_tv" 
-	        android:clickable="false"
-	        android:focusable="false"
+	        android:hint="@string/paypal_tv" 
+	        android:clickable="true"
+	        android:focusable="true"
 	        android:visibility="visible"
+	        android:imeOptions="actionNext"
 	        />
 	
 	    <EditText
@@ -53,11 +55,12 @@
 	        android:layout_width="match_parent"
 	        android:layout_height="@dimen/common_height_size"
 	        android:layout_below="@+id/text_register_email"
-	        android:password="true"
 	        android:visibility="visible"
-	        android:hint="@string/password_text" />
-
-
+	        android:hint="@string/password_text" 
+	        android:inputType="textPassword"
+	        android:imeOptions="actionDone"/>
+	    
+	    
 	    <Button
 	        android:id="@+id/btn_register"
 	        android:layout_width="match_parent"
@@ -129,6 +132,17 @@
 	        android:textAllCaps="false"
 	        android:background="@drawable/btn_shape"
 	        />
+
+	    <TextView
+	        android:id="@+id/tV_user_email"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignBaseline="@+id/text_upload_avatar"
+	        android:layout_alignBottom="@+id/text_upload_avatar"
+	        android:layout_marginLeft="22dp"
+	        android:layout_toRightOf="@+id/text_upload_avatar"
+	        android:text="" />
+
     </RelativeLayout>
     
      

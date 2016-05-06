@@ -43,6 +43,7 @@
         android:icon="@drawable/app_icon"
         android:label="@string/app_name"
         android:theme="@style/Theme.Rc_mobile"
+        android:largeHeap="true"
         >
         <!--android:theme="@style/Theme.Rc_mobile"-->
 <!---->

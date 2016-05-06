@@ -478,15 +478,19 @@ public class ProfileFragment extends HomeFragmentBase implements
 	
 
 	@Override
-	public void onHomeAvatarUpdated(Intent data) {
-		Bundle extras = data.getExtras();
+	public void onHomeAvatarUpdated(Bitmap data) {
+		/*Bundle extras = data.getExtras();
 		if (extras != null) {
 			m_bm_Avatar = extras.getParcelable("data");
 			m_img_avatar.setImageBitmap(m_bm_Avatar);
 			
 			
-		}
+		}*/
 		
+		if (data != null) {
+			m_bm_Avatar = data;
+			m_img_avatar.setImageBitmap(m_bm_Avatar);
+		}
 	}
 	
 	@Override

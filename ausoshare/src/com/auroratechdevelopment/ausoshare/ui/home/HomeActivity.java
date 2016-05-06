@@ -7,9 +7,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
+import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.Settings;
@@ -110,7 +113,7 @@ public class HomeActivity extends ActivityBase implements
     }
     
     public interface HomeAvatarUpdated{
-    	public void onHomeAvatarUpdated(Intent data);
+    	public void onHomeAvatarUpdated(Bitmap data);
     }
     
     private HomeAdListUpdated HomeAdListUpdatedListener;
@@ -715,10 +718,14 @@ public class HomeActivity extends ActivityBase implements
     }
     
     public void fetchCurrentIncome(){
-        WebServiceHelper.getInstance().getCurrentIncome(CustomApplication.getInstance().getEmail(),
-                        CustomApplication.getInstance().getAndroidID(),
-                        Constants.CURRENT_INCOME_TOP_USER_MAXNUMBER);
-        //showWaiting();
+    	if(CustomApplication.getInstance().getLoginOutStatus()){
+    	
+	        WebServiceHelper.getInstance().getCurrentIncome(CustomApplication.getInstance().getEmail(),
+	                        CustomApplication.getInstance().getAndroidID(),
+	                        Constants.CURRENT_INCOME_TOP_USER_MAXNUMBER);
+	        
+    	}
+        
     }
     
     
@@ -731,7 +738,7 @@ public class HomeActivity extends ActivityBase implements
             if (resultCode != Activity.RESULT_OK) {
                 return;
             }else{
-            	Bundle extras = data.getExtras();
+            	/*Bundle extras = data.getExtras();
         		if (extras != null) {
         			Bitmap photo = extras.getParcelable("data");
         			if (HomeAvatarUpdatedListener != null){
@@ -739,7 +746,18 @@ public class HomeActivity extends ActivityBase implements
         			}
         			
         			UploadAvatar(photo);
-        		}
+        		}*/
+            	try{
+	            	Uri uritempFile = Uri.parse("file://" + "/" + Environment.getExternalStorageDirectory().getPath() + "/" + Constants.TMP_CLIP_IMG);
+	            	Bitmap photo = BitmapFactory.decodeStream(getContentResolver().openInputStream(uritempFile)); 
+	            	if (HomeAvatarUpdatedListener != null){
+        				HomeAvatarUpdatedListener.onHomeAvatarUpdated(photo);
+        			}
+	            	UploadAvatar(photo);
+            	}catch(Exception e){
+            		e.printStackTrace();
+            		   return;
+            	}
             }
             break;
 

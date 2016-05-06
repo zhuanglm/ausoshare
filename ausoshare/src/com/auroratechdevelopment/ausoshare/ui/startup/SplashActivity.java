@@ -39,9 +39,11 @@ import com.auroratechdevelopment.common.ViewUtils;
 import com.auroratechdevelopment.common.util.LoadNetPicture;
 import com.auroratechdevelopment.common.webservice.WebServiceConstants;
 
+//Updated by Raymond Zhuang May 1 2016
+
 public class SplashActivity extends Activity implements OnGestureListener,OnDisplayChagnedListener{
 
-    public static final int SPLASH_SECOND = 2;
+    public static final int SPLASH_SECOND = 3;
     boolean isNotFirstTime = true;
     private AppLocationService appLocationService;
     private ImageView splashAdImage1,splashAdImage2;
@@ -51,7 +53,7 @@ public class SplashActivity extends Activity implements OnGestureListener,OnDisp
     private ImageView[] indicators;
     LinearLayout pointLayout = null;
     private GestureDetector detector;
-    private int nPages = 2;
+    private int m_nPages;
     private int m_currentImg = 0;
     private Button m_BtnSkip;
 
@@ -61,6 +63,8 @@ public class SplashActivity extends Activity implements OnGestureListener,OnDisp
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         //splashAdImage = (ImageView)findViewById(R.id.splash_ad_image);
+        m_nPages = getResources().getInteger(R.integer.max_splash_page);
+        
         detector = new GestureDetector(this);
         img_vf = (MyViewFilpper)this.findViewById(R.id.splash_img_vf);
         splashAdImage1 = new ImageView(this);
@@ -81,20 +85,14 @@ public class SplashActivity extends Activity implements OnGestureListener,OnDisp
         }); 
         
         checkNetworkStatus = new CheckNetworkStatus(this);
+        
+        isNotFirstTime = CustomApplication.getInstance().getNotFirstTimeUse();
 
-        if (checkNetworkStatus.getNetworkStatus()) {
+        if (isNotFirstTime && checkNetworkStatus.getNetworkStatus()) {
         	splashAdImage1.setScaleType(ScaleType.FIT_CENTER);
         	new LoadNetPicture().getPicture(WebServiceConstants.splashAdImageURL, splashAdImage1);
-        	splashAdImage2.setScaleType(ScaleType.CENTER_INSIDE);
-        	splashAdImage2.setImageDrawable(getResources().getDrawable(R.drawable.splash_share));
-        	
-        	indicators = new ImageView[nPages];
-            for(int i = 0; i< nPages;i++) {
-            	indicators[i] = (ImageView) pointLayout.getChildAt(i);
-            	indicators[i].setEnabled(false);
-            	indicators[i].setTag(i);
-                }
-            indicators[0].setEnabled(true);//初始，第0个img的属性Enable为true
+        	//splashAdImage2.setScaleType(ScaleType.CENTER_INSIDE);
+        	//splashAdImage2.setImageDrawable(getResources().getDrawable(R.drawable.splash_share));
             
             img_vf.setOnDisplayChagnedListener(this);
             img_vf.setAutoStart(true);
@@ -102,27 +100,39 @@ public class SplashActivity extends Activity implements OnGestureListener,OnDisp
                        
         }else{
         	splashAdImage1.setScaleType(ScaleType.CENTER_INSIDE);
-        	splashAdImage1.setImageDrawable(getResources().getDrawable(R.drawable.splash_share));
+        	splashAdImage1.setImageDrawable(getResources().getDrawable(R.drawable.firsttime_launch_app_1));
+        	//splashAdImage1.setImageDrawable(getResources().getDrawable(R.drawable.splash_share));
+        	
         }
-
-        isNotFirstTime = CustomApplication.getInstance().getNotFirstTimeUse();
         
         getDeviceLocation();
         
+        indicators = new ImageView[m_nPages];
+        for(int i = 0; i< m_nPages;i++) {
+        	indicators[i] = (ImageView) pointLayout.getChildAt(i);
+        	indicators[i].setEnabled(false);
+        	indicators[i].setTag(i);
+            }
+        indicators[0].setEnabled(true);//初始，第0个img的属性Enable为true
         
         //is not the first time, means from the second times
         if(isNotFirstTime){
         	pointLayout.setVisibility(View.INVISIBLE);
+        	
         	new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     finish();
                     showHomeOrLogin();
                 }
-            }, SPLASH_SECOND * 2500);
+            }, SPLASH_SECOND * 1000);
         }
         //is the first time
         else{
+        	// the first time should show 2 pages
+        	splashAdImage2.setScaleType(ScaleType.CENTER_INSIDE);
+        	splashAdImage2.setImageDrawable(getResources().getDrawable(R.drawable.firsttime_launch_app_2));
+        	
         	CustomApplication.getInstance().setNotFirstTimeUse(true);
         	//showFirstTimeUseGuide();
         }
@@ -223,7 +233,7 @@ public class SplashActivity extends Activity implements OnGestureListener,OnDisp
 		
 		img_vf.setAutoStart(false);
 		if (e1.getX() - e2.getX() > 120) { 
-            if(img_vf.getDisplayedChild() == nPages-1){//如果滑动到最后
+            if(img_vf.getDisplayedChild() == m_nPages-1){//如果滑动到最后
                    img_vf.stopFlipping();                                   //停止切换
                    return false;
             }else{
@@ -256,7 +266,7 @@ public class SplashActivity extends Activity implements OnGestureListener,OnDisp
 	}
 	
 	public void  ViewChange(int position) {
-        if(position < 0 || position > nPages -1 || m_currentImg == position) {
+        if(position < 0 || position > m_nPages -1 || m_currentImg == position) {
                      return;
           }
         indicators[m_currentImg].setEnabled(false);//当前的属性改为false

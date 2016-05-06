@@ -125,9 +125,14 @@ public class PhotoPickerActivity extends Activity {
 		intent.putExtra("aspectY", 1);
 
 		// outputX , outputY : 裁剪图片宽高
-		intent.putExtra("outputX", 300);
-		intent.putExtra("outputY", 300);
-		intent.putExtra("return-data", true);
+		intent.putExtra("outputX", 160);
+		intent.putExtra("outputY", 160);
+		//intent.putExtra("return-data", true);
+		
+		intent.putExtra("return-data", false);
+		Uri uritempFile = Uri.parse("file://" + "/" + Environment.getExternalStorageDirectory().getPath() + "/" + Constants.TMP_CLIP_IMG);  
+	    intent.putExtra(MediaStore.EXTRA_OUTPUT, uritempFile);  
+	    intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString()); 
 
 		startActivityForResult(intent, REQUEST_CLIP_PICTURE);
 	}

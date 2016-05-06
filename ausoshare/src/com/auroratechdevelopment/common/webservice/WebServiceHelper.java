@@ -175,9 +175,9 @@ private boolean validateWebServiceConnection(ResponseBase response) {
         });
     }
 
-    public void updateUserProfile(String deviceID, String nickname, String email, String pwd){
+    public void updateUserProfile(String deviceID, String nickname, String email, String pwd, String paypalEmail){
         UpdateUserProfileRequest req = new UpdateUserProfileRequest(CustomApplication.getInstance().getUserToken(),
-                deviceID, nickname,email,pwd);
+                deviceID, nickname,email,pwd,paypalEmail);
 
         WebService.sendRequestAsync(req, new WebService.WebServiceCallback<UpdateUserProfileResponse>(){
             @Override

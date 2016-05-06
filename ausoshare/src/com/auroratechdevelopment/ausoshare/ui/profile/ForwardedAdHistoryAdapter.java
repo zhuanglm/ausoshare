@@ -97,10 +97,14 @@ public class ForwardedAdHistoryAdapter extends BaseAdapter{
                 if (TextUtils.isEmpty(item.thumb)) {
                     holder.thumb.setImageDrawable(context.getResources().getDrawable(R.drawable.placeholder));
                 } else {
-                    Picasso.with(context).load(item.thumb)
+                    /*Picasso.with(context).load(item.thumb)
                             .placeholder(R.drawable.placeholder)
                             .error(R.drawable.placeholder)
-                            .into(holder.thumb);
+                            .into(holder.thumb);*/
+                	Picasso.with(context).load(item.thumb)
+                    .placeholder(R.drawable.placeholder)
+                    .error(R.drawable.placeholder).fit()
+                    .into(holder.thumb);
                 }
 
                 //ad description

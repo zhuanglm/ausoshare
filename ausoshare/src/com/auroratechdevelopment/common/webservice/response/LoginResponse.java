@@ -10,5 +10,6 @@ public class LoginResponse extends ResponseBase {
     public String nickname;
     public String availableFund;
     public String avatar;
+    public String paypal;
 
 }

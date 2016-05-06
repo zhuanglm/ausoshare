@@ -14,13 +14,15 @@ public class UpdateUserProfileRequest extends RequestBase<UpdateUserProfileRespo
     public String nickname;
     public String email;
     public String password;
+    public String paypal;
 
-    public UpdateUserProfileRequest(String token, String deviceID, String nickName, String email,String pwd) {
+    public UpdateUserProfileRequest(String token, String deviceID, String nickName, String email,String pwd,String paypalEmail) {
         this.token = token;
         this.deviceID = deviceID;
         this.nickname = nickName;
         this.email = email;
         this.password = pwd;
+        paypal = paypalEmail;
     }
 
     @Override

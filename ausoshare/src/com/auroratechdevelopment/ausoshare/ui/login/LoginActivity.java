@@ -424,6 +424,7 @@ public class LoginActivity extends ActivityBase implements View.OnClickListener{
                     }
 
                     CustomApplication.getInstance().setUsername(loginResponse.nickname);
+                    CustomApplication.getInstance().setPaypal(loginResponse.paypal);
                     CustomApplication.getInstance().setEmail(emailInputed);
                     CustomApplication.getInstance().setLoginOutStatus(true);
                     

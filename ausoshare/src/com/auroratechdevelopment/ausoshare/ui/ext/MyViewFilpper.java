@@ -2,6 +2,8 @@ package com.auroratechdevelopment.ausoshare.ui.ext;
 
 import android.widget.ViewFlipper;
 
+//Created by Raymond Zhuang May 1 2016
+
 public class MyViewFilpper extends ViewFlipper {
 	private OnDisplayChagnedListener mListener;
 

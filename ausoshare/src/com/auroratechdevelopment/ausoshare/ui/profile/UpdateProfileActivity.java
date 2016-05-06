@@ -47,7 +47,7 @@ public class UpdateProfileActivity extends ActivityBase implements OnClickListen
     //private ListView top10List;
     //private Top10IncomeAdapter adapter;
 
-    private TextView currentIncomeText;
+    private TextView currentIncomeText,currentEmail;
     
     private TextView textTitle;
     private ImageView headerTitleImage;
@@ -70,6 +70,7 @@ public class UpdateProfileActivity extends ActivityBase implements OnClickListen
         m_layout_bk.setOnClickListener(this);
         textUsername = (TextView)findViewById(R.id.text_username);
         textRegisterEmail = (TextView)findViewById(R.id.text_register_email);
+        currentEmail = (TextView)findViewById(R.id.tV_user_email);
         
         m_tv_pwd = (TextView)findViewById(R.id.text_update_password);
         m_tv_old_pwd = (TextView)findViewById(R.id.text_old_password);
@@ -78,6 +79,7 @@ public class UpdateProfileActivity extends ActivityBase implements OnClickListen
         
         textTitle = (TextView)findViewById(R.id.text_title);
         headerTitleImage = (ImageView)findViewById(R.id.header_title_image);
+        
         //textTitle.setVisibility(View.VISIBLE);
         //textTitle.setText(getResources().getString(R.string.my_update_profile));
         //headerTitleImage.setVisibility(View.GONE);
@@ -87,7 +89,8 @@ public class UpdateProfileActivity extends ActivityBase implements OnClickListen
 
     private void setUserInfo(){
     	textUsername.setText(CustomApplication.getInstance().getUsername());
-    	textRegisterEmail.setText(CustomApplication.getInstance().getEmail());
+    	currentEmail.setText(CustomApplication.getInstance().getEmail());
+    	textRegisterEmail.setText(CustomApplication.getInstance().getPaypal());
 
     }
     
@@ -119,7 +122,7 @@ public class UpdateProfileActivity extends ActivityBase implements OnClickListen
     
     public void onUpdateProfileClicked(View view){
     	String username = textUsername.getText().toString().trim();
-        String email = textRegisterEmail.getText().toString().trim();
+        String paypal_email = textRegisterEmail.getText().toString().trim();
         String password = m_tv_pwd.getText().toString().trim();
 
         Log.e("Edward", "Username is: " + username);
@@ -130,12 +133,12 @@ public class UpdateProfileActivity extends ActivityBase implements OnClickListen
         	return;
         }
         
-        if(email.equals("")){
+        /*if(paypal_email.equals("")){
         	showAlert(CustomApplication.getInstance().getCurrentActivity(),
                 getString(R.string.title_update_profile),
                 getResources().getString(R.string.validate_empty_email));
         	return;
-        }
+        }*/
         
         if(password.equals("")){
         	showAlert(CustomApplication.getInstance().getCurrentActivity(),
@@ -150,13 +153,17 @@ public class UpdateProfileActivity extends ActivityBase implements OnClickListen
 //        if (!runValidation(EmailValidator.class, email)) {
 //            return;
 //        }
+        
+        if (!runValidation(EmailValidator.class, paypal_email)) {
+        	return;
+        }
 
         showWaiting();
 
         WebServiceHelper.getInstance().updateUserProfile(
                 Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID),
-                textUsername.getText().toString().trim(),//CustomApplication.getInstance().getEmail(),
-                email,password
+                textUsername.getText().toString().trim(),CustomApplication.getInstance().getEmail(),
+                password,paypal_email
         );
     }
     
@@ -230,9 +237,9 @@ public class UpdateProfileActivity extends ActivityBase implements OnClickListen
                     	if(!sNmae.equals("")){
                     		CustomApplication.getInstance().setUsername(sNmae);
                     	}
-                    	String email = textRegisterEmail.getText().toString().trim();
-                    	if(!email.equals("")){
-                    		CustomApplication.getInstance().setEmail(email);
+                    	String sPaypal = textRegisterEmail.getText().toString().trim();
+                    	if(!sPaypal.equals("")){
+                    		CustomApplication.getInstance().setPaypal(sPaypal);
                     	}
                     	
                     }
