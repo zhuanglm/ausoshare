@@ -748,7 +748,8 @@ public class HomeActivity extends ActivityBase implements
         			UploadAvatar(photo);
         		}*/
             	try{
-	            	Uri uritempFile = Uri.parse("file://" + "/" + Environment.getExternalStorageDirectory().getPath() + "/" + Constants.TMP_CLIP_IMG);
+	            	Uri uritempFile = Uri.parse("file://" + "/" + Environment.getExternalStorageDirectory().getPath() + "/" 
+	            			+ CustomApplication.getInstance().getUsername()+".JPG");
 	            	Bitmap photo = BitmapFactory.decodeStream(getContentResolver().openInputStream(uritempFile)); 
 	            	if (HomeAvatarUpdatedListener != null){
         				HomeAvatarUpdatedListener.onHomeAvatarUpdated(photo);

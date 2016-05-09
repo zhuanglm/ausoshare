@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import java.io.File;
 
+import com.auroratechdevelopment.ausoshare.CustomApplication;
 import com.auroratechdevelopment.ausoshare.R;
 import com.auroratechdevelopment.ausoshare.ui.login.LoginActivity;
 import com.auroratechdevelopment.ausoshare.util.Constants;
@@ -130,7 +131,8 @@ public class PhotoPickerActivity extends Activity {
 		//intent.putExtra("return-data", true);
 		
 		intent.putExtra("return-data", false);
-		Uri uritempFile = Uri.parse("file://" + "/" + Environment.getExternalStorageDirectory().getPath() + "/" + Constants.TMP_CLIP_IMG);  
+		Uri uritempFile = Uri.parse("file://" + "/" + Environment.getExternalStorageDirectory().getPath() + "/" 
+				+ CustomApplication.getInstance().getUsername()+".JPG");  
 	    intent.putExtra(MediaStore.EXTRA_OUTPUT, uritempFile);  
 	    intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString()); 
 

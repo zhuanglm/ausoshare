@@ -146,6 +146,5 @@ public class Constants {
     public static final String SHARE_TO_FRIENDS ="friends";
     public static final String SHARE_TO_MOMENTS="moments";
     
-    public static final String TMP_CLIP_IMG="small.jpg";
     
 }

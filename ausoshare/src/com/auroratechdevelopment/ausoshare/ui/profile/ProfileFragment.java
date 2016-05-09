@@ -468,8 +468,10 @@ public class ProfileFragment extends HomeFragmentBase implements
             homeActivity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                	m_tv_currentIncome.setText(getResources().getString(R.string.ui_current_income)+
+                	if(isAdded()){
+                		m_tv_currentIncome.setText(getResources().getString(R.string.ui_current_income)+
                             currentIncome.data.currentIncome);
+                	}
                 }
             });
         }

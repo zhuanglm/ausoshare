@@ -15,8 +15,7 @@ import android.os.Environment;
  */
 
 public class FileUtils {
-	public static String SDPATH = Environment.getExternalStorageDirectory()
-			+ "/DCIM/Camera/";
+	public static String SDPATH = Environment.getExternalStorageDirectory() + "/";
 
 	public static void saveBitmap(Bitmap bm, String picName) {
 		try {
