@@ -96,9 +96,11 @@ public class ProfileFragment extends HomeFragmentBase implements
        
        if(m_bm_Avatar != null){
     	   	FileUtils.saveBitmap(m_bm_Avatar,CustomApplication.getInstance().getUsername());
-    	   	m_bm_Avatar.recycle(); 
-   			m_bm_Avatar = null; 
-   			System.gc();
+    	   	if(m_bm_Avatar.isRecycled() == false){
+	    		m_bm_Avatar.recycle(); 
+	 			m_bm_Avatar = null; 
+	 			System.gc();
+    		}
        }
        
     }
@@ -109,9 +111,11 @@ public class ProfileFragment extends HomeFragmentBase implements
     	
     	if(m_bm_Avatar != null){
     		FileUtils.saveBitmap(m_bm_Avatar,CustomApplication.getInstance().getUsername());
-     	   	m_bm_Avatar.recycle(); 
- 			m_bm_Avatar = null; 
- 			System.gc();
+    		if(m_bm_Avatar.isRecycled() == false){
+	    		m_bm_Avatar.recycle(); 
+	 			m_bm_Avatar = null; 
+	 			System.gc();
+    		}
         }
     }
     
