@@ -86,11 +86,15 @@ public class PrepareShareEntertainmentActivity extends ActivityBase {
     private static final int THUMB_SIZE = 150;
     
     private ImageView imageView, viewImage_ad_share;
+    private int m_lastTab;
     
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
+        Bundle bundle=this.getIntent().getExtras(); 
+        m_lastTab = bundle.getInt(Constants.LAST_TAB);
 
     }
 
@@ -195,6 +199,7 @@ public class PrepareShareEntertainmentActivity extends ActivityBase {
 	   
 	    final Bundle bundle = new Bundle(); 
 	        bundle.putString(Constants.LAST_PAGE, Constants.ENTERTAINMENT_PAGE);
+	        bundle.putInt(Constants.LAST_TAB, m_lastTab);
 	        ViewUtils.startPageWithClearStack(bundle, PrepareShareEntertainmentActivity.this, HomeActivity.class);
 	        super.onBackPressed();
     }

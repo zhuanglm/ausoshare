@@ -100,6 +100,7 @@ public class Constants {
     public static final int CURRENT_INCOME_TOP_USER_MAXNUMBER =  10;
 
     public static final String LAST_PAGE ="com.app.last_page";
+    public static final String LAST_TAB ="com.app.last_tab";
     public static final String LOGIN_STATUS = "login_status";
 
     public static final String HOME_PAGE = "home";
@@ -142,6 +143,10 @@ public class Constants {
     public static final String TAG_NEWS = "news";
     public static final String TAG_TIPS = "tips";
     public static final String TAG_VIDEO = "video";
+    public static final int TAG_FUN_ID = 0;
+    public static final int TAG_NEWS_ID = 1;
+    public static final int TAG_TIPS_ID = 2;
+    public static final int TAG_VIDEO_ID = 3;
     
     public static final String SHARE_TO_FRIENDS ="friends";
     public static final String SHARE_TO_MOMENTS="moments";

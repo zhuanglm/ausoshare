@@ -70,6 +70,7 @@ public class EntertainmentFragment extends HomeFragmentBase  implements
 		private static final String KEY_ADS = "ENTERTAINMENT";
 		
 		private ViewPagerEx pager;
+		private TabHost m_tabs;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -82,6 +83,7 @@ public class EntertainmentFragment extends HomeFragmentBase  implements
 		final Bundle bundle = new Bundle(); 
 	    bundle.putParcelable(Constants.BUNDLE_AD_ITEM, item);
 	    
+	    bundle.putInt(Constants.LAST_TAB, m_tabs.getCurrentTab());
 	    ViewUtils.startPage(bundle, homeActivity, PrepareShareEntertainmentActivity.class);
 	
 	}
@@ -92,29 +94,29 @@ public class EntertainmentFragment extends HomeFragmentBase  implements
 	    View rootView = inflater.inflate(R.layout.fragment_home_entertainment_v2, container, false);
 	    m_tVEmpty = (TextView)rootView.findViewById(R.id.empty_list);
 	    
-	    final TabHost tabs = (TabHost) rootView.findViewById(android.R.id.tabhost);
-	    TabWidget mTabWidget = tabs.getTabWidget(); 
-	    tabs.setup(); 
+	    m_tabs = (TabHost) rootView.findViewById(android.R.id.tabhost);
+	    TabWidget mTabWidget = m_tabs.getTabWidget(); 
+	    m_tabs.setup(); 
 	    
-	    TabSpec tabSpec = tabs.newTabSpec("page_fun");
+	    TabSpec tabSpec = m_tabs.newTabSpec("page_fun");
         tabSpec.setIndicator(getResources().getString(R.string.page_fun));
         tabSpec.setContent(R.id.tab1);
-        tabs.addTab(tabSpec);
+        m_tabs.addTab(tabSpec);
         
-        tabSpec = tabs.newTabSpec("page_news");
+        tabSpec = m_tabs.newTabSpec("page_news");
         tabSpec.setIndicator(getResources().getString(R.string.page_news));
         tabSpec.setContent(R.id.tab2);
-        tabs.addTab(tabSpec);
+        m_tabs.addTab(tabSpec);
 	   	    
-        tabSpec = tabs.newTabSpec("page_tips");
+        tabSpec = m_tabs.newTabSpec("page_tips");
         tabSpec.setIndicator(getResources().getString(R.string.page_tips));
         tabSpec.setContent(R.id.tab3);
-        tabs.addTab(tabSpec);
+        m_tabs.addTab(tabSpec);
         
-        tabSpec = tabs.newTabSpec("page_video");
+        tabSpec = m_tabs.newTabSpec("page_video");
         tabSpec.setIndicator(getResources().getString(R.string.page_video));
         tabSpec.setContent(R.id.tab4);
-        tabs.addTab(tabSpec);
+        m_tabs.addTab(tabSpec);
         
         /*View v = mTabWidget.getChildTabViewAt(2);  
         v.setOnClickListener(new OnClickListener(){  
@@ -125,9 +127,13 @@ public class EntertainmentFragment extends HomeFragmentBase  implements
             }  
               
         });  */
-        tabs.setCurrentTab(0);
-        updateTab(tabs);
-        tabs.setOnTabChangedListener(new OnTabChangeListener(){  
+        
+        Intent urlIntent = getActivity().getIntent();
+        int nLastTab = urlIntent.getIntExtra(Constants.LAST_TAB, 0);
+        m_tabs.setCurrentTab(nLastTab);
+        
+        updateTab(m_tabs);
+        m_tabs.setOnTabChangedListener(new OnTabChangeListener(){  
             @Override  
             public void onTabChanged(String tabId){  
                //Log.d("Raymond", tabId);	//page2  ....
@@ -137,20 +143,20 @@ public class EntertainmentFragment extends HomeFragmentBase  implements
             		m_tVEmpty.setVisibility(View.VISIBLE);
             		getNewEntertainments(startNumber,Constants.TAG_NEWS);
             		
-            		updateTab(tabs);
+            		updateTab(m_tabs);
             	}else if(tabId.equalsIgnoreCase("page_tips")){
             		startNumber = 0;
             		adapter.clearList();
             		m_tVEmpty.setVisibility(View.VISIBLE);
             		getNewEntertainments(startNumber,Constants.TAG_TIPS);
             		
-            		updateTab(tabs);
+            		updateTab(m_tabs);
             	}else if(tabId.equalsIgnoreCase("page_video")){
             		startNumber = 0;
             		adapter.clearList();
             		m_tVEmpty.setVisibility(View.VISIBLE);
             		getNewEntertainments(startNumber,Constants.TAG_VIDEO);
-            		updateTab(tabs);
+            		updateTab(m_tabs);
             		
             	}else if(tabId.equalsIgnoreCase("page_fun")){
             		startNumber = 0;
@@ -159,7 +165,7 @@ public class EntertainmentFragment extends HomeFragmentBase  implements
             		m_tVEmpty.setVisibility(View.VISIBLE);
             		getNewEntertainments(startNumber,Constants.TAG_LIFE);
             		
-            		updateTab(tabs);
+            		updateTab(m_tabs);
             	}
             }  
         }); 
@@ -262,7 +268,21 @@ public class EntertainmentFragment extends HomeFragmentBase  implements
     list3.setAdapter(adapter);
     list4.setAdapter(adapter);
     
-    getNewEntertainments(startNumber,Constants.TAG_LIFE);	//first page
+    switch(nLastTab){
+    case Constants.TAG_FUN_ID:
+    	getNewEntertainments(startNumber,Constants.TAG_LIFE);	//first page
+    	break;
+    case Constants.TAG_NEWS_ID:
+    	getNewEntertainments(startNumber,Constants.TAG_NEWS);	
+    	break;
+    case Constants.TAG_TIPS_ID:
+    	getNewEntertainments(startNumber,Constants.TAG_TIPS);	
+    	break;
+    case Constants.TAG_VIDEO_ID:
+    	getNewEntertainments(startNumber,Constants.TAG_VIDEO);	
+    	break;
+    }
+    
 
     swipeRefreshlayout1 = (SwipeRefreshLayout)rootView.findViewById(R.id.swipe_container_ad1);
     //swipeRefreshlayout.setColorScheme(android.R.color.holo_purple);

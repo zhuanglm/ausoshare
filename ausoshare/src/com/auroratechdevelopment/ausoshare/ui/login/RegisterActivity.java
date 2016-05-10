@@ -259,6 +259,7 @@ public class RegisterActivity extends ActivityBase implements View.OnClickListen
                     
                     CustomApplication.getInstance().setEmail(email);
                     CustomApplication.getInstance().setUserToken(registerResponse.token);
+                    CustomApplication.getInstance().setPaypal("");
                     
                     hideSoftBoard();
                     

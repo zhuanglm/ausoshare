@@ -192,6 +192,8 @@ public class HomeActivity extends ActivityBase implements
                 iLastTab = Constants.FRAG_PROFILE;
             }
             else if (lastPage.equals(Constants.ENTERTAINMENT_PAGE)){
+            	//int nLastTab = urlIntent.getIntExtra(Constants.LAST_TAB, 0);
+            	
             	pager.setCurrentItem(Constants.FRAG_ENTERTAINMENT);
             	iLastTab = Constants.FRAG_ENTERTAINMENT;
             	
