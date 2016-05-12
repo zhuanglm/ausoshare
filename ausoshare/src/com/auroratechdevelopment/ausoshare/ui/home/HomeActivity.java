@@ -2,6 +2,7 @@ package com.auroratechdevelopment.ausoshare.ui.home;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -141,8 +142,24 @@ public class HomeActivity extends ActivityBase implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //handleIntent(getIntent());
+       
 
     }
+    
+    /*@Override
+    protected void onNewIntent(Intent intent) {
+        setIntent(intent);
+        handleIntent(intent);
+    }
+
+    private void handleIntent(Intent intent) {
+        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+          String query = intent.getStringExtra(SearchManager.QUERY);
+          Log.i("Raymond", "search result:"+ query);
+          //doMySearch(query);
+        }
+    }*/
 
     public void setListener() {
         WebServiceHelper.getInstance().setListener(this);
@@ -214,7 +231,7 @@ public class HomeActivity extends ActivityBase implements
             }
             else if (lastPage.equals(Constants.ENTERTAINMENT_PAGE)){
             	//int nLastTab = urlIntent.getIntExtra(Constants.LAST_TAB, 0);
-            	
+            	m_Search.setVisibility(View.VISIBLE);
             	pager.setCurrentItem(Constants.FRAG_ENTERTAINMENT);
             	iLastTab = Constants.FRAG_ENTERTAINMENT;
             	
@@ -225,6 +242,7 @@ public class HomeActivity extends ActivityBase implements
             	iLastTab = Constants.FRAG_PROMOTION;
             }
             else {
+            	m_Search.setVisibility(View.VISIBLE);
                 pager.setCurrentItem(Constants.FRAG_HOME);
                 iLastTab = Constants.FRAG_HOME;
                 Log.e("Edward", "else Home");
@@ -851,6 +869,9 @@ public class HomeActivity extends ActivityBase implements
 		m_Search.setSubmitButtonEnabled(true);
 		// 设置该SearchView内默认显示的提示文本
 		//m_Search.setQueryHint("查找");
+		
+		//SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+		//m_Search.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
 		
 		m_Search.setOnSearchClickListener(new View.OnClickListener(){
 

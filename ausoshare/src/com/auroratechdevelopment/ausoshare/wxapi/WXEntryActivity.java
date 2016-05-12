@@ -49,24 +49,31 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
 	@Override
 	public void onResp(BaseResp resp) {
 		int result = 0;
+		String sR;
 		
 		switch (resp.errCode) {
 		case BaseResp.ErrCode.ERR_OK:
 			result = R.string.errcode_success;
+			sR= getResources().getString(result);
 			break;
 		case BaseResp.ErrCode.ERR_USER_CANCEL:
 			result = R.string.errcode_cancel;
+			sR= getResources().getString(result);
 			break;
 		case BaseResp.ErrCode.ERR_AUTH_DENIED:
 			result = R.string.errcode_deny;
+			sR= getResources().getString(result);
 			break;
 		default:
 			result = R.string.errcode_unknown;
+			sR= String.format(getResources().getString(result),resp.errCode);
 			break;
 		}
 		
+		//String s = "[" +Integer.toString(resp.errCode)+"]";
+		Toast.makeText(this, sR, Toast.LENGTH_LONG).show();
 		finish();
-		Toast.makeText(this, result, Toast.LENGTH_LONG).show();
+		
 		
 	}
 	
