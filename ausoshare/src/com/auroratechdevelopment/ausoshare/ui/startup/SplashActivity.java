@@ -68,9 +68,9 @@ public class SplashActivity extends Activity implements OnGestureListener,OnDisp
         detector = new GestureDetector(this);
         img_vf = (MyViewFilpper)this.findViewById(R.id.splash_img_vf);
         splashAdImage1 = new ImageView(this);
-        splashAdImage2 = new ImageView(this);
+        
         img_vf.addView(splashAdImage1);
-        img_vf.addView(splashAdImage2);
+        
         pointLayout = (LinearLayout) findViewById(R.id.point_layout);
         m_BtnSkip = (Button) findViewById(R.id.button_skip);
         m_BtnStart = (Button) findViewById(R.id.button_start);
@@ -142,6 +142,8 @@ public class SplashActivity extends Activity implements OnGestureListener,OnDisp
         //is the first time
         else{
         	// the first time should show 2 pages
+        	splashAdImage2 = new ImageView(this);
+        	img_vf.addView(splashAdImage2);
         	splashAdImage2.setScaleType(ScaleType.FIT_XY);
         	splashAdImage2.setImageDrawable(getResources().getDrawable(R.drawable.firsttime_launch_app_2));
         	//img_vf.setAutoStart(true);
@@ -287,7 +289,8 @@ public class SplashActivity extends Activity implements OnGestureListener,OnDisp
         indicators[position].setEnabled(true);//要切换过去的img属性改为true
         m_currentImg = position;
         
-        m_BtnStart.setVisibility(View.VISIBLE);
+        if(!isNotFirstTime)
+        	m_BtnStart.setVisibility(View.VISIBLE);
 	}
 
 	@Override

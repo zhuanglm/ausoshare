@@ -17,7 +17,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="8dp"
-            android:padding="4dp"
+            android:padding="1dp"
+            android:dividerHeight="2dp"
             >
         </ListView> 
     </android.support.v4.widget.SwipeRefreshLayout>
@@ -37,7 +38,7 @@
     <LinearLayout
         android:id="@+id/forward_method_tv"
         android:layout_width="fill_parent"
-        android:layout_height="128dp"
+        android:layout_height="100dp"
         android:layout_alignParentTop="true"
         android:layout_centerInParent="false"
         android:background="@color/whitesmoke"

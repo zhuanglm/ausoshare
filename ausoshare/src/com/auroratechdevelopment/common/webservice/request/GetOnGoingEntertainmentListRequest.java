@@ -8,6 +8,7 @@ import com.auroratechdevelopment.common.webservice.util.WebUtils;
 
 /**
  * Created by Edward on 2015-09-03.
+ * Updated by Raymond Zhuang May 10 2016
  */
 public class GetOnGoingEntertainmentListRequest extends RequestBase<GetOnGoingEntertainmentListResponse> {
 
@@ -15,13 +16,15 @@ public class GetOnGoingEntertainmentListRequest extends RequestBase<GetOnGoingEn
     public String deviceID;
     public String tag;  //advert means advertisement; life means entertainment
     public UserInfo data;
+    public String keyword;
 
-    public GetOnGoingEntertainmentListRequest( String email, String Token, String deviceId, UserInfo data, String tag) {
+    public GetOnGoingEntertainmentListRequest( String email, String Token, String deviceId, UserInfo data, String tag,String key) {
         this.email = email;
         this.deviceID = deviceId;
         this.data = data;
         this.token = Token;
         this.tag = tag;
+        keyword = key;
     }
 
     @Override

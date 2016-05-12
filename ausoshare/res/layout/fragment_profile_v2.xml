@@ -102,7 +102,7 @@
 	    android:layout_height="match_parent"
 	    android:layout_alignParentRight="true"
 	    android:layout_below="@+id/login_out_profile_layout"
-	    android:background="@color/lightgray" >
+	     >
 
 	    <LinearLayout
 	        android:id="@+id/amount_layout"

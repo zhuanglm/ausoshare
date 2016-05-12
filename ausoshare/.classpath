@@ -9,5 +9,6 @@
 	<classpathentry kind="lib" path="F:/zlm Java/workspace/ausoshare/libs/gson-2.4.jar"/>
 	<classpathentry kind="lib" path="F:/zlm Java/ausoshare/git/ausoshare/libs/org.apache.http.legacy.jar"/>
 	<classpathentry kind="lib" path="libs/libammsdk.jar"/>
+	<classpathentry kind="lib" path="libs/httpmime-4.1.3.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

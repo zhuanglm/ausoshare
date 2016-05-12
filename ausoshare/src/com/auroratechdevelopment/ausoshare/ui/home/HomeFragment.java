@@ -22,6 +22,7 @@ import com.auroratechdevelopment.ausoshare.ui.contact.ContactURLActivity;
 import com.auroratechdevelopment.ausoshare.ui.ext.LineProgress;
 import com.auroratechdevelopment.ausoshare.ui.home.HomeActivity.HomeAdListUpdated;
 import com.auroratechdevelopment.ausoshare.ui.home.HomeActivity.HomeEntertainmentListUpdated;
+import com.auroratechdevelopment.ausoshare.ui.home.HomeActivity.HomeStartNumUpdated;
 import com.auroratechdevelopment.ausoshare.ui.login.LoginActivity;
 import com.auroratechdevelopment.ausoshare.util.Constants;
 import com.auroratechdevelopment.common.DebugLogUtil;
@@ -44,7 +45,7 @@ import java.util.ArrayList;
 public class HomeFragment extends HomeFragmentBase  implements  
     OnGoingAdItemsAdapter.GetItemSelected,
     SwipeRefreshLayout.OnRefreshListener,
-    HomeActivity.HomeAdListUpdated
+    HomeActivity.HomeAdListUpdated, HomeStartNumUpdated
     {
 	    private ListView list;
 	    private OnGoingAdItemsAdapter adapter;
@@ -178,7 +179,7 @@ public class HomeFragment extends HomeFragmentBase  implements
     	
     	Log.e("Edward", "getNewAds: startNumber = " + startNumber);
         UserInfo user_info = setUserInfo(startNumber);
-        WebServiceHelper.getInstance().onGoingAdList(user_info, Constants.TAG_ADVERT);
+        WebServiceHelper.getInstance().onGoingAdList(user_info, Constants.TAG_ADVERT,"");
     }
 
     public void checkLoginStatus(){
@@ -199,7 +200,7 @@ public class HomeFragment extends HomeFragmentBase  implements
     }
 
 	@Override
-	public void onHomeAdListUpdated(final int tag, final GetOnGoingAdListResponse adList) {
+	public void onHomeAdListUpdated(final int tag, final GetOnGoingAdListResponse adList ) {
 		// TODO Auto-generated method stub
         homeActivity.runOnUiThread(new Runnable() {
             @Override
@@ -229,6 +230,13 @@ public class HomeFragment extends HomeFragmentBase  implements
                 }
             });
         }
+	}
+
+	@Override
+	public void onHomeStartNumUpdated(int pos) {
+		startNumber = 0;
+		adapter.clearList();
+		
 	}
 
 

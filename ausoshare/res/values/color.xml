@@ -11,6 +11,7 @@
     <color name="lightransparent">#a0000000</color>
     <color name="alert_start">#c2c2c2</color>
     <color name="alert_end">#828080</color>
+    <color name="textfield_search_default_holo_light">#fff3f3f3</color>
 
     <color name="navpage">#FFE1E8EB</color>
 

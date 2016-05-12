@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
@@ -19,6 +20,8 @@ import android.provider.Settings;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+
+import android.widget.TextView;
 import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -27,6 +30,10 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.SearchView;
+import android.widget.SearchView.OnCloseListener;
+import android.widget.SearchView.OnQueryTextListener;
 import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
@@ -73,7 +80,7 @@ import com.auroratechdevelopment.common.webservice.response.WithdrawRequestRespo
  * updated by Raymond Zhuang 2016/4/22
  */
 public class HomeActivity extends ActivityBase implements
-        PushHelper.PushHelperListener
+        PushHelper.PushHelperListener, OnQueryTextListener
 {
 	
     private ViewPagerEx pager;
@@ -85,16 +92,22 @@ public class HomeActivity extends ActivityBase implements
     private ImageButton ibtnProfile;
     private ImageButton ibtnEntertainment;
     private ImageButton ibtnPromotion;
+    private SearchView 	m_Search;
 
     private AppLocationService appLocationService;
     
     private static final int REQUEST_PICK_PICTURE = 0xaf;
 
     private int iLastTab = -1;
+    public String iEntertaimentLastTab;
 
     private boolean backPress;
     private PushHelper pushHelper;
 
+    
+    public interface HomeStartNumUpdated {
+    	public void onHomeStartNumUpdated(int pos);
+    }
     
     public interface HomeAdListUpdated {
     	public void onHomeAdListUpdated(int tag, GetOnGoingAdListResponse response);
@@ -116,6 +129,7 @@ public class HomeActivity extends ActivityBase implements
     	public void onHomeAvatarUpdated(Bitmap data);
     }
     
+    private HomeStartNumUpdated HomeAdStartNumUpdatedListener,HomeEnStartNumUpdatedListener;
     private HomeAdListUpdated HomeAdListUpdatedListener;
     private HomeEntertainmentListUpdated HomeEntertainmentListUpdatedListener;
     private HomeWithdrawUpdated HomeWithdrawUpdatedListener;
@@ -176,6 +190,13 @@ public class HomeActivity extends ActivityBase implements
         ibtnContact = (ImageButton) findViewById(R.id.bottomtab_contact);
         ibtnProfile = (ImageButton) findViewById(R.id.bottomtab_profile);
         ibtnEntertainment = (ImageButton)findViewById(R.id.bottomtab_entertainment);
+        m_Search = (SearchView)findViewById(R.id.search_button);
+        if(m_Search != null)
+        	searchViewInit();
+        else{
+        	Log.e("Raymond", "null searchview");
+        }
+        
 
         
         pushHelper = new PushHelper(this, this);
@@ -211,6 +232,7 @@ public class HomeActivity extends ActivityBase implements
             
         }
         else{
+        	m_Search.setVisibility(View.VISIBLE);
             pager.setCurrentItem(Constants.FRAG_HOME);
             iLastTab = Constants.FRAG_HOME;
             Log.e("Edward", "else else home");
@@ -398,6 +420,7 @@ public class HomeActivity extends ActivityBase implements
             } else {
                 backPress = false;
                 finish();
+                
                 return;
             }
 
@@ -416,6 +439,7 @@ public class HomeActivity extends ActivityBase implements
         backPress = false;
         iLastTab = Constants.FRAG_HOME;
         showBackButton(false);
+        m_Search.setVisibility(View.VISIBLE);
 
         setTopBarTitle(CustomApplication.getInstance().getUsername() + getResources().getString(R.string.title_infinity_cellphone)
                 + String.valueOf(CustomApplication.getInstance().getAvailableFund().equals("") ? "0.00" : CustomApplication.getInstance().getAvailableFund()));
@@ -436,6 +460,7 @@ public class HomeActivity extends ActivityBase implements
 
 
     public void showContact() {
+    	m_Search.setVisibility(View.INVISIBLE);
         backPress = false;
         iLastTab = Constants.FRAG_CONTACT;
         setBottomBarSelected(iLastTab);
@@ -445,10 +470,12 @@ public class HomeActivity extends ActivityBase implements
     }
 
     public void showProfile() { 
+    	m_Search.setVisibility(View.INVISIBLE);
     	if(CustomApplication.getInstance().getEmail().equalsIgnoreCase("")){
 			requestUserLogin();
     	}
     	else{
+    		
 	        backPress = false;
 	        iLastTab = Constants.FRAG_PROFILE;
 	        showBackButton(false);
@@ -536,6 +563,7 @@ public class HomeActivity extends ActivityBase implements
     public void showEntertainment(){
     	backPress = false;
     	iLastTab = Constants.FRAG_ENTERTAINMENT;
+    	m_Search.setVisibility(View.VISIBLE);
     	showBackButton(false);
     	setTopBarTitle(getResources().getString(R.string.title_infinity_cellphone4));
     	pager.setCurrentItem(Constants.FRAG_ENTERTAINMENT);
@@ -582,6 +610,7 @@ public class HomeActivity extends ActivityBase implements
                     fg = new HomeFragment();
                     fg.setHomeActivity(HomeActivity.this);
                     HomeActivity.this.HomeAdListUpdatedListener = (HomeFragment) fg;
+                    HomeActivity.this.HomeAdStartNumUpdatedListener = (HomeFragment) fg;
                     
                     return fg;
 
@@ -608,6 +637,7 @@ public class HomeActivity extends ActivityBase implements
                 	fg = new EntertainmentFragment();
                 	fg.setHomeActivity(HomeActivity.this);
                 	HomeActivity.this.HomeEntertainmentListUpdatedListener = (EntertainmentFragment) fg;
+                	HomeActivity.this.HomeEnStartNumUpdatedListener = (EntertainmentFragment) fg;
                 	return fg;
 
                 default:
@@ -714,6 +744,13 @@ public class HomeActivity extends ActivityBase implements
                 }
             }, 2000); 
         } else {
+        	if(!CustomApplication.getInstance().getRememberMeChecked()){
+		    	CustomApplication.getInstance().setUsername("");
+		        CustomApplication.getInstance().setPaypal("");
+		        CustomApplication.getInstance().setEmail("");
+		        CustomApplication.getInstance().setLoginOutStatus(false);
+		    }
+        	
             finish();
             System.exit(0);
         }
@@ -792,6 +829,95 @@ public class HomeActivity extends ActivityBase implements
 	}
 	
 	
-    
+	private void searchViewInit(){
+		//m_Search.setVisibility(View.VISIBLE);
+    	//m_Search.setBackgroundColor(getResources().getColor(android.R.color.white));
+    	//m_Search.setBackgroundResource(R.drawable.textfield_searchview_holo_light);
+    	
+    	//int id = m_Search.getContext().getResources().getIdentifier("android:id/search_button", null, null);
+    	
+    	//ImageView icon = (ImageView) m_Search.findViewById(id);
+    	
+    	//icon.setImageResource(R.drawable.ic_search);
+    	//id = m_Search.getContext().getResources().getIdentifier("android:id/search_src_text", null, null);
+    	//TextView textView = (TextView) m_Search.findViewById(id);
+    	//textView.setTextColor(getResources().getColor(android.R.color.white));
+		
+		// 设置该SearchView默认是否自动缩小为图标
+		m_Search.setIconifiedByDefault(true);
+		// 为该SearchView组件设置事件监听器
+		m_Search.setOnQueryTextListener(this);
+		// 设置该SearchView显示搜索按钮
+		m_Search.setSubmitButtonEnabled(true);
+		// 设置该SearchView内默认显示的提示文本
+		//m_Search.setQueryHint("查找");
+		
+		m_Search.setOnSearchClickListener(new View.OnClickListener(){
+
+			@Override
+			public void onClick(View v) {
+				m_Search.setBackgroundColor(getResources().getColor(android.R.color.white));
+				
+			}
+			
+		});
+		
+		m_Search.setOnCloseListener(new OnCloseListener() {
+			 
+			@Override
+			public boolean onClose() {
+				
+				//m_Search.setIconified(true);
+				m_Search.onActionViewCollapsed();
+				m_Search.setBackgroundColor(Color.argb(0x00, 0xff, 0x00, 0x00));
+				return true;
+			}
+		});
+	}
+
+	@Override
+	public boolean onQueryTextSubmit(String query) {
+		
+		if(iLastTab == 0){
+			//ad 
+			UserInfo user_info = setUserInfo(0);
+			if (HomeAdStartNumUpdatedListener != null){
+				HomeAdStartNumUpdatedListener.onHomeStartNumUpdated(0);
+			}
+	        WebServiceHelper.getInstance().onGoingAdList(user_info, Constants.TAG_ADVERT , m_Search.getQuery().toString());
+	        //Toast.makeText(this, "submit advertisement["+m_Search.getQuery()+"]", Toast.LENGTH_SHORT).show();
+		}else if(iLastTab ==1){
+			//entertaiment
+			UserInfo user_info = setUserInfo(0);
+			if (HomeEnStartNumUpdatedListener != null){
+				HomeEnStartNumUpdatedListener.onHomeStartNumUpdated(0);
+			}
+		    WebServiceHelper.getInstance().onGoingEntertainmentList(user_info, iEntertaimentLastTab,m_Search.getQuery().toString());
+		    //Toast.makeText(this, "submit entertaiment"+iEntertaimentLastTab, Toast.LENGTH_SHORT).show();
+		}
+		
+		m_Search.setBackgroundColor(Color.argb(0x00, 0xff, 0x00, 0x00));
+		m_Search.onActionViewCollapsed();
+		
+		return false;
+	}
+
+	@Override
+	public boolean onQueryTextChange(String newText) {
+		//Toast.makeText(this, "changed", Toast.LENGTH_SHORT).show();
+		return false;
+	}
+	
+	public UserInfo setUserInfo(int startNumber){
+	    UserInfo userInfo = new UserInfo();
+	    userInfo.city = CustomApplication.getInstance().getUserCity();
+	    userInfo.province = CustomApplication.getInstance().getUserProvince();
+	    userInfo.country = CustomApplication.getInstance().getUserCountry();
+	    userInfo.lon = CustomApplication.getInstance().getUserLongitude();
+	    userInfo.lat = CustomApplication.getInstance().getUserLatitude();
+	    userInfo.startNumber = startNumber;
+	    userInfo.counts = Constants.ADS_PAGE_SIZE;
+	    return userInfo;
+	}
     
 }

@@ -30,6 +30,8 @@ import com.auroratechdevelopment.ausoshare.R;
 import com.auroratechdevelopment.ausoshare.ui.home.HomeActivity;
 import com.auroratechdevelopment.ausoshare.ui.home.HomeFragmentBase;
 import com.auroratechdevelopment.ausoshare.ui.home.PrepareShareAdActivity;
+import com.auroratechdevelopment.ausoshare.ui.home.HomeActivity.HomeAdListUpdated;
+import com.auroratechdevelopment.ausoshare.ui.home.HomeActivity.HomeStartNumUpdated;
 import com.auroratechdevelopment.ausoshare.ui.login.LoginActivity;
 import com.auroratechdevelopment.ausoshare.util.Constants;
 import com.auroratechdevelopment.common.ViewUtils;
@@ -59,7 +61,7 @@ import org.w3c.dom.Text;
 public class EntertainmentFragment extends HomeFragmentBase  implements  
 	EntertainmentItemsAdapter.GetItemSelected,
 	SwipeRefreshLayout.OnRefreshListener,
-	HomeActivity.HomeEntertainmentListUpdated
+	HomeActivity.HomeEntertainmentListUpdated, HomeStartNumUpdated
 	{
 		private ListView list1,list2,list3,list4;
 		private TextView m_tVEmpty;
@@ -71,7 +73,7 @@ public class EntertainmentFragment extends HomeFragmentBase  implements
 		
 		private ViewPagerEx pager;
 		private TabHost m_tabs;
-
+		
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 	    super.onCreate(savedInstanceState);
@@ -92,6 +94,7 @@ public class EntertainmentFragment extends HomeFragmentBase  implements
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) { 	
 		startNumber = 0;
 	    View rootView = inflater.inflate(R.layout.fragment_home_entertainment_v2, container, false);
+	    
 	    m_tVEmpty = (TextView)rootView.findViewById(R.id.empty_list);
 	    
 	    m_tabs = (TabHost) rootView.findViewById(android.R.id.tabhost);
@@ -162,8 +165,7 @@ public class EntertainmentFragment extends HomeFragmentBase  implements
             		startNumber = 0;
             		adapter.clearList();
             		m_tVEmpty.setVisibility(View.VISIBLE);
-            		m_tVEmpty.setVisibility(View.VISIBLE);
-            		getNewEntertainments(startNumber,Constants.TAG_LIFE);
+            		getNewEntertainments(startNumber,Constants.TAG_FUN);
             		
             		updateTab(m_tabs);
             	}
@@ -185,7 +187,7 @@ public class EntertainmentFragment extends HomeFragmentBase  implements
 
 //                    startNumber = startNumber + Constants.ADS_PAGE_SIZE;
 	    				if(startNumber%Constants.ADS_PAGE_SIZE == 0){
-	    					getNewEntertainments(startNumber,Constants.TAG_LIFE);
+	    					getNewEntertainments(startNumber,Constants.TAG_FUN);
 	    				}
 	    			}
 	    		}
@@ -270,7 +272,7 @@ public class EntertainmentFragment extends HomeFragmentBase  implements
     
     switch(nLastTab){
     case Constants.TAG_FUN_ID:
-    	getNewEntertainments(startNumber,Constants.TAG_LIFE);	//first page
+    	getNewEntertainments(startNumber,Constants.TAG_FUN);	//first page
     	break;
     case Constants.TAG_NEWS_ID:
     	getNewEntertainments(startNumber,Constants.TAG_NEWS);	
@@ -316,7 +318,7 @@ public class EntertainmentFragment extends HomeFragmentBase  implements
                 public void run() {
                 	swipeRefreshlayout1.setRefreshing(false);
                 	startNumber = 0;
-                    getNewEntertainments(startNumber,Constants.TAG_LIFE);
+                    getNewEntertainments(startNumber,Constants.TAG_FUN);
                     adapter.clearList();
                 }
             }, 2000);
@@ -401,7 +403,7 @@ public class EntertainmentFragment extends HomeFragmentBase  implements
 		
 		Log.e("Edward", "entertainment: startNumber = " + startNumber);
 	    UserInfo user_info = setUserInfo(startNumber);
-	    WebServiceHelper.getInstance().onGoingEntertainmentList(user_info, sTag);
+	    WebServiceHelper.getInstance().onGoingEntertainmentList(user_info, sTag,"");
 	}
 	
 	public void checkLoginStatus(){
@@ -414,7 +416,7 @@ public class EntertainmentFragment extends HomeFragmentBase  implements
 	
 	@Override
 	public void onHomeEntertainmentListUpdated(final int tag, GetOnGoingEntertainmentListResponse response) {
-		// TODO Auto-generated method stub
+		
 		final GetOnGoingEntertainmentListResponse adList = (GetOnGoingEntertainmentListResponse) response;
         if(homeActivity != null){
             homeActivity.runOnUiThread(new Runnable() {
@@ -431,9 +433,15 @@ public class EntertainmentFragment extends HomeFragmentBase  implements
 
                 	startNumber = startNumber + adList.data.size();
                 	Log.e("Edward", "at ResponseSuccessCallBack, startNumber is: " + startNumber);
-                	m_tVEmpty.setVisibility(View.GONE);
-                    adapter.setList(adList.data);
-                    adapter.notifyDataSetChanged();
+                	if(adList.data.size()>0){
+                		m_tVEmpty.setVisibility(View.GONE);
+                		adapter.setList(adList.data);
+                		adapter.notifyDataSetChanged();
+                	}
+                	else{
+                		adapter.clearList();
+                		m_tVEmpty.setVisibility(View.VISIBLE);
+                	}
                 }
             });
         }
@@ -451,6 +459,23 @@ public class EntertainmentFragment extends HomeFragmentBase  implements
             tv.setTypeface(Typeface.SERIF, 0); // 设置字体和风格  
             if (tabHost.getCurrentTab() == i) {//选中  
                 //view.setBackgroundDrawable(getResources().getDrawable(R.drawable.category_current));//选中后的背景  
+            	if (homeActivity != null) {
+            		switch (i){
+            		case Constants.TAG_FUN_ID:
+            			homeActivity.iEntertaimentLastTab = Constants.TAG_FUN;	//first page
+            	    	break;
+            	    case Constants.TAG_NEWS_ID:
+            	    	homeActivity.iEntertaimentLastTab = Constants.TAG_NEWS;	
+            	    	break;
+            	    case Constants.TAG_TIPS_ID:
+            	    	homeActivity.iEntertaimentLastTab = Constants.TAG_TIPS;	
+            	    	break;
+            	    case Constants.TAG_VIDEO_ID:
+            	    	homeActivity.iEntertaimentLastTab = Constants.TAG_VIDEO;	
+            	    	break;
+            		}
+            		
+                }
             	tv.setTextColor(this.getResources().getColor(R.color.blue)); 
             } else {//不选中  
                 //view.setBackgroundDrawable(getResources().getDrawable(R.drawable.category_bg));//非选择的背景  
@@ -468,6 +493,12 @@ public class EntertainmentFragment extends HomeFragmentBase  implements
 	@Override
 	public void onResume() {
 	    super.onResume();
+	}
+
+	@Override
+	public void onHomeStartNumUpdated(int pos) {
+		startNumber = 0;
+		adapter.clearList();
 	}
 
 }

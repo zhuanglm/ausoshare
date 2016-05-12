@@ -293,11 +293,11 @@ private boolean validateWebServiceConnection(ResponseBase response) {
         });
     }
 
-    public void onGoingAdList(UserInfo userInfo, String tag){
+    public void onGoingAdList(UserInfo userInfo, String tag , String key){
         GetOnGoingAdListRequest req = new GetOnGoingAdListRequest(CustomApplication.getInstance().getEmail(),
                 CustomApplication.getInstance().getUserToken(),
                 CustomApplication.getInstance().getAndroidID(),
-                userInfo, tag);
+                userInfo, tag , key);
 
         WebService.sendRequestAsync(req, new WebService.WebServiceCallback<GetOnGoingAdListResponse>(){
             @Override
@@ -307,11 +307,11 @@ private boolean validateWebServiceConnection(ResponseBase response) {
         });
     }
     
-    public void onGoingEntertainmentList(UserInfo userInfo, String tag){
+    public void onGoingEntertainmentList(UserInfo userInfo, String tag, String key){
         GetOnGoingEntertainmentListRequest req = new GetOnGoingEntertainmentListRequest(CustomApplication.getInstance().getEmail(),
                 CustomApplication.getInstance().getUserToken(),
                 CustomApplication.getInstance().getAndroidID(),
-                userInfo, tag);
+                userInfo, tag , key);
 
         WebService.sendRequestAsync(req, new WebService.WebServiceCallback<GetOnGoingEntertainmentListResponse>(){
             @Override

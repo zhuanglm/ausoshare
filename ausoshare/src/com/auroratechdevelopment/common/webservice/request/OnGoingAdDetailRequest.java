@@ -4,6 +4,8 @@ import com.auroratechdevelopment.common.webservice.WebServiceConstants;
 import com.auroratechdevelopment.common.webservice.response.OnGoingAdDetailResponse;
 import com.auroratechdevelopment.common.webservice.util.WebUtils;
 
+//Updated by Raymond Zhuang May 10 2016
+
 public class OnGoingAdDetailRequest extends RequestBase<OnGoingAdDetailResponse> {
 
     public String email;

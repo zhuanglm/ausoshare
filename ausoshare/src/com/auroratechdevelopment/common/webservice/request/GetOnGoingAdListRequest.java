@@ -14,13 +14,15 @@ public class GetOnGoingAdListRequest extends RequestBase<GetOnGoingAdListRespons
     public String deviceID;
     public String tag;  //advert means advertisement; life means entertainment
     public UserInfo data;
+    public String keyword;
 
-    public GetOnGoingAdListRequest( String email, String Token, String deviceId, UserInfo data, String tag) {
+    public GetOnGoingAdListRequest( String email, String Token, String deviceId, UserInfo data, String tag, String key) {
         this.email = email;
         this.deviceID = deviceId;
         this.data = data;
         this.token = Token;
         this.tag = tag;
+        keyword = key;
     }
 
     @Override

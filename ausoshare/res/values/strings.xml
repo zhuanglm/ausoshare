@@ -2,6 +2,8 @@
 <resources>
 
     <string name="app_name">极速分享</string>
+    <string name="app_version">2.0.0</string>
+    <string name="search_title">输入搜索关键字</string>
     <string name="hello_world">Hello world!</string>
     <string name="is_timeline">是否分享到朋友圈</string>
     <string name="errcode_success">发送成功</string>
@@ -62,7 +64,7 @@
     <string name="my_log_out">注销</string>
     <string name="my_update_profile">更新个人资料</string>
     <string name="my_update_password">修改登录密码</string>
-    <string name="my_forwarded_ad">转发广告记录</string>
+    <string name="my_forwarded_ad">有效转发广告记录</string>
     <string name="my_current_income">我的当前收入</string>
     <string name="my_incoming_record">我的收入详情</string>
     <string name="my_withdraw_record">我的提现记录</string>
@@ -173,7 +175,7 @@
      <!-- ad list -->
      <string name="ui_click">点击打开广告</string>
      <string name="ui_share">在打开的广告页点击分享到微信</string>
-     <string name="ui_view">到朋友圈查看</string>
+     <string name="ui_view">查看收入</string>
     <string name="ui_bonus">奖金：$</string>
     <string name="ui_income">每次点击：$</string>
     <string name="ui_location">投放地点：</string>
