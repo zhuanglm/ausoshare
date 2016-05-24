@@ -3,6 +3,7 @@ package com.auroratechdevelopment.common.webservice;
 import com.auroratechdevelopment.ausoshare.CustomApplication;
 import com.auroratechdevelopment.ausoshare.R;
 import com.auroratechdevelopment.common.webservice.models.UserInfo;
+import com.auroratechdevelopment.common.webservice.request.AcquireUpdateRequest;
 import com.auroratechdevelopment.common.webservice.request.CurrentIncomeRequest;
 import com.auroratechdevelopment.common.webservice.request.ForgotPasswordRequest;
 import com.auroratechdevelopment.common.webservice.request.ForwardedAdHistoryRequest;
@@ -19,6 +20,7 @@ import com.auroratechdevelopment.common.webservice.request.UpdateUserProfileRequ
 import com.auroratechdevelopment.common.webservice.request.UploadAvatarRequest;
 import com.auroratechdevelopment.common.webservice.request.UserProfileRequest;
 import com.auroratechdevelopment.common.webservice.request.WithdrawRequestRequest;
+import com.auroratechdevelopment.common.webservice.response.AcquireUpdateResponse;
 import com.auroratechdevelopment.common.webservice.response.CurrentIncomeResponse;
 import com.auroratechdevelopment.common.webservice.response.ForgotPasswordResponse;
 import com.auroratechdevelopment.common.webservice.response.ForwardedAdHistoryResponse;
@@ -346,6 +348,18 @@ private boolean validateWebServiceConnection(ResponseBase response) {
         WebService.sendRequestAsync(req, new WebService.WebServiceCallback<UserProfileResponse>() {
             @Override
             public void ResponseReady(int id, int tag, UserProfileResponse response) {
+                validateResponse(tag, response);
+            }
+        });
+    }
+    
+    public void acquireUpdate(String adID){
+    	AcquireUpdateRequest req = new AcquireUpdateRequest(CustomApplication.getInstance().getUserToken(),
+    			CustomApplication.getInstance().getAndroidID(), CustomApplication.getInstance().getEmail() ,adID);
+
+        WebService.sendRequestAsync(req, new WebService.WebServiceCallback<AcquireUpdateResponse>(){
+            @Override
+            public void ResponseReady(int id, int tag, AcquireUpdateResponse response){
                 validateResponse(tag, response);
             }
         });

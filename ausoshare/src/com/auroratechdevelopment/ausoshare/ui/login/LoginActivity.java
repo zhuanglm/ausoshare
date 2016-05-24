@@ -405,8 +405,8 @@ public class LoginActivity extends ActivityBase implements View.OnClickListener{
                     String available_fund = loginResponse.availableFund;
                     
                     if(loginResponse.avatar.equals("")){
-                    	if(FileUtils.isFileExist(user_name,"JPG"))
-                    		FileUtils.delFile(user_name,"JPG");
+                    	if(FileUtils.isFileExist(emailInputed,"JPG"))
+                    		FileUtils.delFile(emailInputed,"JPG");
                     }else{
                     	new Thread(new Runnable(){
 
@@ -414,7 +414,7 @@ public class LoginActivity extends ActivityBase implements View.OnClickListener{
 							public void run() {
 								Bitmap avatar = Bimp.getHttpBitmap(loginResponse.avatar);
 								if(avatar != null)
-		                    		FileUtils.saveBitmap(avatar,user_name);
+		                    		FileUtils.saveBitmap(avatar,emailInputed);
 							}
                     		
                     	}).start();

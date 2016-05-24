@@ -196,6 +196,7 @@ public class SplashActivity extends Activity implements OnGestureListener,OnDisp
     
 
     protected void showHomeOrLogin() {
+    	stopService(new Intent(this,NotificationService.class));
     	
     	ViewUtils.startPageWithClearStack(null, this, HomeActivity.class);
     	

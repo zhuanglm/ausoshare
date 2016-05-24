@@ -58,6 +58,7 @@ import com.auroratechdevelopment.ausoshare.ui.login.LoginActivity;
 import com.auroratechdevelopment.ausoshare.ui.profile.CurrentIncomeActivity;
 import com.auroratechdevelopment.ausoshare.ui.profile.ProfileFragment;
 import com.auroratechdevelopment.ausoshare.ui.profile.Top10IncomeAdapter;
+import com.auroratechdevelopment.ausoshare.ui.startup.NotificationService;
 import com.auroratechdevelopment.ausoshare.ui.yellowpage.YellowPageFragment;
 import com.auroratechdevelopment.ausoshare.util.AppLocationService;
 import com.auroratechdevelopment.ausoshare.util.Constants;
@@ -138,7 +139,7 @@ public class HomeActivity extends ActivityBase implements
     private HomeIncomeUpdated HomeIncomeUpdatedListener;
     private HomeAvatarUpdated HomeAvatarUpdatedListener;
     
-    
+   
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -671,6 +672,15 @@ public class HomeActivity extends ActivityBase implements
     protected void onResume() {
         super.onResume();
         CustomApplication.getInstance().setHomeActivity(this);
+        
+        stopService(new Intent(this,NotificationService.class));
+    }
+    
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        
+        startService(new Intent(this,NotificationService.class));
     }
 
     @Override
@@ -769,6 +779,7 @@ public class HomeActivity extends ActivityBase implements
 		        CustomApplication.getInstance().setLoginOutStatus(false);
 		    }
         	
+        	startService(new Intent(this,NotificationService.class));
             finish();
             System.exit(0);
         }
@@ -806,7 +817,7 @@ public class HomeActivity extends ActivityBase implements
         		}*/
             	try{
 	            	Uri uritempFile = Uri.parse("file://" + "/" + Environment.getExternalStorageDirectory().getPath() + "/" 
-	            			+ CustomApplication.getInstance().getUsername()+".JPG");
+	            			+ CustomApplication.getInstance().getEmail()+".JPG");
 	            	Bitmap photo = BitmapFactory.decodeStream(getContentResolver().openInputStream(uritempFile)); 
 	            	if (HomeAvatarUpdatedListener != null){
         				HomeAvatarUpdatedListener.onHomeAvatarUpdated(photo);

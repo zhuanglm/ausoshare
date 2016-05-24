@@ -26,6 +26,7 @@ public class WebServiceConstants {
     public static String updateUserPassword = "user/password/update";
     public static String withdrawRequest = "company/withdraw_request";
     public static String updateSharedTime = "advert/addShare";
+    public static String ADupdate = "advert/updateItems";
 
     public static String statsUserIncomeToplist = "stats/user_income_toplist";
     public static String uploadAvatar = "stats/upload_avatar";

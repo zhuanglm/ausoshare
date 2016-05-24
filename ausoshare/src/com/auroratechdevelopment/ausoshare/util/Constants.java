@@ -94,6 +94,7 @@ public class Constants {
 
     public static final String CONTACT_URL="com.app.contact.url";
     public static final String ADID_URL="com.app.home.ad.url";
+    public static final String LAST_AD="com.app.home.ad.lastID";
 
     public static final String AVAILABLE_FUND ="com.app.available.fund";
 
@@ -150,6 +151,8 @@ public class Constants {
     
     public static final String SHARE_TO_FRIENDS ="friends";
     public static final String SHARE_TO_MOMENTS="moments";
+    
+    public static final int NOTI_INT = 30;	//notification interval time 's'
     
     
 }

@@ -225,6 +225,7 @@ public class HomeFragment extends HomeFragmentBase  implements
                 	startNumber = startNumber + adList.data.size();
                 	
                 	Log.e("Edward", "at ResponseSuccessCallBack, startNumber is: " + startNumber);
+                	CustomApplication.getInstance().setLastAD(adList.data.get(adList.data.size()-1).adID);
                     adapter.setList(adList.data);
                     adapter.notifyDataSetChanged();
                 }

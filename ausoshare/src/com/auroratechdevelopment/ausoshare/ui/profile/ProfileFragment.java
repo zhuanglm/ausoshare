@@ -95,7 +95,7 @@ public class ProfileFragment extends HomeFragmentBase implements
        super.onSaveInstanceState(outState);
        
        if(m_bm_Avatar != null){
-    	   	FileUtils.saveBitmap(m_bm_Avatar,CustomApplication.getInstance().getUsername());
+    	   	FileUtils.saveBitmap(m_bm_Avatar,CustomApplication.getInstance().getEmail());
     	   	if(m_bm_Avatar.isRecycled() == false){
 	    		m_bm_Avatar.recycle(); 
 	 			m_bm_Avatar = null; 
@@ -110,7 +110,7 @@ public class ProfileFragment extends HomeFragmentBase implements
     	super.onDestroyView();
     	
     	if(m_bm_Avatar != null){
-    		FileUtils.saveBitmap(m_bm_Avatar,CustomApplication.getInstance().getUsername());
+    		FileUtils.saveBitmap(m_bm_Avatar,CustomApplication.getInstance().getEmail());
     		if(m_bm_Avatar.isRecycled() == false){
 	    		m_bm_Avatar.recycle(); 
 	 			m_bm_Avatar = null; 
@@ -137,8 +137,8 @@ public class ProfileFragment extends HomeFragmentBase implements
     	
     	if(m_bm_Avatar != null){
      	   m_img_avatar.setImageBitmap(m_bm_Avatar);
-        }else if(FileUtils.isFileExist(CustomApplication.getInstance().getUsername(),"JPG")){
- 	       m_bm_Avatar = FileUtils.loadBitmap(CustomApplication.getInstance().getUsername(),"JPG");
+        }else if(FileUtils.isFileExist(CustomApplication.getInstance().getEmail(),"JPG")){
+ 	       m_bm_Avatar = FileUtils.loadBitmap(CustomApplication.getInstance().getEmail(),"JPG");
  	       m_img_avatar.setImageBitmap(m_bm_Avatar);
         }
     }

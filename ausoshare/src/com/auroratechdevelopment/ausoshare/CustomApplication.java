@@ -263,6 +263,14 @@ public class CustomApplication extends Application {
     public boolean getUserLogin(){
         return SharedPreferenceManager.getBoolean(Constants.USER_LOGIN);
     }
+    
+    public void setLastAD(String adID){
+        SharedPreferenceManager.setString(Constants.LAST_AD,adID);
+    }
+    
+    public String getLastAD(){
+        return SharedPreferenceManager.getString(Constants.LAST_AD);
+    }
 
 //    private DatabaseReader databaseReader;
 //    private DatabaseWriter databaseWriter;

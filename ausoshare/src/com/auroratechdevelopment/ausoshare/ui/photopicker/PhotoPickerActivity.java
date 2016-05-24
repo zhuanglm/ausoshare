@@ -132,7 +132,7 @@ public class PhotoPickerActivity extends Activity {
 		
 		intent.putExtra("return-data", false);
 		Uri uritempFile = Uri.parse("file://" + "/" + Environment.getExternalStorageDirectory().getPath() + "/" 
-				+ CustomApplication.getInstance().getUsername()+".JPG");  
+				+ CustomApplication.getInstance().getEmail()+".JPG");  
 	    intent.putExtra(MediaStore.EXTRA_OUTPUT, uritempFile);  
 	    intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString()); 
 
