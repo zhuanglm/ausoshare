@@ -211,6 +211,7 @@ public class PrepareShareAdActivity extends ActivityBase {
     private void openURLWeb(String url){
         WebSettings ws = wv.getSettings();
         ws.setJavaScriptEnabled(true);
+        
         showWaiting();
         
         wv.loadUrl(url);

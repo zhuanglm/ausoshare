@@ -65,11 +65,15 @@ public class WebServiceHelper {
 	}
 	
 	private WebServiceListener listener;
+	private WebServiceListener Servicelistener;
 	
 	public void setListener(WebServiceListener listener) {
 		this.listener = listener;
 	}
 	
+	public void setServiceListener(WebServiceListener listener) {
+		this.Servicelistener = listener;
+	}
 	
 	private void validateResponse(int tag, ResponseBase response) {
 		
@@ -93,6 +97,32 @@ public class WebServiceHelper {
 
                 //webservice returned with error
                 listener.ResponseFailedCallBack(tag, response);
+            }
+        }
+	}
+	
+	private void validateServiceResponse(int tag, ResponseBase response) {
+		
+		if(Servicelistener == null) {
+			Log.e("Raymond", "Service listener is null??");
+			return;
+		}
+		if(response != null){
+            if (response.reasonCode==0) { // reasonCode == 0 means success from web server
+                
+            	Log.e("Raymond", "response.reasonCode == 0");
+            	Servicelistener.ResponseSuccessCallBack(tag, response);
+            }
+            else {
+            	Log.e("Raymond", "response.reasonCode != 0");
+                //web service communication error
+                if(!validateWebServiceConnection(response)){
+                	Servicelistener.ResponseConnectionError(tag, response);
+                    return;
+                }
+
+                //webservice returned with error
+                Servicelistener.ResponseFailedCallBack(tag, response);
             }
         }
 	}
@@ -360,7 +390,7 @@ private boolean validateWebServiceConnection(ResponseBase response) {
         WebService.sendRequestAsync(req, new WebService.WebServiceCallback<AcquireUpdateResponse>(){
             @Override
             public void ResponseReady(int id, int tag, AcquireUpdateResponse response){
-                validateResponse(tag, response);
+            	validateServiceResponse(tag, response);
             }
         });
     }

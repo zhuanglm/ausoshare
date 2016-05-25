@@ -72,7 +72,13 @@ public class PhotoPickerActivity extends Activity {
 		
 		Intent pickIntent = new Intent(Intent.ACTION_PICK, null);
 		pickIntent.setType("image/*");
-		pickIntent.setAction(Intent.ACTION_GET_CONTENT);
+		pickIntent.setData(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+		//pickIntent.setAction(Intent.ACTION_GET_CONTENT);
+		/*if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+			pickIntent.setAction(Intent.ACTION_OPEN_DOCUMENT);
+        } else {
+        	pickIntent.setAction(Intent.ACTION_GET_CONTENT);
+        }*/
 		startActivityForResult(pickIntent, REQUEST_PICK_PICTURE);
 
 	}

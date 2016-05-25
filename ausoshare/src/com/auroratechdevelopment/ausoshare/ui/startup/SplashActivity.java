@@ -56,6 +56,7 @@ public class SplashActivity extends Activity implements OnGestureListener,OnDisp
     private int m_nPages;
     private int m_currentImg = 0;
     private Button m_BtnSkip,m_BtnStart;
+    private boolean m_isSkipped;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -63,6 +64,7 @@ public class SplashActivity extends Activity implements OnGestureListener,OnDisp
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         //splashAdImage = (ImageView)findViewById(R.id.splash_ad_image);
+        m_isSkipped = false;
         m_nPages = getResources().getInteger(R.integer.max_splash_page);
         
         detector = new GestureDetector(this);
@@ -79,6 +81,7 @@ public class SplashActivity extends Activity implements OnGestureListener,OnDisp
         { 
 			@Override
 			public void onClick(View v) {
+				m_isSkipped = true;
 				finish();
                 showHomeOrLogin();
 				
@@ -89,6 +92,7 @@ public class SplashActivity extends Activity implements OnGestureListener,OnDisp
         { 
 			@Override
 			public void onClick(View v) {
+				m_isSkipped = true;
 				finish();
                 showHomeOrLogin();
 				
@@ -135,7 +139,8 @@ public class SplashActivity extends Activity implements OnGestureListener,OnDisp
                 @Override
                 public void run() {
                     finish();
-                    showHomeOrLogin();
+                    if(!m_isSkipped)
+                    	showHomeOrLogin();
                 }
             }, SPLASH_SECOND * 1000);
         }

@@ -95,7 +95,7 @@ public class ProfileFragment extends HomeFragmentBase implements
        super.onSaveInstanceState(outState);
        
        if(m_bm_Avatar != null){
-    	   	FileUtils.saveBitmap(m_bm_Avatar,CustomApplication.getInstance().getEmail());
+    	   	
     	   	if(m_bm_Avatar.isRecycled() == false){
 	    		m_bm_Avatar.recycle(); 
 	 			m_bm_Avatar = null; 
@@ -110,7 +110,7 @@ public class ProfileFragment extends HomeFragmentBase implements
     	super.onDestroyView();
     	
     	if(m_bm_Avatar != null){
-    		FileUtils.saveBitmap(m_bm_Avatar,CustomApplication.getInstance().getEmail());
+    		
     		if(m_bm_Avatar.isRecycled() == false){
 	    		m_bm_Avatar.recycle(); 
 	 			m_bm_Avatar = null; 
