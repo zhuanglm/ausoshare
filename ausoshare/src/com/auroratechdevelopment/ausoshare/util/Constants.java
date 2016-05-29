@@ -15,6 +15,8 @@ public class Constants {
     public static final String WX_APP_SECRET = "wx6bb3add97b7da9f9";
     public static BaseResp	WXresp;
     
+    public static final String G_PROJECT_ID = "800422132811";
+    
     public static class ShowMsgActivity {
 		public static final String STitle = "showmsg_title";
 		public static final String SMessage = "showmsg_message";
@@ -53,6 +55,7 @@ public class Constants {
     public static final String PREF_USER_SCREENWIDTH = "com.app.screenwidth";
 
     public static final String PREF_REMEMBERME = "com.app.rememberme";
+    public static final String PREF_NOTIFIED = "com.app.notification";
     public static final String PREF_REMEMBEPASSWORD = "com.app.rememberpassword";
 
     public static final String BUNDLE_ORDER_DETAIL = "com.app.orderDetail";

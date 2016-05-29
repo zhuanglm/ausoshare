@@ -153,6 +153,7 @@ public class SplashActivity extends Activity implements OnGestureListener,OnDisp
         	splashAdImage2.setImageDrawable(getResources().getDrawable(R.drawable.firsttime_launch_app_2));
         	//img_vf.setAutoStart(true);
         	
+        	CustomApplication.getInstance().setNotificationChecked(false);
         	CustomApplication.getInstance().setNotFirstTimeUse(true);
         	//showFirstTimeUseGuide();
         }

@@ -121,6 +121,13 @@ public class CustomApplication extends Application {
     public boolean getRememberMeChecked() {
         return  SharedPreferenceManager.getBoolean(Constants.PREF_REMEMBERME);
     }
+    
+    public void setNotificationChecked(boolean isNotified) {
+        SharedPreferenceManager.setBoolean(Constants.PREF_NOTIFIED, isNotified);
+    }
+    public boolean getNotificationChecked() {
+        return  SharedPreferenceManager.getBoolean(Constants.PREF_NOTIFIED);
+    }
 
     public void setRememberPasswordChecked(boolean rememberPassword) {
         SharedPreferenceManager.setBoolean(Constants.PREF_REMEMBEPASSWORD, rememberPassword);

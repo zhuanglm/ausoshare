@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">极速分享</string>
+    <string name="app_version">2.0.0</string>
+    <string name="search_title">输入搜索关键字</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="is_timeline">是否分享到朋友圈</string>
+    <string name="errcode_success">发送成功</string>
+	<string name="errcode_cancel">发送取消</string>
+	<string name="errcode_deny">发送被拒绝</string>
+	<string name="errcode_unknown">返回未知错误: %1$d</string>
+	<string name="double_click_exit_text">再按一次退出程序</string>
+
+	<!-- tab titles -->
+	<string name="tab_title_home">Home</string>
+	<string name="tab_title_yellowpage">YellowPage</string>
+	<string name="tab_title_contact">Contact</string>
+	<string name="tab_title_profile">Profile</string>
+	<string name="tab_title_entertainment">Entertainment</string>
+	<string name="tab_title_promotion">Promotion</string>
+	
+    <string name="action_settings">Settings</string>
+
+    <string name="button_back">back</string>
+
+    <string name="forward_guide_text">转发步骤：\n1.点击打开广告；\n2.在打开的广告页，点击分享到微信;\n3.到微信朋友圈查看。</string>
+    <string name="ad_simple_desc_text">Tridel年度盛宴--2015楼盘销售展会全新SCALA CONDO VVIP发布,就在Oct.31，机不可失！</string>
+
+    <string name="title_infinity_cellphone">，您赚了$</string>
+    <string name="title_ausomedia_yellow_page_text">黄页</string>
+    <string name="title_infinity_cellphone3">客服</string>
+    <string name="title_infinity_cellphone4">我的</string>
+    <string name="empty"/>
+    <string name="button_ok">确认</string>
+    <string name="button_cancel">取消</string>
+
+    <string name="title_validation_failed">验证错误</string>
+    <string name="title_update_profile">修改个人资料</string>
+
+    <string name="error_title">错误</string>
+
+    <string name="empty_list_ad">当前无广告，请稍后再试</string>
+    <string name="empty_list_entertainment">正在下载或暂无数据</string>
+    <string name="empty_list_no_info">暂无信息，请稍后刷新</string>
+    <string name="empty_forwarded_ad">亲，您当前无转发广告，加油啊！</string>
+    <string name="register_email_prompt">为了您以后提取现金，请使用真实邮箱注册！</string>
+    <string name="alert_share_ad_login_prompt_text">请用email注册或登录</string>  
+    <string name="alert_mine_login_prompt_text">查看个人相关资料请，请先注册或登录。</string>
+
+    <string name="ongoing_total_ad_funds">总奖金：</string>
+    <string name="ongoing_ad_completed_percentage">已分配：</string>
+    <string name="ongoing_ad_completed_percentage_suffix">%</string>
+    <string name="ongoing_ad_completed_shared_suffix"> 人已转发</string>
+
+    <string name="profile_current_income_text">你当前可提现金额为：CAD </string>
+    <string name="profile_top10_info_text">总收入排行榜</string>
+    <string name="profile_reading_times">阅读：</string>
+    <string name="profile_earned_funds">收入：</string>
+    <string name="profile_empty_ad_text">你还没有转发的广告，加油啊。</string>
+    
+    <!-- my profile -->
+    <string name="my_log_in">登入</string>
+    <string name="my_log_out">注销</string>
+    <string name="my_update_profile">更新个人资料</string>
+    <string name="my_update_password">修改登录密码</string>
+    <string name="my_forwarded_ad">有效转发广告记录</string>
+    <string name="my_current_income">我的当前收入</string>
+    <string name="my_incoming_record">我的收入详情</string>
+    <string name="my_withdraw_record">我的提现记录</string>
+    <string name="my_withdraw_request">提现请求</string>
+    <string name="my_update_profile_success">修改个人资料成功！</string>
+    <string name="my_update_password_success">修改登录密码成功！</string>
+    <string name="my_logout_info_title">注销提示</string>
+    <string name="my_logout_info_content">您确定要注销吗？</string>
+    
+    
+    <!-- 登录提示 -->
+    <string name="login_prompt_text">登录提示</string>
+
+    <!-- contact -->
+    <string name="contact_t_c_text">声明</string>
+    <string name="contact_incoming_rule_text">收入规则</string>
+    <string name="contact_withdraw_rule_text">提现规则</string>
+    <string name="contact_company_introduction_text">公司介绍</string>
+    <string name="contact_questions_answers_text">常见问答</string>
+    <string name="contact_customer_text">联系客服</string>
+
+    <!-- yellow page -->
+    <string name="yp_first_life_text">生活服务</string>
+    <string name="yp_first_education_text">教育培训</string>
+    <string name="yp_first_real_estate_text">房屋服务</string>
+    <string name="yp_first_vehicle_text">汽车服务</string>
+    
+    <!-- entertainment -->
+	<string name="entertainment_title_text">乐享</string>
+
+    <!-- network -->
+    <string name="network_unavailable_info">网络异常，请检查后重试！</string>
+
+
+    <string name="ws_error_no_connection">网络连接有错.\n请检查Wi-Fi或网络设置，然后重试.</string>
+    <string name="ws_error_timeout">连接服务器超时.</string>
+    <string name="ws_error_response_invalid">服务器端不正确的响应消息.</string>
+    <string name="ws_error_connection_error">连接服务器时错误发生.</string>
+    <string name="ws_error_server_response_error">服务器响应错误.</string>
+    <string name="ws_error_response_unknown">服务器端通信时, 发生未知错误.</string>
+    <string name="ws_error_client_not_authorized">没有授权错误</string>
+    
+    <string name="ws_error_unknown_request">未知请求错误</string>
+    <string name="ws_error_unknown_parameter">未知参数错误</string>
+    <string name="ws_error_unauthorized_user">未授权用户</string>
+    <string name="ws_error_nickname">用户别名错误</string>
+    <string name="ws_error_email">email错误</string>
+    <string name="ws_error_password">密码错误</string>
+    <string name="ws_error_username">用户名错误</string>
+    <string name="ws_error_capcha">验证码错误</string>
+    <string name="ws_error_send_email">发送email错误</string>
+    <string name="ws_error_exist_email">email已经注册过</string>
+
+    <!-- register -->
+    <string name="old_password">旧密码</string>
+    <string name="new_password">新密码(6-16个字符)</string>
+    <string name="nick_name_text">用户名</string>
+    <string name="email_tv">Email</string>
+    <string name="paypal_tv">Paypal账户关联Email</string>
+    <string name="register_email_tv">Email(请用真实邮箱，提现凭证)</string>
+    <string name="password_text">密码</string>
+    <string name="password_login_text">密码</string>
+    <string name="confirm_password_text">确认密码</string>
+    <string name="confirm_button_text">确认</string>
+    <string name="forgot_password_text">忘记密码?</string>
+    <string name="register_new_user_text">注册</string>
+    <string name="label_remember_me">记住我</string>
+    <string name="gender_text">性别</string>
+    <string name="birthday_text">生日</string>
+    <string name="promotion_code">推荐码</string>
+    <string name="male_text">男</string>
+    <string name="female_text">女</string>
+    <string name="share_button_text">分享到朋友圈</string>
+    <string name="share_to_friend_button_text">分享给好友</string>
+
+    <!-- -->
+    <string name="update_btn">更新</string>
+    <string name="update_pwd_btn">修改密码</string>
+
+    <string name="validate_empty_password">抱歉，密码不能为空</string>
+    <string name="validate_outofrange">长度至少%1$d - %2$d个字符</string>
+    <string name="validate_password_nomatch">密码不匹配</string>
+    <string name="validate_empty_email">Email不能为空.</string>
+    <string name="validate_email_failure">输入的Email格式不正确.</string>
+    <string name="validate_email_nomatch">Email不正确.</string>
+
+    <string name="validate_empty_username">用户名不能为空</string>
+    <string name="validate_username_failure">用户名错误</string>
+    <string name="validate_outofrange_username">用户名长度至少%1$d - %2$d个字符</string>
+    <string name="forgot_password_title">获取密码</string>
+    <string name="forgot_password_message">临时密码发送到你的邮件了，请检查.</string>
+
+    <!-- customer support -->
+    <string name="customer_support_email">mailto:cs@ausoshare.com</string>
+    <string name="email_title">邮件标题...</string>
+    <string name="email_content">邮件内容...</string>
+    
+    <!-- splash page -->
+    <string name="splash_name_text">Ausomedia</string>
+    <string name="skip">跳过</string>
+    <string name="start">开始体验</string>
+    <string name="splash_copyright">&#169;2015-2016 Ausomedia.com All rights reserved.</string>
+
+    <!-- login -->
+    <string name="login_test_email">cs@ausoshare.com</string>
+    <string name="login_test_password">1234</string>
+    
+     <!-- ad list -->
+     <string name="ui_click">点击打开广告</string>
+     <string name="ui_share">在打开的广告页点击分享到微信</string>
+     <string name="ui_view">查看收入</string>
+    <string name="ui_bonus">奖金：$</string>
+    <string name="ui_income">每次点击：$</string>
+    <string name="ui_location">投放地点：</string>
+    <string name="ui_shared">人已转发</string>
+    <string name="ui_progress">进度：50%</string>
+    
+    <!-- entertainment -->
+    <string name="page_fun">乐趣  </string>
+    <string name="page_news">乐闻  </string>
+    <string name="page_tips">乐知  </string>
+    <string name="page_video">乐视  </string>
+    
+     <!-- profile -->
+     <string name="ui_logout">【退出登录】</string>
+     <string name="ui_leaderboard">【排行榜】</string>
+     <string name="ui_detail">详细资料</string>
+     <string name="ui_current_income">当前收入    $</string> 
+     
+     <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+    
+    <!-- 图片浏览 -->
+    <string name="only_choose_num">超出可选图片张数</string>
+    <string name="finish">完成</string>
+    <string name="invalidSD">sdcard无效或没有插入！</string>
+    <string name="photo">选择相册</string>
+    <string name="album">相册</string>
+    <string name="preview">预览</string>
+    <string name="unfinished">完成</string> 
+    <string name="camera_cancel">取消</string>
+    <string name="no_photo">相册没有图片</string>
+    
+</resources>

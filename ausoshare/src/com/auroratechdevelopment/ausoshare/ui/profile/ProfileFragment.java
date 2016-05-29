@@ -18,6 +18,7 @@ import android.view.View.OnClickListener;
 import android.view.inputmethod.InputMethodManager;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -86,6 +87,7 @@ public class ProfileFragment extends HomeFragmentBase implements
     private ImageView m_img_avatar;
     private TextView m_tv_avatar;
     private Bitmap m_bm_Avatar;
+    private CompoundButton m_Notification_switch;
     
     private static final int REQUEST_PICK_PICTURE = 0xaf;
     
@@ -237,6 +239,15 @@ public class ProfileFragment extends HomeFragmentBase implements
         m_tV_withdraw_history_l.setOnClickListener(this);
         m_tV_withdraw_request.setOnClickListener(this);
         m_tV_withdraw_request_l.setOnClickListener(this);
+        
+        m_Notification_switch = ((CompoundButton)rootView.findViewById(R.id.noti_switch));
+        m_Notification_switch.setChecked(CustomApplication.getInstance().getNotificationChecked());
+        m_Notification_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                CustomApplication.getInstance().setNotificationChecked(isChecked);
+            }
+        });
         
         
         return rootView;

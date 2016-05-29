@@ -83,5 +83,18 @@
         <item name="android:scaleType">fitCenter</item>
         
     </style>
+    
+    <style name="switch_item">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:paddingLeft">30dp</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingRight">30dp</item>
+        <item name="android:paddingBottom">8dp</item>
+        <item name="android:minHeight">38dp</item>
+        <item name="android:drawablePadding">16dp</item>
+        <item name="android:textColor">@android:color/black</item>
+    </style>
 
 </resources>

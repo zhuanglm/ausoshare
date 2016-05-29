@@ -3,6 +3,7 @@ package com.auroratechdevelopment.ausoshare.ui.startup;
 import java.io.IOException;
 
 import com.auroratechdevelopment.ausoshare.CustomApplication;
+import com.auroratechdevelopment.ausoshare.util.Constants;
 import com.auroratechdevelopment.ausoshare.R;
 import com.auroratechdevelopment.ausoshare.ui.home.HomeActivity;
 import com.auroratechdevelopment.ausoshare.util.Constants;
@@ -11,6 +12,9 @@ import com.auroratechdevelopment.common.webservice.WebServiceHelper.WebServiceLi
 import com.auroratechdevelopment.common.webservice.response.AcquireUpdateResponse;
 import com.auroratechdevelopment.common.webservice.response.ResponseBase;
 import com.auroratechdevelopment.common.webservice.response.UpdateUserProfileResponse;
+import com.google.android.gms.gcm.GcmPubSub;
+import com.google.android.gms.gcm.GoogleCloudMessaging;
+import com.google.android.gms.iid.InstanceID;
 import com.tencent.mm.sdk.platformtools.Log;
 
 import android.app.Notification;
@@ -32,6 +36,8 @@ WebServiceListener {
 	private Handler handler;
 	private int notificationCounter;
 	NotificationManager notificationManager = null;// 注册通知管理器
+	
+	private static final String[] TOPICS = {"global"};
 
 	@Override
 	public IBinder onBind(Intent intent) {
@@ -47,10 +53,14 @@ WebServiceListener {
 			notificationManager.cancel(1);
 			notificationManager=null;
 		}
+				
 	}
 	
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
+		/*if(!CustomApplication.getInstance().getNotificationChecked())
+			stopSelf();*/
+		
 		WebServiceHelper.getInstance().setServiceListener(this);
 		
 		isRun = true;
@@ -66,7 +76,27 @@ WebServiceListener {
 				while (isRun) {
 					try {
 						Thread.sleep(Constants.NOTI_INT*1000);// Java中线程的休眠，必须在try-catch结构中
+						
+						//register to gcm
+						InstanceID instanceID = InstanceID.getInstance(getApplicationContext());
+						//String authorizedEntity = "ausoshare-1324";
+						String authorizedEntity = Constants.G_PROJECT_ID;
+						String token = instanceID.getToken(authorizedEntity,GoogleCloudMessaging.INSTANCE_ID_SCOPE, null);
+						
+						Log.i("Raymond GCM", "GCM Registration Token: " + token);
+						
+			            //sendRegistrationToServer(token);
+
+			            // Subscribe to topic channels
+			            subscribeTopics(token);
+			            isRun = false;
+			            
+						
 					} catch (InterruptedException e) {
+						e.printStackTrace();
+					} catch (IOException e) {
+						// gettoken error
+						Log.i("Raymond GCM", "Failed to complete token refresh", e);
 						e.printStackTrace();
 					}
 					if (!isRun) {
@@ -82,7 +112,9 @@ WebServiceListener {
 				@Override
 				public boolean handleMessage(Message msg) {
 					
-					WebServiceHelper.getInstance().acquireUpdate(CustomApplication.getInstance().getLastAD());
+					//WebServiceHelper.getInstance().acquireUpdate(CustomApplication.getInstance().getLastAD());
+					if(!isRun)
+						stopSelf();
 					
 					return false;
 				}
@@ -123,31 +155,7 @@ WebServiceListener {
 
 	@Override
 	public void ResponseFailedCallBack(int tag, ResponseBase response) {
-		Notification.Builder builder = new Notification.Builder(getApplicationContext());
 		
-		// 以下三行：在安卓设备任意环境中中，如果点击信息则打开MainActivity
-		Intent newintent = new Intent(getApplicationContext(),HomeActivity.class);
-		PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0,newintent, 0);
-		
-		builder.setContentIntent(pendingIntent);
-		builder.setSmallIcon(R.drawable.noti_icon_small);
-		
-		builder.setLargeIcon(BitmapFactory.decodeResource(getResources(),R.drawable.noti_icon));
-		
-		/*try{
-			builder.setLargeIcon(BitmapFactory.decodeStream(getAssets().open("app_icon.png")));
-		}catch( IOException e){
-			Log.e("Raymond notification", e.toString());
-		}*/
-		
-		builder.setWhen(System.currentTimeMillis());// 设置发送时间
-		builder.setTicker("显示通知");// 在用户没有拉开标题栏之前，在标题栏中显示的文字
-		builder.setContentTitle("ERROR:");// 设置通知的标题
-        builder.setContentText("内容 :"+ response.responseMessage);// 设置通知的内容
-        builder.setAutoCancel(true);//自己维护通知的消失
-		
-		Notification notification = builder.build();
-		notificationManager.notify(1,notification);// 要求通知管理器发送这条通知，其中第一个参数是通知在系统的id
 		
 	}
 
@@ -156,5 +164,12 @@ WebServiceListener {
 		
 		
 	}
+	
+	private void subscribeTopics(String token) throws IOException {
+        GcmPubSub pubSub = GcmPubSub.getInstance(this);
+        for (String topic : TOPICS) {
+            pubSub.subscribe(token, "/topics/" + topic, null);
+        }
+    }
 
 }

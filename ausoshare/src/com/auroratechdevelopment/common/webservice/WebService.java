@@ -1,5 +1,6 @@
 package com.auroratechdevelopment.common.webservice;
 
+import com.auroratechdevelopment.ausoshare.R;
 import android.content.Context;
 import android.util.Log;
 
@@ -312,7 +313,8 @@ public class WebService {
 
                 response.setSuccess(false);
                 response.setErrorNumber(errNumber);
-                response.setMessage("HTTPS URL Connection ERROR: " + statusCode);
+                //response.setMessage("HTTPS URL Connection ERROR: " + statusCode);
+                response.setMessage("网络连接错误: " + statusCode);
                 return response;
             }
 
@@ -327,6 +329,7 @@ public class WebService {
             }
         } catch (UnknownHostException unknownHostEx) { // no internet connection
             e = unknownHostEx;
+            
             errNumber = ResponseErrorNumber.NoInternetConnection;
         } catch (SocketException socketEx) { // socket failure
             e = socketEx;
@@ -380,7 +383,10 @@ public class WebService {
         if (e != null) {
             response.setSuccess(false);
             response.setErrorNumber(errNumber);
-            response.setMessage(e.getMessage());
+            if(errNumber == ResponseErrorNumber.NoInternetConnection)
+            	response.setMessage(CustomApplication.getInstance().getResources().getString(R.string.ws_error_no_connection));
+            else
+            	response.setMessage(e.getMessage());
             DebugLogUtil.Log(e, "Web service get response");
         }
 

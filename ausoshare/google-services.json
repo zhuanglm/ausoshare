@@ -1,0 +1,35 @@
+{
+  "project_info": {
+    "project_number": "800422132811",
+    "project_id": "ausoshare-1324"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:800422132811:android:25db117bbe921343",
+        "android_client_info": {
+          "package_name": "com.auroratechdevelopment.ausoshare"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA3DI_VbygerHLnnb2f3o84WlUbd18Iy6w"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -38,7 +38,7 @@
     <LinearLayout
         android:id="@+id/forward_method_tv"
         android:layout_width="fill_parent"
-        android:layout_height="100dp"
+        android:layout_height="110dp"
         android:layout_alignParentTop="true"
         android:layout_centerInParent="false"
         android:background="@color/whitesmoke"
@@ -57,7 +57,7 @@
                 android:id="@+id/img_bk"
                 android:layout_width="64dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_weight="2"
                 android:src="@drawable/page1_1" />
 
             <TextView
@@ -65,7 +65,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="match_parent"
                 android:layout_marginRight="0dp"
-                android:layout_weight="2"
+                android:layout_weight="3"
                 android:gravity="center_horizontal"
                 android:text="@string/ui_click" />
 
@@ -98,7 +98,7 @@
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="match_parent"
-            android:layout_weight="6.5"
+            android:layout_weight="6"
             android:gravity="center_horizontal"
             android:orientation="vertical" >
 
@@ -106,14 +106,14 @@
                 android:id="@+id/imageView3"
                 android:layout_width="64dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_weight="2"
                 android:src="@drawable/page1_2" />
 
             <TextView
                 android:id="@+id/ui_share_tV"
                 android:layout_width="fill_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="2"
+                android:layout_weight="3"
                 android:gravity="center_horizontal"
                 android:text="@string/ui_share" />
 
@@ -153,7 +153,7 @@
                 android:id="@+id/imageView5"
                 android:layout_width="64dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_weight="2"
                 android:src="@drawable/page1_3" />
 
             <TextView
@@ -161,7 +161,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="0dp"
-                android:layout_weight="2"
+                android:layout_weight="3"
                 android:gravity="center_horizontal"
                 android:text="@string/ui_view" />
 

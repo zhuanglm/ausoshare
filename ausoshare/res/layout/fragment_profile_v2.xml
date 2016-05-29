@@ -63,7 +63,7 @@
                 android:layout_marginLeft="0dp"
                 android:gravity="center_horizontal"
                 android:scrollHorizontally="false"
-                android:text="【上传图片】" />
+                android:text="【上传头像】" />
 
 	        </LinearLayout>
 
@@ -97,12 +97,19 @@
 
     </RelativeLayout>
 
+	<ScrollView
+        android:id="@+id/scrollView1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/login_out_profile_layout"
+        android:layout_marginBottom="5dp" >
+	
 	<RelativeLayout
 	    android:layout_width="match_parent"
 	    android:layout_height="match_parent"
-	    android:layout_alignParentRight="true"
-	    android:layout_below="@+id/login_out_profile_layout"
-	     >
+	    android:layout_alignParentRight="true">
+        
+	    
 
 	    <LinearLayout
 	        android:id="@+id/amount_layout"
@@ -220,7 +227,47 @@
 	        
 	    </LinearLayout>
 	    
+	    <LinearLayout
+	        android:id="@+id/noti_setting_layout"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_below="@+id/withdraw_request_layout"
+	        android:orientation="horizontal"
+	        android:visibility="gone" >
+	        
+			<TextView
+			    android:id="@+id/noti_setting"
+			    style="@style/myProfile"
+			    android:layout_width="match_parent"
+			    android:layout_height="48dp"
+			    android:layout_marginLeft="0dp"
+			    android:layout_marginTop="5dp"
+			    android:layout_weight="1"
+			    android:clickable="false"
+			    android:text="  接受推送" />
+			
+			<com.auroratechdevelopment.ausoshare.ui.ext.SwitchButton
+			    android:id="@+id/noti_switch"
+			    style="@style/myProfile"
+			    android:layout_width="match_parent"
+			    android:layout_height="48dp"
+			    android:layout_marginLeft="0dp"
+			    android:layout_marginTop="5dp"
+			    android:layout_weight="3"
+			    android:background="@color/white"
+			    android:checked="true"
+			    android:padding="4dp"
+			    app:frameDrawable="@drawable/switch_frame"
+			    app:sliderDrawable="@drawable/selector_switch_slider"
+			    app:stateDrawable="@drawable/selector_switch_state"
+			    app:stateMaskDrawable="@drawable/switch_state_mask"
+			    app:withTextInterval="16dp" />
+	        
+	    </LinearLayout>
+	    
+	   
 	    
 	</RelativeLayout>
+	</ScrollView>
 
 </RelativeLayout>
