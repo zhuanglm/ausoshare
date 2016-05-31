@@ -74,6 +74,32 @@
 	        android:text="@string/share_to_friend_button_text"
         />
         
+        <Button
+	        android:id="@+id/facebook_btn"
+	        android:layout_width="0dp"
+	        android:layout_height="48dp" 
+	        android:layout_weight="1"
+	        android:background="@drawable/btn_shape"
+	        android:onClick="FacebookOnClicked"
+	        android:textAllCaps="false"
+	        android:textColor="@color/white"
+	        style="@style/margin_left_right"
+	        
+        />
+        
+        <Button
+	        android:id="@+id/twitter_btn"
+	        android:layout_width="0dp"
+	        android:layout_height="48dp" 
+	        android:layout_weight="1"
+	        android:background="@drawable/btn_shape"
+	        android:onClick="TwitterOnClicked"
+	        android:textAllCaps="false"
+	        android:textColor="@color/white"
+	        style="@style/margin_left_right"
+	        
+        />
+        
     </LinearLayout>
 
 

@@ -45,7 +45,7 @@
         android:layout_marginTop="8dp"
         android:padding="0dp"
         android:scaleType="fitCenter"
-        android:src="@drawable/ausoshare_title_logo_chinese" />
+        android:src="@drawable/ausoshare_title_logo" />
 
     <Button
         android:id="@+id/button_info"

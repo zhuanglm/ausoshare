@@ -10,5 +10,6 @@
 	<classpathentry kind="lib" path="libs/libammsdk.jar"/>
 	<classpathentry kind="lib" path="libs/httpmime-4.1.3.jar"/>
 	<classpathentry kind="lib" path="libs/gson-2.4.jar"/>
+	<classpathentry kind="lib" path="libs/twitter4j-core-4.0.4.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

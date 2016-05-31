@@ -33,7 +33,7 @@
             android:layout_centerInParent="false"
             android:layout_marginLeft="25dp"
             android:layout_toRightOf="@+id/avatar_layout"
-            android:text="用户姓名"
+            android:text="@string/ui_username"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@color/white" />
 
@@ -63,7 +63,7 @@
                 android:layout_marginLeft="0dp"
                 android:gravity="center_horizontal"
                 android:scrollHorizontally="false"
-                android:text="【上传头像】" />
+                android:text="@string/ui_avatar" />
 
 	        </LinearLayout>
 
@@ -144,6 +144,7 @@
 	        android:layout_below="@+id/amount_layout"
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
+	        android:background="@color/white"
 	        android:orientation="horizontal" >
 	        
 	        <TextView
@@ -151,10 +152,10 @@
 	            style="@style/myProfile"
 	            android:layout_width="match_parent"
 	            android:layout_height="48dp"
-	            android:layout_marginLeft="0dp"
+	            android:layout_marginLeft="8dp"
 	            android:layout_marginTop="5dp"
 	            android:layout_weight="1"
-	            android:text="  有效转发广告记录" />
+	            android:text="@string/ui_share_record" />
 
 	        <TextView
 	            android:id="@+id/textView1"
@@ -174,6 +175,7 @@
 	        android:layout_below="@+id/shared_history_layout"
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
+	        android:background="@color/white"
 	        android:orientation="horizontal" >
 	        
 			<TextView
@@ -182,9 +184,9 @@
 		        android:layout_width="match_parent"
 		        android:layout_height="48dp"
 		        android:layout_weight="1"
-		        android:layout_marginLeft="0dp"
+		        android:layout_marginLeft="8dp"
 		        android:layout_marginTop="5dp"
-		        android:text="  我的提现记录" />	
+		        android:text="@string/ui_withdraw_record" />	
 		        
 			<TextView
 	            android:id="@+id/textView2"
@@ -203,6 +205,7 @@
 	        android:layout_below="@+id/withdraw_history_layout"
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
+	        android:background="@color/white"
 	        android:orientation="horizontal" >
 	        
 			<TextView
@@ -211,9 +214,9 @@
 		        android:layout_width="match_parent"
 		        android:layout_height="48dp"
 		      	android:layout_weight="1"
-		        android:layout_marginLeft="0dp"
+		        android:layout_marginLeft="8dp"
 		        android:layout_marginTop="5dp"
-		        android:text="  提现请求" />
+		        android:text="@string/ui_withdraw_request" />
 			
 			<TextView
 	            android:id="@+id/textView3"
@@ -231,6 +234,7 @@
 	        android:id="@+id/noti_setting_layout"
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
+	        android:background="@color/white"
 	        android:layout_below="@+id/withdraw_request_layout"
 	        android:orientation="horizontal"
 	        android:visibility="gone" >
@@ -240,11 +244,11 @@
 			    style="@style/myProfile"
 			    android:layout_width="match_parent"
 			    android:layout_height="48dp"
-			    android:layout_marginLeft="0dp"
+			    android:layout_marginLeft="8dp"
 			    android:layout_marginTop="5dp"
 			    android:layout_weight="1"
 			    android:clickable="false"
-			    android:text="  接受推送" />
+			    android:text="@string/ui_push_notification" />
 			
 			<com.auroratechdevelopment.ausoshare.ui.ext.SwitchButton
 			    android:id="@+id/noti_switch"
