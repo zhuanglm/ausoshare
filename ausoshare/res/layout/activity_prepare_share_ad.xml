@@ -48,57 +48,62 @@
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="4dp"
         >
-        <Button
-	        android:id="@+id/share_confirm_btn"
-	        android:layout_width="0dp"
-	        android:layout_height="48dp" 
-	        android:layout_weight="1"
-	        android:background="@drawable/btn_shape"
-	        android:onClick="PrepareToShareOnClicked"
-	        android:textAllCaps="false"
-	        android:textColor="@color/white"
-	        style="@style/margin_left_right"
-	        android:text="@string/share_button_text"
-        />
+
+		<ImageButton
+			android:id="@+id/share_confirm_btn"
+			android:layout_width="0dp"
+			android:layout_height="48dp"
+			android:layout_weight="1"
+			android:background="@null"
+			android:contentDescription="@string/empty"
+			android:onClick="PrepareToShareOnClicked"
+
+			android:scaleType="fitCenter"
+			android:src="@drawable/share_moment_button" />
+		/>
+
+		<ImageButton
+			android:id="@+id/share_to_friend_btn"
+			android:layout_width="0dp"
+			android:layout_height="48dp"
+			android:layout_weight="1"
+			android:background="@null"
+			android:contentDescription="@string/empty"
+			android:onClick="PrepareToShareToFriendOnClicked"
+
+			android:scaleType="fitCenter"
+			android:src="@drawable/share_wechat_button" />
+		/>
+
+
+		<ImageButton
+			android:id="@+id/facebook_btn"
+			android:layout_width="0dp"
+			android:layout_height="48dp"
+			android:layout_weight="1"
+			android:background="@null"
+			android:contentDescription="@string/empty"
+			android:onClick="FacebookOnClicked"
+
+			android:scaleType="fitCenter"
+			android:src="@drawable/share_facebook_button" />
+		/>
+
+		<ImageButton
+		    android:id="@+id/twitter_btn"
+		    android:layout_width="0dp"
+		    android:layout_height="48dp"
+		    android:layout_weight="1"
+		    android:background="@null"
+		    android:contentDescription="@string/empty"
+		    android:onClick="TwitterOnClicked"
+		    android:scaleType="fitCenter"
+		    android:src="@drawable/share_twitter_button"
+		    android:visibility="gone" />
+
+		/>
         
-        <Button
-	        android:id="@+id/share_to_friend_btn"
-	        android:layout_width="0dp"
-	        android:layout_height="48dp"
-	        android:layout_weight="1"
-	        android:background="@drawable/btn_shape"
-	        android:onClick="PrepareToShareToFriendOnClicked"
-	        android:textAllCaps="false"
-	        android:textColor="@color/white"
-	        style="@style/margin_left_right"
-	        android:text="@string/share_to_friend_button_text"
-        />
-        
-        <Button
-	        android:id="@+id/facebook_btn"
-	        android:layout_width="0dp"
-	        android:layout_height="48dp" 
-	        android:layout_weight="1"
-	        android:background="@drawable/btn_shape"
-	        android:onClick="FacebookOnClicked"
-	        android:textAllCaps="false"
-	        android:textColor="@color/white"
-	        style="@style/margin_left_right"
-	        
-        />
-        
-        <Button
-	        android:id="@+id/twitter_btn"
-	        android:layout_width="0dp"
-	        android:layout_height="48dp" 
-	        android:layout_weight="1"
-	        android:background="@drawable/btn_shape"
-	        android:onClick="TwitterOnClicked"
-	        android:textAllCaps="false"
-	        android:textColor="@color/white"
-	        style="@style/margin_left_right"
-	        
-        />
+
         
     </LinearLayout>
 

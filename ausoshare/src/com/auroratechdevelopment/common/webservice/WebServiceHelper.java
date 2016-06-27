@@ -2,11 +2,13 @@ package com.auroratechdevelopment.common.webservice;
 
 import com.auroratechdevelopment.ausoshare.CustomApplication;
 import com.auroratechdevelopment.ausoshare.R;
+import com.auroratechdevelopment.ausoshare.util.Constants;
 import com.auroratechdevelopment.common.webservice.models.UserInfo;
 import com.auroratechdevelopment.common.webservice.request.AcquireUpdateRequest;
 import com.auroratechdevelopment.common.webservice.request.CurrentIncomeRequest;
 import com.auroratechdevelopment.common.webservice.request.ForgotPasswordRequest;
 import com.auroratechdevelopment.common.webservice.request.ForwardedAdHistoryRequest;
+import com.auroratechdevelopment.common.webservice.request.GetFinishedAdListRequest;
 import com.auroratechdevelopment.common.webservice.request.GetOnGoingAdListRequest;
 import com.auroratechdevelopment.common.webservice.request.GetOnGoingEntertainmentListRequest;
 import com.auroratechdevelopment.common.webservice.request.GetURLRequest;
@@ -14,6 +16,7 @@ import com.auroratechdevelopment.common.webservice.request.LoginRequest;
 import com.auroratechdevelopment.common.webservice.request.OnGoingAdDetailRequest;
 import com.auroratechdevelopment.common.webservice.request.RegisterRequest;
 import com.auroratechdevelopment.common.webservice.request.RequestBase;
+import com.auroratechdevelopment.common.webservice.request.UpdateGCMRequest;
 import com.auroratechdevelopment.common.webservice.request.UpdateSharedTimeRequest;
 import com.auroratechdevelopment.common.webservice.request.UpdateUserPasswordRequest;
 import com.auroratechdevelopment.common.webservice.request.UpdateUserProfileRequest;
@@ -32,6 +35,7 @@ import com.auroratechdevelopment.common.webservice.response.OnGoingAdDetailRespo
 import com.auroratechdevelopment.common.webservice.response.RegisterResponse;
 import com.auroratechdevelopment.common.webservice.response.ResponseBase;
 import com.auroratechdevelopment.common.webservice.response.ResponseErrorNumber;
+import com.auroratechdevelopment.common.webservice.response.UpdateGCMResponse;
 import com.auroratechdevelopment.common.webservice.response.UpdatePasswordResponse;
 import com.auroratechdevelopment.common.webservice.response.UpdateUserProfileResponse;
 import com.auroratechdevelopment.common.webservice.response.UploadAvatarResponse;
@@ -114,7 +118,7 @@ public class WebServiceHelper {
             	Servicelistener.ResponseSuccessCallBack(tag, response);
             }
             else {
-            	Log.e("Raymond", "response.reasonCode != 0");
+            	Log.e("Raymond", "response.reasonCode "+response.reasonCode);
                 //web service communication error
                 if(!validateWebServiceConnection(response)){
                 	Servicelistener.ResponseConnectionError(tag, response);
@@ -203,6 +207,17 @@ private boolean validateWebServiceConnection(ResponseBase response) {
             @Override
             public void ResponseReady(int id, int tag, ForgotPasswordResponse response){
                 validateResponse(tag, response);
+            }
+        });
+    }
+
+    public void updateGCMToken(String token){
+        UpdateGCMRequest req = new UpdateGCMRequest(token, Constants.GCM_TOPIC+"global");
+
+        WebService.sendRequestAsync(req, new WebService.WebServiceCallback<UpdateGCMResponse>(){
+            @Override
+            public void ResponseReady(int id, int tag, UpdateGCMResponse response){
+                validateServiceResponse(tag, response);
             }
         });
     }
@@ -325,11 +340,39 @@ private boolean validateWebServiceConnection(ResponseBase response) {
         });
     }
 
+    public void offAdList(UserInfo userInfo, String tag , String key){
+        GetFinishedAdListRequest req = new GetFinishedAdListRequest(CustomApplication.getInstance().getEmail(),
+                CustomApplication.getInstance().getUserToken(),
+                CustomApplication.getInstance().getAndroidID(),
+                userInfo, tag , key);
+
+        WebService.sendRequestAsync(req, new WebService.WebServiceCallback<GetOnGoingAdListResponse>(){//same response with ongoing list
+            @Override
+            public void ResponseReady(int id, int tag, GetOnGoingAdListResponse response){
+                validateResponse(tag, response);
+            }
+        });
+    }
+
     public void onGoingAdList(UserInfo userInfo, String tag , String key){
         GetOnGoingAdListRequest req = new GetOnGoingAdListRequest(CustomApplication.getInstance().getEmail(),
                 CustomApplication.getInstance().getUserToken(),
                 CustomApplication.getInstance().getAndroidID(),
                 userInfo, tag , key);
+
+        WebService.sendRequestAsync(req, new WebService.WebServiceCallback<GetOnGoingAdListResponse>(){
+            @Override
+            public void ResponseReady(int id, int tag, GetOnGoingAdListResponse response){
+                validateResponse(tag, response);
+            }
+        });
+    }
+
+    public void onGoingAdList(UserInfo userInfo, String tag , String key,String lang){
+        GetOnGoingAdListRequest req = new GetOnGoingAdListRequest(CustomApplication.getInstance().getEmail(),
+                CustomApplication.getInstance().getUserToken(),
+                CustomApplication.getInstance().getAndroidID(),
+                userInfo, tag , key,lang);
 
         WebService.sendRequestAsync(req, new WebService.WebServiceCallback<GetOnGoingAdListResponse>(){
             @Override

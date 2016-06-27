@@ -22,6 +22,8 @@
         android:background="@drawable/icon_left_arrow"
         android:visibility="visible"
         />
+
+
     </RelativeLayout>
     
 
@@ -71,5 +73,21 @@
         android:color="@color/white" >
 
     </SearchView>
+
+    <Switch
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/lang_switch"
+        android:layout_alignParentStart="false"
+        android:layout_alignParentLeft="false"
+        android:gravity="center_vertical"
+        android:layout_centerVertical="true"
+        android:textOff="En"
+        android:textOn="中"
+        android:textStyle="normal"
+        android:showText="true"
+        android:visibility="invisible"
+        android:checked="true" />
+
 
 </RelativeLayout>

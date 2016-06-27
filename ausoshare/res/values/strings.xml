@@ -49,13 +49,13 @@
     <string name="alert_share_ad_login_prompt_text">register/login with your email</string>  
     <string name="alert_mine_login_prompt_text">you have to sign in</string>
 
-    <string name="ongoing_total_ad_funds">bonus: </string>
+    <string name="ongoing_total_ad_funds">Bonus: </string>
     <string name="ongoing_ad_completed_percentage">assigned: </string>
     <string name="ongoing_ad_completed_percentage_suffix">%</string>
     <string name="ongoing_ad_completed_shared_suffix"> people shared</string>
 
     <string name="profile_current_income_text">available amount: CAD </string>
-    <string name="profile_top10_info_text">Leader Board</string>
+    <string name="profile_top10_info_text">TOP 10</string>
     <string name="profile_reading_times">read：</string>
     <string name="profile_earned_funds">earned：</string>
     <string name="profile_empty_ad_text">No record</string>
@@ -80,12 +80,12 @@
     <string name="login_prompt_text">login prompt</string>
 
     <!-- contact -->
-    <string name="contact_t_c_text">announcement</string>
-    <string name="contact_incoming_rule_text">incoming rule</string>
-    <string name="contact_withdraw_rule_text">withdraw rule</string>
-    <string name="contact_company_introduction_text">introduction</string>
+    <string name="contact_t_c_text">Announcement</string>
+    <string name="contact_incoming_rule_text">Incoming rule</string>
+    <string name="contact_withdraw_rule_text">Withdraw rule</string>
+    <string name="contact_company_introduction_text">Introduction</string>
     <string name="contact_questions_answers_text">FAQ</string>
-    <string name="contact_customer_text">contact us</string>
+    <string name="contact_customer_text">Contact us</string>
 
     <!-- yellow page -->
     <string name="yp_first_life_text">生活服务</string>
@@ -191,7 +191,7 @@
     
      <!-- profile -->
      <string name="ui_logout">[QUIT]</string>
-     <string name="ui_leaderboard">[Leader Board]</string>
+     <string name="ui_leaderboard">[TOP10]</string>
      <string name="ui_detail">Detail</string>
      <string name="ui_username">Username</string>
      <string name="ui_avatar">[Avatar]</string>
@@ -200,6 +200,9 @@
      <string name="ui_withdraw_record">withdraw record</string>
      <string name="ui_withdraw_request">withdraw request</string>
      <string name="ui_push_notification">push notification</string>
+     <string name="ui_lang_setting">Language</string>
+     <string name="ui_lang_en">English</string>
+     <string name="ui_lang_zh">中文</string>
      <string name="ui_take_picture">take picture</string>
      <string name="ui_album">pick from album</string>
      
@@ -220,5 +223,17 @@
     <string name="no_photo">相册没有图片</string>
     
     <string name="no_data">no data,click to refresh</string>
+
+    <string name="confirm_prompt_text">Confirmation</string>
+    <string name="alert_withdraw_prompt_text">Do you want to withdraw right now?</string>
+    <string name="lang_title_en">You selected English</string>
+    <string name="lang_set_en">You must restart to apply this change</string>
+    <string name="lang_change_en">English will be applied</string>
+    <string name="lang_title_zh">系统语言</string>
+    <string name="lang_set_zh">如需语言变更生效请退出应用并重启</string>
+    <string name="lang_change_zh">系统语言设置为中文</string>
+    <string name="update_title">It is not newest version</string>
+    <string name="update_require">Would you like to update?</string>
+
     
 </resources>

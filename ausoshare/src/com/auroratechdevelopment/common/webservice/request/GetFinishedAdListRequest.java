@@ -6,9 +6,9 @@ import com.auroratechdevelopment.common.webservice.response.GetOnGoingAdListResp
 import com.auroratechdevelopment.common.webservice.util.WebUtils;
 
 /**
- * Created by Edward on 2015-09-03.
+ * Created by Raymond Zhuang on 2016-06-08.
  */
-public class GetOnGoingAdListRequest extends RequestBase<GetOnGoingAdListResponse> {
+public class GetFinishedAdListRequest extends RequestBase<GetOnGoingAdListResponse> {
 
     public String email;
     public String deviceID;
@@ -16,28 +16,18 @@ public class GetOnGoingAdListRequest extends RequestBase<GetOnGoingAdListRespons
     public UserInfo data;
     public String keyword;
 
-    public GetOnGoingAdListRequest( String email, String Token, String deviceId, UserInfo data, String tag, String key) {
+    public GetFinishedAdListRequest(String email, String Token, String deviceId, UserInfo data, String tag, String key) {
         this.email = email;
         this.deviceID = deviceId;
         this.data = data;
         this.token = Token;
         this.tag = tag;
         keyword = key;
-    }
-
-    public GetOnGoingAdListRequest( String email, String Token, String deviceId, UserInfo data, String tag, String key,String lang) {
-        this.email = email;
-        this.deviceID = deviceId;
-        this.data = data;
-        this.token = Token;
-        this.tag = tag;
-        keyword = key;
-        language = lang.toUpperCase();
     }
 
     @Override
     public String getUri() {
-        return WebUtils.getURI(String.format(WebServiceConstants.advertOngoingList));
+        return WebUtils.getURI(String.format(WebServiceConstants.advertFinishedList));
     }
 
     @Override

@@ -1,5 +1,7 @@
 package com.auroratechdevelopment.common.webservice.request;
 
+import com.auroratechdevelopment.ausoshare.CustomApplication;
+import com.auroratechdevelopment.ausoshare.util.Constants;
 import com.google.gson.annotations.SerializedName;
 import com.auroratechdevelopment.common.webservice.response.ResponseBase;
 import com.auroratechdevelopment.common.webservice.util.WebUtils;
@@ -9,11 +11,15 @@ import org.xmlpull.v1.XmlPullParserException;
 import java.io.IOException;
 import java.io.OutputStream;
 
+//updated by Raymond at Jun 7 2016
+
 public abstract class RequestBase<T extends ResponseBase> {
 
 
 	@SerializedName("token")
 	public String token = null;
+    public String version = Constants.VER;
+    public String language = CustomApplication.getInstance().getLanguage().toUpperCase();
 
     @SuppressWarnings("unused")
     private transient String extension;

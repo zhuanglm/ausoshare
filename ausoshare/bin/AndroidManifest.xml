@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.auroratechdevelopment.ausoshare"
-    android:versionCode="26"
-    android:versionName="1.0.8.3">
+    android:versionCode="27"
+    android:versionName="1.2A">
 
     <uses-permission android:name="android.permission.INTERNET" />      <!-- allow to open internet sockets -->
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>  <!-- mount and unmount file related permission -->
@@ -21,6 +21,8 @@
 
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+    <uses-permission android:name="android.permission.CHANGE_CONFIGURATION" />
     
 <!--     <uses-feature
         android:glEsVersion="0x00020000"
@@ -48,6 +50,7 @@
         android:label="@string/app_name"
         android:theme="@style/Theme.Rc_mobile"
         android:largeHeap="true"
+        android:configChanges="locale"
         >
         <!--android:theme="@style/Theme.Rc_mobile"-->
 <!---->
@@ -55,7 +58,7 @@
 
         <meta-data tools:replace = "android:value"
             android:name="com.google.android.gms.version"
-            android:value="7895000"       
+            android:value="8298000"
 		/>
         
         <meta-data
@@ -66,6 +69,11 @@
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="AIzaSyCgRqfqH0Hx0oFYZ6WHBnNsAwY31rxOFJo" />
+
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="07e53996b5c5a4c1eb2ca6f18baf33e6a1dcc115"
+            />
 
         <activity
             android:name=".ui.startup.SplashActivity"

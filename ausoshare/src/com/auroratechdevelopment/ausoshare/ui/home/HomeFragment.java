@@ -23,11 +23,14 @@ import com.auroratechdevelopment.ausoshare.ui.ext.LineProgress;
 import com.auroratechdevelopment.ausoshare.ui.home.HomeActivity.HomeAdListUpdated;
 import com.auroratechdevelopment.ausoshare.ui.home.HomeActivity.HomeEntertainmentListUpdated;
 import com.auroratechdevelopment.ausoshare.ui.home.HomeActivity.HomeStartNumUpdated;
+import com.auroratechdevelopment.ausoshare.ui.home.HomeActivity.HomeLangUpdated;
 import com.auroratechdevelopment.ausoshare.ui.login.LoginActivity;
 import com.auroratechdevelopment.ausoshare.util.Constants;
 import com.auroratechdevelopment.common.DebugLogUtil;
 import com.auroratechdevelopment.common.ViewUtils;
 import com.auroratechdevelopment.common.ui.ViewPagerEx;
+import com.auroratechdevelopment.common.util.LoadNetPicture;
+import com.auroratechdevelopment.common.webservice.WebServiceConstants;
 import com.auroratechdevelopment.common.webservice.WebServiceHelper;
 import com.auroratechdevelopment.common.webservice.models.AdDataItem;
 import com.auroratechdevelopment.common.webservice.models.OnGoingAdItem;
@@ -45,7 +48,7 @@ import java.util.ArrayList;
 public class HomeFragment extends HomeFragmentBase  implements  
     OnGoingAdItemsAdapter.GetItemSelected,
     SwipeRefreshLayout.OnRefreshListener,
-    HomeActivity.HomeAdListUpdated, HomeStartNumUpdated
+    HomeActivity.HomeAdListUpdated, HomeStartNumUpdated, HomeLangUpdated
     {
 	    private ListView list;
 	    private OnGoingAdItemsAdapter adapter;
@@ -53,16 +56,20 @@ public class HomeFragment extends HomeFragmentBase  implements
 	    private int startNumber = 0;
 	    private static final String KEY_ADS = "ADS";
 	    //private TextView forwardMethodText;
-	    private LinearLayout forwardMethodImg;
+	    private LinearLayout forwardMethodImg,TopbannerLayout;
+        private ImageView TopbannerImg;
 	    private RelativeLayout forwardMethodText;
 	    
 	    private ViewPagerEx pager;
+        private boolean isFinished;
 	    
 //	    private PullToRefreshLayout mPullToRefreshLayout;
 	
 	    @Override
 	    public void onCreate(Bundle savedInstanceState) {
 	        super.onCreate(savedInstanceState);
+            isFinished = false;
+
 	    }
 	
 	    @Override
@@ -87,12 +94,24 @@ public class HomeFragment extends HomeFragmentBase  implements
         //forwardMethodText = (TextView) rootView.findViewById(R.id.forward_method_tv);
         forwardMethodImg = (LinearLayout) rootView.findViewById(R.id.forward_method_tv);
         //forwardMethodText = (RelativeLayout) rootView.findViewById(R.id.description_layout);
+        TopbannerLayout = (LinearLayout) rootView.findViewById(R.id.top_banner_layout);
+        TopbannerImg = (ImageView) rootView.findViewById(R.id.banner_imageView);
         
         //int abt = CustomApplication.getInstance().getSharedADTime();
         
         if(CustomApplication.getInstance().getSharedADTime()>=3){
+
         	//forwardMethodText.setVisibility(View.GONE);
         	forwardMethodImg.setVisibility(View.GONE);
+            TopbannerLayout.setVisibility(View.VISIBLE);
+
+            TopbannerImg.setScaleType(ImageView.ScaleType.FIT_XY);
+            if(CustomApplication.getInstance().getLanguage().substring(0,2).equals("zh")) {
+                new LoadNetPicture().getPicture(WebServiceConstants.top_banner_ZH, TopbannerImg);
+            }
+            else{
+                new LoadNetPicture().getPicture(WebServiceConstants.top_banner_EN, TopbannerImg);
+            }
         }
         
         
@@ -106,10 +125,16 @@ public class HomeFragment extends HomeFragmentBase  implements
                     if (list.getLastVisiblePosition() >= list.getCount() - 1 - 0) {
 
 //                        startNumber = startNumber + Constants.ADS_PAGE_SIZE;
-                    	if(startNumber%Constants.ADS_PAGE_SIZE == 0){
+                    	if(startNumber!=0 && startNumber%Constants.ADS_PAGE_SIZE == 0){
                     		Log.e("Edward Debug", "111 invoke getNewAds");
                     		getNewAds(startNumber);
                     	}
+                        else{//all ads were downloaded
+                            if(!isFinished) {
+                                getFinishedAds();   //add 100% ads 1 time
+                                isFinished = true;
+                            }
+                        }
                     }
                 }
             }
@@ -128,7 +153,9 @@ public class HomeFragment extends HomeFragmentBase  implements
         list.setAdapter(adapter);
 
         swipeRefreshlayout = (SwipeRefreshLayout)rootView.findViewById(R.id.swipe_container_ad);
-        swipeRefreshlayout.setColorScheme(android.R.color.holo_purple);
+        swipeRefreshlayout.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light, android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);;
         swipeRefreshlayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
 			
 			@Override
@@ -140,9 +167,10 @@ public class HomeFragment extends HomeFragmentBase  implements
 	                public void run() {
 	                	swipeRefreshlayout.setRefreshing(false);
 	                	startNumber = 0;
+                        isFinished = false;
 	                	Log.e("Edward Debug", "222 invoke getNewAds");
 	                	adapter.clearList();
-	                    getNewAds(startNumber);
+	                    getNewAds(startNumber,homeActivity.m_sLanguage);
 	                }
 	            }, 1000);
 			}
@@ -181,6 +209,21 @@ public class HomeFragment extends HomeFragmentBase  implements
         UserInfo user_info = setUserInfo(startNumber);
         WebServiceHelper.getInstance().onGoingAdList(user_info, Constants.TAG_ADVERT,"");
     }
+        private void getNewAds(int startNumber,String lang){
+//    	homeActivity.showWaiting();
+
+            Log.e("Edward", "getNewAds: startNumber = " + startNumber);
+            UserInfo user_info = setUserInfo(startNumber);
+            WebServiceHelper.getInstance().onGoingAdList(user_info, Constants.TAG_ADVERT,"",lang);
+        }
+
+        private void getFinishedAds(){
+//    	homeActivity.showWaiting();
+
+            Log.i("Raymond", "get 100% ads ");
+            UserInfo user_info = setUserInfo(0);
+            WebServiceHelper.getInstance().offAdList(user_info, Constants.TAG_ADVERT,"");
+        }
 
     public void checkLoginStatus(){
         if(!CustomApplication.getInstance().getUserLogin()){
@@ -210,19 +253,23 @@ public class HomeFragment extends HomeFragmentBase  implements
         });
 		
 //		final GetOnGoingAdListResponse adList = (GetOnGoingAdListResponse) response;
-        if(homeActivity != null){
+        if(homeActivity != null && adList.data.size()>=0){
             homeActivity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                 	if(adList.data != null &&adList.data.size() == 0 ){
-
+                        adapter.setList(adList.data);
+                        adapter.notifyDataSetChanged();
+                        return;
                 	}
                 	
                 	if(tag == -1){
                 		adapter.clearList();
+                        startNumber = 0;
                 	}
 
-                	startNumber = startNumber + adList.data.size();
+                    Log.e("Edward", "at ResponseSuccessCallBack, startNumber is: " + startNumber);
+                    startNumber = startNumber + adList.data.size();
                 	
                 	Log.e("Edward", "at ResponseSuccessCallBack, startNumber is: " + startNumber);
                 	CustomApplication.getInstance().setLastAD(adList.data.get(adList.data.size()-1).adID);
@@ -241,4 +288,11 @@ public class HomeFragment extends HomeFragmentBase  implements
 	}
 
 
-}
+        @Override
+        public void onHomeLangUpdated(String lang) {
+            Log.i("Raymond lang",lang);
+            startNumber = 0;
+            adapter.clearList();
+            getNewAds(startNumber,lang);
+        }
+    }

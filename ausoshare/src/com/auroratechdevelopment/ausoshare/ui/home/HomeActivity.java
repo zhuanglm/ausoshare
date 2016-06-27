@@ -6,6 +6,8 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
@@ -22,6 +24,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
+import android.widget.CompoundButton;
+import android.widget.LinearLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.util.Base64;
 import android.util.DisplayMetrics;
@@ -45,6 +50,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -75,6 +81,9 @@ import com.auroratechdevelopment.common.webservice.response.GetOnGoingAdListResp
 import com.auroratechdevelopment.common.webservice.response.GetOnGoingEntertainmentListResponse;
 import com.auroratechdevelopment.common.webservice.response.ResponseBase;
 import com.auroratechdevelopment.common.webservice.response.WithdrawRequestResponse;
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.common.api.GoogleApiClient;
 
 
 /**
@@ -82,9 +91,10 @@ import com.auroratechdevelopment.common.webservice.response.WithdrawRequestRespo
  * updated by Raymond Zhuang 2016/4/22
  */
 public class HomeActivity extends ActivityBase implements
-        PushHelper.PushHelperListener, OnQueryTextListener
-{
-	
+        PushHelper.PushHelperListener, OnQueryTextListener,
+        CustomAlertDialog.AlertCallback{
+
+    private Context HomeContext;
     private ViewPagerEx pager;
     private MyPagerAdapter adapter;
 
@@ -94,10 +104,12 @@ public class HomeActivity extends ActivityBase implements
     private ImageButton ibtnProfile;
     private ImageButton ibtnEntertainment;
     private ImageButton ibtnPromotion;
-    private SearchView 	m_Search;
+    private SearchView m_Search;
+    private Switch m_Lang_Switch;
+    public LinearLayout m_bottombar;
 
     private AppLocationService appLocationService;
-    
+
     private static final int REQUEST_PICK_PICTURE = 0xaf;
 
     private int iLastTab = -1;
@@ -106,45 +118,118 @@ public class HomeActivity extends ActivityBase implements
     private boolean backPress;
     private PushHelper pushHelper;
 
-    
+    public String m_sLanguage;
+
+    @Override
+    public void GetAlertButton(int which) {
+        if(which == -1){
+            final Bundle bundle = new Bundle();
+            bundle.putString(Constants.LAST_PAGE, Constants.HOME_PAGE);
+            ViewUtils.startPage(bundle, HomeActivity.this, LoginActivity.class);
+        }
+    }
+
+    @Override
+    public void AlertCancelled() {
+
+    }
+
+
+    public interface HomeLangUpdated {
+        public void onHomeLangUpdated(String lang);
+    }
+
     public interface HomeStartNumUpdated {
-    	public void onHomeStartNumUpdated(int pos);
+        public void onHomeStartNumUpdated(int pos);
     }
-    
+
     public interface HomeAdListUpdated {
-    	public void onHomeAdListUpdated(int tag, GetOnGoingAdListResponse response);
+        public void onHomeAdListUpdated(int tag, GetOnGoingAdListResponse response);
     }
-    
-    public interface HomeEntertainmentListUpdated{
-    	public void onHomeEntertainmentListUpdated(int tag, GetOnGoingEntertainmentListResponse response);
+
+    public interface HomeEntertainmentListUpdated {
+        public void onHomeEntertainmentListUpdated(int tag, GetOnGoingEntertainmentListResponse response);
     }
-    
-    public interface HomeWithdrawUpdated{
-    	public void onHomeWithdrawUpdated(int tag, WithdrawRequestResponse response);
+
+    public interface HomeWithdrawUpdated {
+        public void onHomeWithdrawUpdated(int tag, WithdrawRequestResponse response);
     }
-    
-    public interface HomeIncomeUpdated{
-    	public void onHomeCurrentIncomeUpdated(int tag, CurrentIncomeResponse response);
+
+    public interface HomeIncomeUpdated {
+        public void onHomeCurrentIncomeUpdated(int tag, CurrentIncomeResponse response);
     }
-    
-    public interface HomeAvatarUpdated{
-    	public void onHomeAvatarUpdated(Bitmap data);
+
+    public interface HomeAvatarUpdated {
+        public void onHomeAvatarUpdated(Bitmap data);
     }
-    
-    private HomeStartNumUpdated HomeAdStartNumUpdatedListener,HomeEnStartNumUpdatedListener;
+
+    private HomeStartNumUpdated HomeAdStartNumUpdatedListener, HomeEnStartNumUpdatedListener;
     private HomeAdListUpdated HomeAdListUpdatedListener;
     private HomeEntertainmentListUpdated HomeEntertainmentListUpdatedListener;
     private HomeWithdrawUpdated HomeWithdrawUpdatedListener;
-    
+
     private HomeIncomeUpdated HomeIncomeUpdatedListener;
     private HomeAvatarUpdated HomeAvatarUpdatedListener;
-    
-   
+    private HomeLangUpdated HomeLangUpdatedListener;
+
+
+    class UpdateVerCallback implements CustomAlertDialog.AlertCallback {
+
+        @Override
+        public void GetAlertButton(int which) {
+            if(which == -1) {
+                final String appPackageName = getPackageName(); // getPackageName() from Context or Activity object
+                try {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+                } catch (android.content.ActivityNotFoundException anfe) {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+                }
+
+            }else{
+                CustomApplication.getInstance().setIsUpdate(false);
+            }
+
+        }
+
+        @Override
+        public void AlertCancelled() {
+
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //handleIntent(getIntent());
-       
+        Log.i("Raymond homeactivity", "oncreate");
+        HomeContext = this;
+
+        QueryVersion(new QueryVerCallback() {
+            @Override
+            public void responseVersion(String newVersion) {
+                String sVerName="";
+
+                try {
+                    sVerName = CustomApplication.getInstance().getCurrentVersion();
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                Log.i("Raymond Version:",sVerName);
+                Log.i("Raymond ver PS", newVersion);
+
+                if(!sVerName.equals(newVersion) && CustomApplication.getInstance().getIsUpdate()) {
+                    UpdateVerCallback callback = new UpdateVerCallback();
+                    showCenterScreenOkCancelAlert(HomeContext,
+                            getResources().getString(R.string.update_title),
+                            getResources().getString(R.string.update_require),
+                            getString(R.string.button_ok), getString(R.string.button_cancel),
+                            callback, true);
+                }
+
+            }
+        });
+
 
     }
     
@@ -171,9 +256,9 @@ public class HomeActivity extends ActivityBase implements
         super.onSaveInstanceState(outState);
     }
 
-    
+
     //test here, April.18, 2016
-    
+
     @Override
     protected void setView() {
         setContentView(R.layout.activity_main);
@@ -203,97 +288,120 @@ public class HomeActivity extends ActivityBase implements
         int halfScreenWidth = (dm.widthPixels - 30) / 2;
         CustomApplication.getInstance().setScreenWidth(halfScreenWidth);
 
+        m_bottombar = (LinearLayout)findViewById(R.id.colors);
         ibtnHome = (ImageButton) findViewById(R.id.bottomtab_home);
         ibtnYellowPage = (ImageButton) findViewById(R.id.bottomtab_yellow_page);
         ibtnContact = (ImageButton) findViewById(R.id.bottomtab_contact);
         ibtnProfile = (ImageButton) findViewById(R.id.bottomtab_profile);
-        ibtnEntertainment = (ImageButton)findViewById(R.id.bottomtab_entertainment);
-        m_Search = (SearchView)findViewById(R.id.search_button);
-        if(m_Search != null)
-        	searchViewInit();
-        else{
-        	Log.e("Raymond", "null searchview");
-        }
-        
+        ibtnEntertainment = (ImageButton) findViewById(R.id.bottomtab_entertainment);
 
-        
+        m_Lang_Switch = (Switch) findViewById(R.id.lang_switch);
+        m_Lang_Switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(HomeLangUpdatedListener==null)
+                    return;
+                if(isChecked){
+                    m_sLanguage = "zh";
+                }else{
+                    m_sLanguage = "en";
+                }
+                HomeLangUpdatedListener.onHomeLangUpdated(m_sLanguage);
+            }
+        });
+
+        m_Search = (SearchView) findViewById(R.id.search_button);
+        if (m_Search != null)
+            searchViewInit();
+        else {
+            Log.e("Raymond", "null searchview");
+        }
+
+        if (!CustomApplication.getInstance().getLanguage().substring(0, 2).equals("zh")) {
+            ibtnEntertainment.setVisibility(View.GONE);
+            m_Lang_Switch.setChecked(false);
+            m_sLanguage = "en";
+
+            Resources resources = getResources();
+            Configuration config = resources.getConfiguration();
+            Locale locale = config.locale;
+            String language = locale.getLanguage();
+
+        }
+        else{
+            m_Lang_Switch.setChecked(true);
+            m_sLanguage = "zh";
+        }
+
+
         pushHelper = new PushHelper(this, this);
 
         Intent urlIntent = getIntent();
         String lastPage = urlIntent.getStringExtra(Constants.LAST_PAGE);
-        if(lastPage != null){
-            if(lastPage.equals(Constants.CONTACT_PAGE)){
+        if (lastPage != null) {
+            if (lastPage.equals(Constants.CONTACT_PAGE)) {
                 pager.setCurrentItem(Constants.FRAG_CONTACT);
                 iLastTab = Constants.FRAG_CONTACT;
-            }
-            else if (lastPage.equals(Constants.MINE_PAGE)){
+            } else if (lastPage.equals(Constants.MINE_PAGE)) {
                 pager.setCurrentItem(Constants.FRAG_PROFILE);
                 iLastTab = Constants.FRAG_PROFILE;
-            }
-            else if (lastPage.equals(Constants.ENTERTAINMENT_PAGE)){
-            	//int nLastTab = urlIntent.getIntExtra(Constants.LAST_TAB, 0);
-            	m_Search.setVisibility(View.VISIBLE);
-            	pager.setCurrentItem(Constants.FRAG_ENTERTAINMENT);
-            	iLastTab = Constants.FRAG_ENTERTAINMENT;
-            	
-            	Log.e("Edward", "from entertainment");
-            }
-            else if(lastPage.equals(Constants.PROMOTION_PAGE)){
-            	pager.setCurrentItem(Constants.FRAG_PROMOTION);
-            	iLastTab = Constants.FRAG_PROMOTION;
-            }
-            else {
-            	m_Search.setVisibility(View.VISIBLE);
+            } else if (lastPage.equals(Constants.ENTERTAINMENT_PAGE)) {
+                //int nLastTab = urlIntent.getIntExtra(Constants.LAST_TAB, 0);
+                m_Search.setVisibility(View.VISIBLE);
+                pager.setCurrentItem(Constants.FRAG_ENTERTAINMENT);
+                iLastTab = Constants.FRAG_ENTERTAINMENT;
+
+                Log.e("Edward", "from entertainment");
+            } else if (lastPage.equals(Constants.PROMOTION_PAGE)) {
+                pager.setCurrentItem(Constants.FRAG_PROMOTION);
+                iLastTab = Constants.FRAG_PROMOTION;
+            } else {
+                m_Search.setVisibility(View.VISIBLE);
+                m_Lang_Switch.setVisibility(View.VISIBLE);
                 pager.setCurrentItem(Constants.FRAG_HOME);
                 iLastTab = Constants.FRAG_HOME;
                 Log.e("Edward", "else Home");
             }
-            
-        }
-        else{
-        	m_Search.setVisibility(View.VISIBLE);
+
+        } else {
+            m_Search.setVisibility(View.VISIBLE);
+            m_Lang_Switch.setVisibility(View.VISIBLE);
             pager.setCurrentItem(Constants.FRAG_HOME);
             iLastTab = Constants.FRAG_HOME;
             Log.e("Edward", "else else home");
         }
-        
+
         getRegisteredUserInfo();
         setBottomBarSelected(iLastTab);
-        
+
         fetchCurrentIncome();
-        
+
     }
-    
-    private void setBottomBarSelected(int last_tab){
-    	ibtnHome.setSelected(false);
-    	
-    	if(last_tab == Constants.FRAG_HOME){
-        	ibtnHome.setSelected(true);
-        }
-        else if(last_tab == Constants.FRAG_CONTACT){
-        	ibtnContact.setSelected(true);
-        }
-        else if(last_tab == Constants.FRAG_PROFILE){
-        	ibtnProfile.setSelected(true);
-        }
-        else if(last_tab == Constants.FRAG_YELLOW_PAGE){
-        	ibtnYellowPage.setSelected(true);
-        }
-        else if(last_tab == Constants.FRAG_ENTERTAINMENT){
-        	ibtnEntertainment.setSelected(true);
-        }
-        else if(last_tab == Constants.FRAG_PROMOTION){
-        	ibtnPromotion.setSelected(true);
-        }
-        else{
-        	ibtnHome.setSelected(true);
+
+    private void setBottomBarSelected(int last_tab) {
+        ibtnHome.setSelected(false);
+
+        if (last_tab == Constants.FRAG_HOME) {
+            ibtnHome.setSelected(true);
+        } else if (last_tab == Constants.FRAG_CONTACT) {
+            ibtnContact.setSelected(true);
+        } else if (last_tab == Constants.FRAG_PROFILE) {
+            ibtnProfile.setSelected(true);
+        } else if (last_tab == Constants.FRAG_YELLOW_PAGE) {
+            ibtnYellowPage.setSelected(true);
+        } else if (last_tab == Constants.FRAG_ENTERTAINMENT) {
+            ibtnEntertainment.setSelected(true);
+        } else if (last_tab == Constants.FRAG_PROMOTION) {
+            ibtnPromotion.setSelected(true);
+        } else {
+            ibtnHome.setSelected(true);
         }
     }
 
-    public void getRegisteredUserInfo(){
+    public void getRegisteredUserInfo() {
         String user_name = CustomApplication.getInstance().getUsername();
         String available_fund = CustomApplication.getInstance().getAvailableFund();
-        available_fund = available_fund.equals("")? "0.00":available_fund;
+        available_fund = available_fund.equals("") ? "0.00" : available_fund;
 
         setTopBarTitle(CustomApplication.getInstance().getUsername() +
                 getResources().getString(R.string.title_infinity_cellphone) + available_fund
@@ -301,12 +409,30 @@ public class HomeActivity extends ActivityBase implements
 
     }
 
-    protected void getDeviceId(){
+    protected void getDeviceId() {
         String android_id = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
         CustomApplication.getInstance().setAndroidID(android_id);
     }
 
-    public void getDeviceLocation(){
+    public interface QueryVerCallback {
+        void responseVersion(String newVersion);
+    };
+
+    private void QueryVersion(final QueryVerCallback query_callback){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    String newVersion = CustomApplication.getInstance().getStoreVersion();
+                    query_callback.responseVersion(newVersion);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
+
+    public void getDeviceLocation() {
         appLocationService = new AppLocationService(HomeActivity.this);
 
         //get location city name
@@ -314,7 +440,7 @@ public class HomeActivity extends ActivityBase implements
         double longitude = -79.332938;
 
         Location location = appLocationService.getLocation(LocationManager.GPS_PROVIDER);
-        if(location != null){
+        if (location != null) {
             latitude = location.getLatitude();
             longitude = location.getLongitude();
         }
@@ -324,7 +450,7 @@ public class HomeActivity extends ActivityBase implements
                 getApplicationContext(), new GeocoderHandler());
 
     }
-    
+
 
     private class GeocoderHandler extends Handler {
         @Override
@@ -341,9 +467,9 @@ public class HomeActivity extends ActivityBase implements
 //            System.out.print("abcde:" + locationAddress);
         }
     }
-    
-    public void resetBottomSelected(){
-    	ibtnHome.setSelected(false);
+
+    public void resetBottomSelected() {
+        ibtnHome.setSelected(false);
         ibtnYellowPage.setSelected(false);
         ibtnContact.setSelected(false);
         ibtnProfile.setSelected(false);
@@ -361,17 +487,17 @@ public class HomeActivity extends ActivityBase implements
 //                            getResources()
 //                                    .getDrawable(
 //                                            R.drawable.bottombar_button_background_selected));
-            if(CustomApplication.getInstance().getEmail().equalsIgnoreCase("") && v.getId()==R.id.bottomtab_profile){
-            	
-            }else{
-            	ViewUtils.setBackgroundDrawable(ibtnHome, null);
+            if (CustomApplication.getInstance().getEmail().equalsIgnoreCase("") && v.getId() == R.id.bottomtab_profile) {
+
+            } else {
+                ViewUtils.setBackgroundDrawable(ibtnHome, null);
                 ViewUtils.setBackgroundDrawable(ibtnEntertainment, null);
                 ViewUtils.setBackgroundDrawable(ibtnYellowPage, null);
                 ViewUtils.setBackgroundDrawable(ibtnContact, null);
                 ViewUtils.setBackgroundDrawable(ibtnProfile, null);
 
                 resetBottomSelected();
-            	v.setSelected(true);
+                v.setSelected(true);
             }
         }
 
@@ -393,9 +519,9 @@ public class HomeActivity extends ActivityBase implements
                 break;
 
             case R.id.bottomtab_entertainment:
-            	showEntertainment();
-            	break;
-            	
+                showEntertainment();
+                break;
+
             default:
                 break;
         }
@@ -421,10 +547,10 @@ public class HomeActivity extends ActivityBase implements
                 case Constants.FRAG_PROFILE:
                     showProfile();
                     break;
-                    
+
                 case Constants.FRAG_ENTERTAINMENT:
-                	showEntertainment();
-                	break;
+                    showEntertainment();
+                    break;
 
                 default:
                     break;
@@ -439,7 +565,7 @@ public class HomeActivity extends ActivityBase implements
             } else {
                 backPress = false;
                 finish();
-                
+
                 return;
             }
 
@@ -459,6 +585,7 @@ public class HomeActivity extends ActivityBase implements
         iLastTab = Constants.FRAG_HOME;
         showBackButton(false);
         m_Search.setVisibility(View.VISIBLE);
+        m_Lang_Switch.setVisibility(View.VISIBLE);
 
         setTopBarTitle(CustomApplication.getInstance().getUsername() + getResources().getString(R.string.title_infinity_cellphone)
                 + String.valueOf(CustomApplication.getInstance().getAvailableFund().equals("") ? "0.00" : CustomApplication.getInstance().getAvailableFund()));
@@ -468,7 +595,7 @@ public class HomeActivity extends ActivityBase implements
     }
 
 
-    public void showYellowPage(){
+    public void showYellowPage() {
         backPress = false;
         iLastTab = Constants.FRAG_YELLOW_PAGE;
         showBackButton(false);
@@ -479,7 +606,8 @@ public class HomeActivity extends ActivityBase implements
 
 
     public void showContact() {
-    	m_Search.setVisibility(View.INVISIBLE);
+        m_Search.setVisibility(View.INVISIBLE);
+        m_Lang_Switch.setVisibility(View.INVISIBLE);
         backPress = false;
         iLastTab = Constants.FRAG_CONTACT;
         setBottomBarSelected(iLastTab);
@@ -488,38 +616,41 @@ public class HomeActivity extends ActivityBase implements
         pager.setCurrentItem(Constants.FRAG_CONTACT);
     }
 
-    public void showProfile() { 
-    	m_Search.setVisibility(View.INVISIBLE);
-    	if(CustomApplication.getInstance().getEmail().equalsIgnoreCase("")){
-			requestUserLogin();
-    	}
-    	else{
-    		
-	        backPress = false;
-	        iLastTab = Constants.FRAG_PROFILE;
-	        showBackButton(false);
-	        setTopBarTitle(getResources().getString(R.string.title_infinity_cellphone4));
-	        pager.setCurrentItem(Constants.FRAG_PROFILE);
-	        setBottomBarSelected(iLastTab);
-    	}
+    public void showProfile() {
+        m_Search.setVisibility(View.INVISIBLE);
+        m_Lang_Switch.setVisibility(View.INVISIBLE);
+        if (CustomApplication.getInstance().getEmail().equalsIgnoreCase("")) {
+            requestUserLogin();
+        } else {
+
+            backPress = false;
+            iLastTab = Constants.FRAG_PROFILE;
+            showBackButton(false);
+            setTopBarTitle(getResources().getString(R.string.title_infinity_cellphone4));
+            pager.setCurrentItem(Constants.FRAG_PROFILE);
+            setBottomBarSelected(iLastTab);
+        }
     }
+
     //userlogin add by Raymond temporarily
-    private void requestUserLogin(){
-		Log.e("Edward", "Did not loginnnn");
-		showCenterScreenOkCancelAlert(this,
+    private void requestUserLogin() {
+        Log.e("Edward", "Did not loginnnn");
+        showCenterScreenOkCancelAlert(this,
                 getResources().getString(R.string.login_prompt_text),
                 getResources().getString(R.string.alert_share_ad_login_prompt_text),
-                getString(R.string.button_ok), getString(R.string.button_cancel), null, true
-				);
+                getString(R.string.button_ok), getString(R.string.button_cancel), this, true
+        );
     }
-    public CustomAlertDialog customADialog;
-    public void showCenterScreenOkCancelAlert(final Context context,
-            final CharSequence alertTitle, final String msg,
-            final String okButtonName, final String cancelButtonName,
-            final CustomAlertDialog.AlertCallback callback, final boolean isCancelable) {
 
-    	Log.e("Edward", "showCenterScreenAlert");
-    	
+    public CustomAlertDialog customADialog;
+
+    public void showCenterScreenOkCancelAlert(final Context context,
+                                              final CharSequence alertTitle, final String msg,
+                                              final String okButtonName, final String cancelButtonName,
+                                              final CustomAlertDialog.AlertCallback callback, final boolean isCancelable) {
+
+        Log.e("Edward", "showCenterScreenAlert");
+
         this.runOnUiThread(new Runnable() {
             public void run() {
                 dismissCustomAlertDialog();
@@ -531,12 +662,12 @@ public class HomeActivity extends ActivityBase implements
                 customADialog.setOnCancelListener(alertCancelClicked(callback));
                 customADialog.setOnDismissListener(alertDismissClicked());
                 if (okButtonName != null && okButtonName.length() > 0) {
-                	customADialog.setButton(okButtonName, alertButtonOkayClicked(callback));
-                    
+                    customADialog.setButton(okButtonName, alertButtonOkayClicked(callback));
+
                 }
 
                 if (cancelButtonName != null && cancelButtonName.length() > 0) {
-                	customADialog.setButton2(cancelButtonName,
+                    customADialog.setButton2(cancelButtonName,
                             alertButtonCancelClicked(callback));
                 }
 
@@ -545,48 +676,47 @@ public class HomeActivity extends ActivityBase implements
             }
         });
     }
+
     protected DialogInterface.OnClickListener alertButtonCancelClicked(
             final CustomAlertDialog.AlertCallback callback) {
         return new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 try {
                     callback.GetAlertButton(which);
-                    
+
                 } catch (Exception e) {
                     // e.printStackTrace();
                 }
-                
+
                 return;
             }
         };
     }
+
     protected DialogInterface.OnClickListener alertButtonOkayClicked(
             final CustomAlertDialog.AlertCallback callback) {
-        return new android.content.DialogInterface.OnClickListener() {
+        return new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 try {
                     callback.GetAlertButton(which);
                 } catch (Exception e) {
                     // e.printStackTrace();
                 }
-                
-                final Bundle bundle = new Bundle(); 
-                bundle.putString(Constants.LAST_PAGE, Constants.HOME_PAGE);
-            	ViewUtils.startPage(bundle, HomeActivity.this, LoginActivity.class);
 
             }
         };
     }
 
-    
-    public void showEntertainment(){
-    	backPress = false;
-    	iLastTab = Constants.FRAG_ENTERTAINMENT;
-    	m_Search.setVisibility(View.VISIBLE);
-    	showBackButton(false);
-    	setTopBarTitle(getResources().getString(R.string.title_infinity_cellphone4));
-    	pager.setCurrentItem(Constants.FRAG_ENTERTAINMENT);
-    	setBottomBarSelected(iLastTab);
+
+    public void showEntertainment() {
+        backPress = false;
+        iLastTab = Constants.FRAG_ENTERTAINMENT;
+        m_Search.setVisibility(View.VISIBLE);
+        m_Lang_Switch.setVisibility(View.INVISIBLE);
+        showBackButton(false);
+        setTopBarTitle(getResources().getString(R.string.title_infinity_cellphone4));
+        pager.setCurrentItem(Constants.FRAG_ENTERTAINMENT);
+        setBottomBarSelected(iLastTab);
     }
 
     @Override
@@ -600,11 +730,11 @@ public class HomeActivity extends ActivityBase implements
 
     public class MyPagerAdapter extends FragmentStatePagerAdapter {
 
-        public final String[] TITLES = {getResources().getString(R.string.tab_title_home), 
-        		getResources().getString(R.string.tab_title_entertainment),
-        		getResources().getString(R.string.tab_title_yellowpage), 
-        		getResources().getString(R.string.tab_title_contact),
-        		getResources().getString(R.string.tab_title_profile)};
+        public final String[] TITLES = {getResources().getString(R.string.tab_title_home),
+                getResources().getString(R.string.tab_title_entertainment),
+                getResources().getString(R.string.tab_title_yellowpage),
+                getResources().getString(R.string.tab_title_contact),
+                getResources().getString(R.string.tab_title_profile)};
 
         public MyPagerAdapter(FragmentManager fm) {
             super(fm);
@@ -630,7 +760,7 @@ public class HomeActivity extends ActivityBase implements
                     fg.setHomeActivity(HomeActivity.this);
                     HomeActivity.this.HomeAdListUpdatedListener = (HomeFragment) fg;
                     HomeActivity.this.HomeAdStartNumUpdatedListener = (HomeFragment) fg;
-                    
+                    HomeActivity.this.HomeLangUpdatedListener = (HomeFragment) fg;
                     return fg;
 
                 case Constants.FRAG_YELLOW_PAGE:
@@ -651,13 +781,13 @@ public class HomeActivity extends ActivityBase implements
                     HomeActivity.this.HomeIncomeUpdatedListener = (ProfileFragment) fg;
                     HomeActivity.this.HomeAvatarUpdatedListener = (ProfileFragment) fg;
                     return fg;
-                    
+
                 case Constants.FRAG_ENTERTAINMENT:
-                	fg = new EntertainmentFragment();
-                	fg.setHomeActivity(HomeActivity.this);
-                	HomeActivity.this.HomeEntertainmentListUpdatedListener = (EntertainmentFragment) fg;
-                	HomeActivity.this.HomeEnStartNumUpdatedListener = (EntertainmentFragment) fg;
-                	return fg;
+                    fg = new EntertainmentFragment();
+                    fg.setHomeActivity(HomeActivity.this);
+                    HomeActivity.this.HomeEntertainmentListUpdatedListener = (EntertainmentFragment) fg;
+                    HomeActivity.this.HomeEnStartNumUpdatedListener = (EntertainmentFragment) fg;
+                    return fg;
 
                 default:
                     fg = new HomeFragment();
@@ -672,15 +802,24 @@ public class HomeActivity extends ActivityBase implements
     protected void onResume() {
         super.onResume();
         CustomApplication.getInstance().setHomeActivity(this);
-        
-        stopService(new Intent(this,NotificationService.class));
+
+        stopService(new Intent(this, NotificationService.class));
     }
-    
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        
-        startService(new Intent(this,NotificationService.class));
+        ibtnHome = null;
+        ibtnContact = null;
+        ibtnProfile = null;
+        ibtnEntertainment = null;
+        m_bottombar = null;
+        //setContentView(null);
+        System.gc();
+
+        Log.i("Raymond homeactivity", "ondestroy");
+        if (CustomApplication.getInstance().getNotificationChecked())
+            startService(new Intent(this, NotificationService.class));
     }
 
     @Override
@@ -703,59 +842,55 @@ public class HomeActivity extends ActivityBase implements
 //        dismissWaiting();
         if (response instanceof GetOnGoingAdListResponse) {
             if (HomeAdListUpdatedListener != null) {
-            	HomeAdListUpdatedListener.onHomeAdListUpdated(tag, (GetOnGoingAdListResponse) response);
+                HomeAdListUpdatedListener.onHomeAdListUpdated(tag, (GetOnGoingAdListResponse) response);
             }
-        }
-        else if (response instanceof GetOnGoingEntertainmentListResponse) {
+        } else if (response instanceof GetOnGoingEntertainmentListResponse) {
             if (HomeEntertainmentListUpdatedListener != null) {
-            	HomeEntertainmentListUpdatedListener.onHomeEntertainmentListUpdated(tag, (GetOnGoingEntertainmentListResponse) response);
+                HomeEntertainmentListUpdatedListener.onHomeEntertainmentListUpdated(tag, (GetOnGoingEntertainmentListResponse) response);
             }
+        } else if (response instanceof WithdrawRequestResponse) {
+            if (HomeWithdrawUpdatedListener != null) {
+                HomeWithdrawUpdatedListener.onHomeWithdrawUpdated(tag, (WithdrawRequestResponse) response);
+            }
+        } else if (response instanceof CurrentIncomeResponse) {
+
+            if (HomeIncomeUpdatedListener != null) {
+                HomeIncomeUpdatedListener.onHomeCurrentIncomeUpdated(tag, (CurrentIncomeResponse) response);
+            }
+
         }
-        else if (response instanceof WithdrawRequestResponse) {
-        	if (HomeWithdrawUpdatedListener != null){
-        		HomeWithdrawUpdatedListener.onHomeWithdrawUpdated(tag, (WithdrawRequestResponse) response);
-        	}
-        }
-        else if (response instanceof CurrentIncomeResponse) {
-        	
-        	if (HomeIncomeUpdatedListener != null){
-        		HomeIncomeUpdatedListener.onHomeCurrentIncomeUpdated(tag, (CurrentIncomeResponse) response);
-        	}
-            
-        }
-        
+
     }
-        
-    
+
+
     private HomeFragmentBase getCurrentFragment() {
         FragmentStatePagerAdapter a = (FragmentStatePagerAdapter) pager.getAdapter();
         return (HomeFragmentBase) a.instantiateItem(pager, pager.getCurrentItem());
     }
-    
+
     /**
      * return back button
      */
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         // TODO Auto-generated method stub
-        if(keyCode == KeyEvent.KEYCODE_BACK)
-        {  
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
             exitBy2Click();        //invoke the double click function
         }
         return false;
     }
-    
-    private void hideSoftBoard(){
+
+    private void hideSoftBoard() {
         InputMethodManager inputmanger = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
 
-        if ( inputmanger.isActive( ) ) {     
-        	inputmanger.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, InputMethodManager.HIDE_NOT_ALWAYS);
+        if (inputmanger.isActive()) {
+            inputmanger.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, InputMethodManager.HIDE_NOT_ALWAYS);
         }
 
     }
-    
+
     /**
-     * double click 
+     * double click
      */
     private static Boolean isExit = false;
 
@@ -770,43 +905,44 @@ public class HomeActivity extends ActivityBase implements
                 public void run() {
                     isExit = false; // cancel exit
                 }
-            }, 2000); 
+            }, 2000);
         } else {
-        	if(!CustomApplication.getInstance().getRememberMeChecked()){
-		    	CustomApplication.getInstance().setUsername("");
-		        CustomApplication.getInstance().setPaypal("");
-		        CustomApplication.getInstance().setEmail("");
-		        CustomApplication.getInstance().setLoginOutStatus(false);
-		    }
-        	
-        	startService(new Intent(this,NotificationService.class));
+            if (!CustomApplication.getInstance().getRememberMeChecked()) {
+                CustomApplication.getInstance().setUsername("");
+                CustomApplication.getInstance().setPaypal("");
+                CustomApplication.getInstance().setEmail("");
+                CustomApplication.getInstance().setLoginOutStatus(false);
+            }
+
+            if (CustomApplication.getInstance().getNotificationChecked())
+                startService(new Intent(this, NotificationService.class));
             finish();
             System.exit(0);
         }
     }
-    
-    public void fetchCurrentIncome(){
-    	if(CustomApplication.getInstance().getLoginOutStatus()){
-    	
-	        WebServiceHelper.getInstance().getCurrentIncome(CustomApplication.getInstance().getEmail(),
-	                        CustomApplication.getInstance().getAndroidID(),
-	                        Constants.CURRENT_INCOME_TOP_USER_MAXNUMBER);
-	        
-    	}
-        
+
+    public void fetchCurrentIncome() {
+        if (CustomApplication.getInstance().getLoginOutStatus()) {
+
+            WebServiceHelper.getInstance().getCurrentIncome(CustomApplication.getInstance().getEmail(),
+                    CustomApplication.getInstance().getAndroidID(),
+                    Constants.CURRENT_INCOME_TOP_USER_MAXNUMBER);
+
+        }
+
     }
-    
-    
+
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        
+
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
-        case REQUEST_PICK_PICTURE:
-            if (resultCode != Activity.RESULT_OK) {
-                return;
-            }else{
-            	/*Bundle extras = data.getExtras();
+            case REQUEST_PICK_PICTURE:
+                if (resultCode != Activity.RESULT_OK) {
+                    return;
+                } else {
+                /*Bundle extras = data.getExtras();
         		if (extras != null) {
         			Bitmap photo = extras.getParcelable("data");
         			if (HomeAvatarUpdatedListener != null){
@@ -815,141 +951,142 @@ public class HomeActivity extends ActivityBase implements
         			
         			UploadAvatar(photo);
         		}*/
-            	try{
-	            	Uri uritempFile = Uri.parse("file://" + "/" + Environment.getExternalStorageDirectory().getPath() + "/" 
-	            			+ CustomApplication.getInstance().getEmail()+".JPG");
-	            	Bitmap photo = BitmapFactory.decodeStream(getContentResolver().openInputStream(uritempFile)); 
-	            	if (HomeAvatarUpdatedListener != null){
-        				HomeAvatarUpdatedListener.onHomeAvatarUpdated(photo);
-        			}
-	            	UploadAvatar(photo);
-            	}catch(Exception e){
-            		e.printStackTrace();
-            		   return;
-            	}
-            }
-            break;
+                    try {
+                        Uri uritempFile = Uri.parse("file://" + "/" + Environment.getExternalStorageDirectory().getPath() + "/"
+                                + CustomApplication.getInstance().getEmail() + ".JPG");
+                        Bitmap photo = BitmapFactory.decodeStream(getContentResolver().openInputStream(uritempFile));
+                        if (HomeAvatarUpdatedListener != null) {
+                            HomeAvatarUpdatedListener.onHomeAvatarUpdated(photo);
+                        }
+                        UploadAvatar(photo);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        return;
+                    }
+                }
+                break;
 
-        default:
-            break;
+            default:
+                break;
         }
-        
-      }
-    
-    
-    public void UploadAvatar(Bitmap src){
-    	String img_base64 = Bitmap2StrByBase64(src);
-    	
+
+    }
+
+
+    public void UploadAvatar(Bitmap src) {
+        String img_base64 = Bitmap2StrByBase64(src);
+
         WebServiceHelper.getInstance().UploadAvatar(CustomApplication.getInstance().getAndroidID(),
-        		CustomApplication.getInstance().getEmail(),img_base64);
+                CustomApplication.getInstance().getEmail(), img_base64);
         //showWaiting();
     }
-    
-    /** 
-	 * 通过Base32将Bitmap转换成Base64字符串 
-	 * @param bit 
-	 * @return 
-	 */  
-	public String Bitmap2StrByBase64(Bitmap bit){  
-	   ByteArrayOutputStream bos=new ByteArrayOutputStream();  
-	   bit.compress(CompressFormat.JPEG, 40, bos);//参数100表示不压缩  
-	   byte[] bytes=bos.toByteArray();  
-	   return Base64.encodeToString(bytes, Base64.DEFAULT);  
-	}
-	
-	
-	private void searchViewInit(){
-		//m_Search.setVisibility(View.VISIBLE);
-    	//m_Search.setBackgroundColor(getResources().getColor(android.R.color.white));
-    	//m_Search.setBackgroundResource(R.drawable.textfield_searchview_holo_light);
-    	
-    	//int id = m_Search.getContext().getResources().getIdentifier("android:id/search_button", null, null);
-    	
-    	//ImageView icon = (ImageView) m_Search.findViewById(id);
-    	
-    	//icon.setImageResource(R.drawable.ic_search);
-    	//id = m_Search.getContext().getResources().getIdentifier("android:id/search_src_text", null, null);
-    	//TextView textView = (TextView) m_Search.findViewById(id);
-    	//textView.setTextColor(getResources().getColor(android.R.color.white));
-		
-		// 设置该SearchView默认是否自动缩小为图标
-		m_Search.setIconifiedByDefault(true);
-		// 为该SearchView组件设置事件监听器
-		m_Search.setOnQueryTextListener(this);
-		// 设置该SearchView显示搜索按钮
-		m_Search.setSubmitButtonEnabled(true);
-		// 设置该SearchView内默认显示的提示文本
-		//m_Search.setQueryHint("查找");
-		
-		//SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-		//m_Search.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-		
-		m_Search.setOnSearchClickListener(new View.OnClickListener(){
 
-			@Override
-			public void onClick(View v) {
-				m_Search.setBackgroundColor(getResources().getColor(android.R.color.white));
-				
-			}
-			
-		});
-		
-		m_Search.setOnCloseListener(new OnCloseListener() {
-			 
-			@Override
-			public boolean onClose() {
-				
-				//m_Search.setIconified(true);
-				m_Search.onActionViewCollapsed();
-				m_Search.setBackgroundColor(Color.argb(0x00, 0xff, 0x00, 0x00));
-				return true;
-			}
-		});
-	}
+    /**
+     * 通过Base32将Bitmap转换成Base64字符串
+     *
+     * @param bit
+     * @return
+     */
+    public String Bitmap2StrByBase64(Bitmap bit) {
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        bit.compress(CompressFormat.JPEG, 40, bos);//参数100表示不压缩
+        byte[] bytes = bos.toByteArray();
+        return Base64.encodeToString(bytes, Base64.DEFAULT);
+    }
 
-	@Override
-	public boolean onQueryTextSubmit(String query) {
-		
-		if(iLastTab == 0){
-			//ad 
-			UserInfo user_info = setUserInfo(0);
-			if (HomeAdStartNumUpdatedListener != null){
-				HomeAdStartNumUpdatedListener.onHomeStartNumUpdated(0);
-			}
-	        WebServiceHelper.getInstance().onGoingAdList(user_info, Constants.TAG_ADVERT , m_Search.getQuery().toString());
-	        //Toast.makeText(this, "submit advertisement["+m_Search.getQuery()+"]", Toast.LENGTH_SHORT).show();
-		}else if(iLastTab ==1){
-			//entertaiment
-			UserInfo user_info = setUserInfo(0);
-			if (HomeEnStartNumUpdatedListener != null){
-				HomeEnStartNumUpdatedListener.onHomeStartNumUpdated(0);
-			}
-		    WebServiceHelper.getInstance().onGoingEntertainmentList(user_info, iEntertaimentLastTab,m_Search.getQuery().toString());
-		    //Toast.makeText(this, "submit entertaiment"+iEntertaimentLastTab, Toast.LENGTH_SHORT).show();
-		}
-		
-		m_Search.setBackgroundColor(Color.argb(0x00, 0xff, 0x00, 0x00));
-		m_Search.onActionViewCollapsed();
-		
-		return false;
-	}
 
-	@Override
-	public boolean onQueryTextChange(String newText) {
-		//Toast.makeText(this, "changed", Toast.LENGTH_SHORT).show();
-		return false;
-	}
-	
-	public UserInfo setUserInfo(int startNumber){
-	    UserInfo userInfo = new UserInfo();
-	    userInfo.city = CustomApplication.getInstance().getUserCity();
-	    userInfo.province = CustomApplication.getInstance().getUserProvince();
-	    userInfo.country = CustomApplication.getInstance().getUserCountry();
-	    userInfo.lon = CustomApplication.getInstance().getUserLongitude();
-	    userInfo.lat = CustomApplication.getInstance().getUserLatitude();
-	    userInfo.startNumber = startNumber;
-	    userInfo.counts = Constants.ADS_PAGE_SIZE;
-	    return userInfo;
-	}
-    
+    private void searchViewInit() {
+        //m_Search.setVisibility(View.VISIBLE);
+        //m_Search.setBackgroundColor(getResources().getColor(android.R.color.white));
+        //m_Search.setBackgroundResource(R.drawable.textfield_searchview_holo_light);
+
+        //int id = m_Search.getContext().getResources().getIdentifier("android:id/search_button", null, null);
+
+        //ImageView icon = (ImageView) m_Search.findViewById(id);
+
+        //icon.setImageResource(R.drawable.ic_search);
+        //id = m_Search.getContext().getResources().getIdentifier("android:id/search_src_text", null, null);
+        //TextView textView = (TextView) m_Search.findViewById(id);
+        //textView.setTextColor(getResources().getColor(android.R.color.white));
+
+        // 设置该SearchView默认是否自动缩小为图标
+        m_Search.setIconifiedByDefault(true);
+        // 为该SearchView组件设置事件监听器
+        m_Search.setOnQueryTextListener(this);
+        // 设置该SearchView显示搜索按钮
+        m_Search.setSubmitButtonEnabled(true);
+        // 设置该SearchView内默认显示的提示文本
+        //m_Search.setQueryHint("查找");
+
+        //SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        //m_Search.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+
+        m_Search.setOnSearchClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                m_Search.setBackgroundColor(getResources().getColor(android.R.color.white));
+
+            }
+
+        });
+
+        m_Search.setOnCloseListener(new OnCloseListener() {
+
+            @Override
+            public boolean onClose() {
+
+                //m_Search.setIconified(true);
+                m_Search.onActionViewCollapsed();
+                m_Search.setBackgroundColor(Color.argb(0x00, 0xff, 0x00, 0x00));
+                return true;
+            }
+        });
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+
+        if (iLastTab == 0) {
+            //ad
+            UserInfo user_info = setUserInfo(0);
+            if (HomeAdStartNumUpdatedListener != null) {
+                HomeAdStartNumUpdatedListener.onHomeStartNumUpdated(0);
+            }
+            WebServiceHelper.getInstance().onGoingAdList(user_info, Constants.TAG_ADVERT, m_Search.getQuery().toString(),m_sLanguage);
+            //Toast.makeText(this, "submit advertisement["+m_Search.getQuery()+"]", Toast.LENGTH_SHORT).show();
+        } else if (iLastTab == 1) {
+            //entertaiment
+            UserInfo user_info = setUserInfo(0);
+            if (HomeEnStartNumUpdatedListener != null) {
+                HomeEnStartNumUpdatedListener.onHomeStartNumUpdated(0);
+            }
+            WebServiceHelper.getInstance().onGoingEntertainmentList(user_info, iEntertaimentLastTab, m_Search.getQuery().toString());
+            //Toast.makeText(this, "submit entertaiment"+iEntertaimentLastTab, Toast.LENGTH_SHORT).show();
+        }
+
+        m_Search.setBackgroundColor(Color.argb(0x00, 0xff, 0x00, 0x00));
+        m_Search.onActionViewCollapsed();
+
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        //Toast.makeText(this, "changed", Toast.LENGTH_SHORT).show();
+        return false;
+    }
+
+    public UserInfo setUserInfo(int startNumber) {
+        UserInfo userInfo = new UserInfo();
+        userInfo.city = CustomApplication.getInstance().getUserCity();
+        userInfo.province = CustomApplication.getInstance().getUserProvince();
+        userInfo.country = CustomApplication.getInstance().getUserCountry();
+        userInfo.lon = CustomApplication.getInstance().getUserLongitude();
+        userInfo.lat = CustomApplication.getInstance().getUserLatitude();
+        userInfo.startNumber = startNumber;
+        userInfo.counts = Constants.ADS_PAGE_SIZE;
+        return userInfo;
+    }
+
 }

@@ -5,23 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/white" >
 
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/swipe_container_ad"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/forward_method_tv"
-        android:layout_marginBottom="4dp" >
-  
-       <ListView
-            android:id="@+id/valid_ad_list"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="8dp"
-            android:padding="1dp"
-            android:dividerHeight="2dp"
-            >
-        </ListView> 
-    </android.support.v4.widget.SwipeRefreshLayout>
+
     
     
     <TextView
@@ -168,7 +152,38 @@
         </LinearLayout>
 
     </LinearLayout>
-    
-    
+
+    <LinearLayout
+        android:id="@+id/top_banner_layout"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="110dp"
+        android:layout_below="@+id/forward_method_tv"
+        android:layout_centerHorizontal="true"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/banner_imageView" />
+    </LinearLayout>
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_container_ad"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/top_banner_layout"
+        android:layout_marginBottom="4dp" >
+
+        <ListView
+            android:id="@+id/valid_ad_list"
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:layout_marginBottom="8dp"
+            android:padding="1dp"
+            android:dividerHeight="2dp"
+            >
+        </ListView>
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 </RelativeLayout>

@@ -25,13 +25,7 @@ import android.widget.CheckBox;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
-import twitter4j.Twitter;
-import twitter4j.TwitterException;
-import twitter4j.TwitterFactory;
-import twitter4j.auth.AccessToken;
-import twitter4j.auth.RequestToken;
-import twitter4j.conf.Configuration;
-import twitter4j.conf.ConfigurationBuilder;
+
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -54,25 +48,29 @@ import com.auroratechdevelopment.ausoshare.util.Constants;
 import com.auroratechdevelopment.common.ViewUtils;
 import com.auroratechdevelopment.common.util.ImageService;
 import com.auroratechdevelopment.common.util.LoadNetPicture;
+import com.auroratechdevelopment.common.util.SocialMediaUtils;
 import com.auroratechdevelopment.common.webservice.WebServiceHelper;
 import com.auroratechdevelopment.common.webservice.models.AdDataItem;
 import com.auroratechdevelopment.common.webservice.models.OnGoingAdItem;
 import com.auroratechdevelopment.common.webservice.response.ResponseBase;
 import com.auroratechdevelopment.common.webservice.response.UpdateUserProfileResponse;
-import com.facebook.CallbackManager;
-import com.facebook.FacebookSdk;
-import com.facebook.appevents.AppEventsLogger;
-import com.facebook.share.model.ShareLinkContent;
-import com.facebook.share.widget.ShareDialog;
+
 //import com.tencent.mm.sdk.modelmsg.SendMessageToWX;
 //import com.tencent.mm.sdk.modelmsg.WXMediaMessage;
 //import com.tencent.mm.sdk.modelmsg.WXWebpageObject;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookSdk;
+import com.facebook.share.model.ShareLinkContent;
+import com.facebook.share.widget.ShareDialog;
 import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.SendMessageToWX;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
 import com.tencent.mm.sdk.openapi.WXImageObject;
 import com.tencent.mm.sdk.openapi.WXMediaMessage;
 import com.tencent.mm.sdk.openapi.WXWebpageObject;
+
+
+
 
 /**
  * Created by happy pan on 2015/11/16.
@@ -82,7 +80,7 @@ public class PrepareShareAdActivity extends ActivityBase {
     private OnGoingAdItem adItem;
     private WebView wv;
     private String url;
-    private Button shareConfirmBtn;
+    //private Button shareConfirmBtn;
     
     private IWXAPI api;
     
@@ -101,8 +99,8 @@ public class PrepareShareAdActivity extends ActivityBase {
     private ImageView imageView, viewImage_ad_share;
     private FrameLayout layoutWebView;
     
-    ShareDialog shareDialog; 
-	CallbackManager callbackManager; 
+    ShareDialog shareDialog;
+	CallbackManager callbackManager;
     
 
 	@Override
@@ -128,7 +126,7 @@ public class PrepareShareAdActivity extends ActivityBase {
         adDataItem = b.getParcelable(Constants.BUNDLE_AD_ITEM);
 
         setContentView(R.layout.activity_prepare_share_ad);
-        shareConfirmBtn = (Button)findViewById(R.id.share_confirm_btn);   
+        //shareConfirmBtn = (Button)findViewById(R.id.share_confirm_btn);
         viewImage_ad_share = (ImageView)findViewById(R.id.view_image_ad_share);
 
         api = WXAPIFactory.createWXAPI(this, Constants.APP_ID);
@@ -436,27 +434,22 @@ public class PrepareShareAdActivity extends ActivityBase {
 	
 	
 	public void FacebookOnClicked(View view){
-		//ShareLinkContent content = new ShareLinkContent.Builder().setContentUrl(Uri.parse(url)).build();
-		
-		try {
-			if (ShareDialog.canShow(ShareLinkContent.class)) {
-				ShareLinkContent linkContent = new ShareLinkContent.Builder()
-				.setContentTitle(adDataItem.description)
-				.setContentDescription(adDataItem.description_long)
-				.setContentUrl(Uri.parse(url))
-				.setImageUrl(Uri.parse(adDataItem.thumb))
-				.build();
-				shareDialog.show(linkContent);
-			}
-		} catch (Exception e) {
-			Toast.makeText(getApplicationContext(), "Error Sharing with Facebook.", Toast.LENGTH_LONG).show();
-		}
+        if(CustomApplication.getInstance().getEmail().equalsIgnoreCase("")){
+            requestUserLogin();
+        }else{
+            SocialMediaUtils.FacebookOnShared(shareDialog,adDataItem);
+            updatedSharedTimes();
+        }
+
 	}
 	
 	public void TwitterOnClicked(View view){
-		
-		//loginToTwitter();
-		
+        /*if(CustomApplication.getInstance().getEmail().equalsIgnoreCase("")){
+            requestUserLogin();
+        }else {
+            SocialMediaUtils.TwitterOnShared(this, adDataItem);
+            updatedSharedTimes();
+        }*/
 	}
 //	public static Bitmap getLoacalBitmap(String url) {
 //        try {
@@ -579,13 +572,13 @@ public class PrepareShareAdActivity extends ActivityBase {
     
    ////////////////////////////////////////////////////////////////////////////
     
-    private static Twitter twitter;
+    /*private static Twitter twitter;
     private static RequestToken requestToken;
     static String TWITTER_CONSUMER_KEY = "L0MfjIUlqgMGjGsQiLktfSPD6";
     static String TWITTER_CONSUMER_SECRET = "wbih4mNfjZR7uOXm7hq5EXqyxyrbAGLeZ3MfcBWwfIwnobKI2I";
     final String TWITTER_CALLBACK_URL = "oauth://t4jsample";
     
-    private void loginToTwitter() {
+    private void shareToTwitter() {
         // Check if already logged in
         //if (!isTwitterLoggedInAlready()) {
     	if (true) {
@@ -598,8 +591,7 @@ public class PrepareShareAdActivity extends ActivityBase {
             twitter = factory.getInstance();
  
             try {
-                requestToken = twitter
-                        .getOAuthRequestToken(TWITTER_CALLBACK_URL);
+                requestToken = twitter.getOAuthRequestToken(TWITTER_CALLBACK_URL);
                 this.startActivity(new Intent(Intent.ACTION_VIEW, Uri
                         .parse(requestToken.getAuthenticationURL())));
             } catch (TwitterException e) {
@@ -610,7 +602,7 @@ public class PrepareShareAdActivity extends ActivityBase {
             Toast.makeText(getApplicationContext(),
                     "Already Logged into twitter", Toast.LENGTH_LONG).show();
         }
-    }
+    }*/
  
     
 

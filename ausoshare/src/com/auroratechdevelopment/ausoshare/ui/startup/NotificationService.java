@@ -11,6 +11,7 @@ import com.auroratechdevelopment.common.webservice.WebServiceHelper;
 import com.auroratechdevelopment.common.webservice.WebServiceHelper.WebServiceListener;
 import com.auroratechdevelopment.common.webservice.response.AcquireUpdateResponse;
 import com.auroratechdevelopment.common.webservice.response.ResponseBase;
+import com.auroratechdevelopment.common.webservice.response.UpdateGCMResponse;
 import com.auroratechdevelopment.common.webservice.response.UpdateUserProfileResponse;
 import com.google.android.gms.gcm.GcmPubSub;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
@@ -58,8 +59,9 @@ WebServiceListener {
 	
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
-		/*if(!CustomApplication.getInstance().getNotificationChecked())
-			stopSelf();*/
+		if(!CustomApplication.getInstance().getNotificationChecked()) {
+			stopSelf();
+		}
 		
 		WebServiceHelper.getInstance().setServiceListener(this);
 		
@@ -86,6 +88,7 @@ WebServiceListener {
 						Log.i("Raymond GCM", "GCM Registration Token: " + token);
 						
 			            //sendRegistrationToServer(token);
+						WebServiceHelper.getInstance().updateGCMToken(token);
 
 			            // Subscribe to topic channels
 			            subscribeTopics(token);
@@ -136,11 +139,11 @@ WebServiceListener {
 			builder.setContentIntent(pendingIntent);
 			builder.setSmallIcon(R.drawable.noti_icon_small);
 			builder.setLargeIcon(BitmapFactory.decodeResource(getResources(),R.drawable.noti_icon));
-			/*try{
-				builder.setLargeIcon(BitmapFactory.decodeStream(getAssets().open("noti_icon.png")));
-			}catch( IOException e){
-				Log.e("Raymond notification", e.getMessage());
-			}*/
+			//try{
+			//	builder.setLargeIcon(BitmapFactory.decodeStream(getAssets().open("noti_icon.png")));
+			//}catch( IOException e){
+			//	Log.e("Raymond notification", e.getMessage());
+			//}
 			builder.setWhen(System.currentTimeMillis());// 设置发送时间
 			builder.setTicker("显示通知");// 在用户没有拉开标题栏之前，在标题栏中显示的文字
 			builder.setContentTitle("极速分享");// 设置通知的标题
@@ -149,26 +152,29 @@ WebServiceListener {
 			
 			Notification notification = builder.build();
 			notificationManager.notify(1,notification);// 要求通知管理器发送这条通知，其中第一个参数是通知在系统的id
+
+		}else if(response instanceof UpdateGCMResponse){
+
 		}
 		
 	}
 
 	@Override
 	public void ResponseFailedCallBack(int tag, ResponseBase response) {
-		
-		
+		Log.e("Raymond send token",response.responseMessage);
+		stopSelf();
 	}
 
 	@Override
 	public void ResponseConnectionError(int tag, ResponseBase response) {
-		
-		
+		Log.e("Raymond connect for notification",response.responseMessage);
+		stopSelf();
 	}
 	
 	private void subscribeTopics(String token) throws IOException {
         GcmPubSub pubSub = GcmPubSub.getInstance(this);
         for (String topic : TOPICS) {
-            pubSub.subscribe(token, "/topics/" + topic, null);
+            pubSub.subscribe(token, Constants.GCM_TOPIC + topic, null);
         }
     }
 

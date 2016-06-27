@@ -6,11 +6,14 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Base64;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +25,8 @@ import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,6 +45,7 @@ import com.auroratechdevelopment.ausoshare.ui.home.PrepareShareAdActivity;
 import com.auroratechdevelopment.ausoshare.ui.login.LoginActivity;
 import com.auroratechdevelopment.ausoshare.ui.login.RegisterActivity;
 import com.auroratechdevelopment.ausoshare.ui.photopicker.PhotoPickerActivity;
+import com.auroratechdevelopment.ausoshare.ui.startup.SplashActivity;
 import com.auroratechdevelopment.ausoshare.util.Constants;
 import com.auroratechdevelopment.common.ViewUtils;
 import com.auroratechdevelopment.common.util.FileUtils;
@@ -64,60 +70,64 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 import org.w3c.dom.Text;
 
 /**
  * Created by happy pan on 2015/10/30.
- * Updated by Raymond Zhuang 2016/4/25
+ * Updated by Raymond Zhuang 2016/4/25-6/14
  */
 //public class ProfileFragment extends HomeFragmentBase implements
 public class ProfileFragment extends HomeFragmentBase implements
-    View.OnClickListener, 
-    HomeActivity.HomeWithdrawUpdated,HomeIncomeUpdated, HomeAvatarUpdated
-    {
+    View.OnClickListener, CustomAlertDialog.AlertCallback,
+    HomeActivity.HomeWithdrawUpdated,HomeIncomeUpdated, HomeAvatarUpdated {
     private RelativeLayout userProfileLayout;
     //private ImageView loginOutImageThumb,userImageThumb,myCurrentIncomeImage,myForwardedAdImage,myWithdrawRecordImage, myWithdrawRequestImage;
     //private TextView loginOutProfileText,userProfileText,myCurrentIncomeText,myForwardedAdText,myWithdrawRecordText,myWithdrawRequestText;
-    private TextView m_tv_username,m_tv_asset,m_leaderboard,m_tV_shared,m_tV_withdraw_history,m_tV_withdraw_request;
-    private TextView m_tV_shared_l,m_tV_withdraw_history_l,m_tV_withdraw_request_l;
-    private LinearLayout m_layout_shared,m_layout_withdraw,m_layout_request;
-    private Button m_btn_logout,m_btn_profile;
+    private TextView m_tv_username, m_tv_asset, m_leaderboard, m_tV_shared, m_tV_withdraw_history, m_tV_withdraw_request;
+    private TextView m_tV_shared_l, m_tV_withdraw_history_l, m_tV_withdraw_request_l;
+    private LinearLayout m_layout_shared, m_layout_withdraw, m_layout_request;
+    private Button m_btn_logout, m_btn_profile;
     private TextView m_tv_currentIncome;
     private ImageView m_img_avatar;
     private TextView m_tv_avatar;
     private Bitmap m_bm_Avatar;
+    private RadioGroup m_lang_Group;
+    private RadioButton m_lang_en, m_lang_zh;
     private CompoundButton m_Notification_switch;
-    
+
+    private boolean m_bIsCancelled = false;
+
     private static final int REQUEST_PICK_PICTURE = 0xaf;
-    
-    
+
+
     @Override
-	public void onSaveInstanceState(Bundle outState) {
-       super.onSaveInstanceState(outState);
-       
-       if(m_bm_Avatar != null){
-    	   	
-    	   	if(m_bm_Avatar.isRecycled() == false){
-	    		m_bm_Avatar.recycle(); 
-	 			m_bm_Avatar = null; 
-	 			System.gc();
-    		}
-       }
-       
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        if (m_bm_Avatar != null) {
+
+            if (m_bm_Avatar.isRecycled() == false) {
+                m_bm_Avatar.recycle();
+                m_bm_Avatar = null;
+                System.gc();
+            }
+        }
+
     }
-    
+
     @Override
-    public void onDestroyView(){
-    	super.onDestroyView();
-    	
-    	if(m_bm_Avatar != null){
-    		
-    		if(m_bm_Avatar.isRecycled() == false){
-	    		m_bm_Avatar.recycle(); 
-	 			m_bm_Avatar = null; 
-	 			System.gc();
-    		}
+    public void onDestroyView() {
+        super.onDestroyView();
+
+        if (m_bm_Avatar != null) {
+
+            if (m_bm_Avatar.isRecycled() == false) {
+                m_bm_Avatar.recycle();
+                m_bm_Avatar = null;
+                System.gc();
+            }
         }
     }
     
@@ -133,18 +143,18 @@ public class ProfileFragment extends HomeFragmentBase implements
        }
        
     }*/
-    
-    public void onResume(){
-    	super.onResume();
-    	
-    	if(m_bm_Avatar != null){
-     	   m_img_avatar.setImageBitmap(m_bm_Avatar);
-        }else if(FileUtils.isFileExist(CustomApplication.getInstance().getEmail(),"JPG")){
- 	       m_bm_Avatar = FileUtils.loadBitmap(CustomApplication.getInstance().getEmail(),"JPG");
- 	       m_img_avatar.setImageBitmap(m_bm_Avatar);
+
+    public void onResume() {
+        super.onResume();
+
+        if (m_bm_Avatar != null) {
+            m_img_avatar.setImageBitmap(m_bm_Avatar);
+        } else if (FileUtils.isFileExist(CustomApplication.getInstance().getEmail(), "JPG")) {
+            m_bm_Avatar = FileUtils.loadBitmap(CustomApplication.getInstance().getEmail(), "JPG");
+            m_img_avatar.setImageBitmap(m_bm_Avatar);
         }
     }
-    
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -203,31 +213,32 @@ public class ProfileFragment extends HomeFragmentBase implements
         }else{
         	loginOutProfileText.setText(getResources().getString(R.string.my_log_in));
         }*/
-        
+
         //for v2
-        m_img_avatar = (ImageView)rootView.findViewById(R.id.img_avatar);
-        m_tv_avatar = (TextView)rootView.findViewById(R.id.text_upload_avatar);
+        m_img_avatar = (ImageView) rootView.findViewById(R.id.img_avatar);
+        m_tv_avatar = (TextView) rootView.findViewById(R.id.text_upload_avatar);
         m_img_avatar.setOnClickListener(this);
         m_tv_avatar.setOnClickListener(this);
-                        
-        m_tv_currentIncome = (TextView)rootView.findViewById(R.id.current_income_tV);
-        m_tv_username = (TextView)rootView.findViewById(R.id.user_name_tV);
+
+        //m_tv_currentIncome = (TextView) rootView.findViewById(R.id.current_income_tV);
+        m_tv_currentIncome = (TextView) rootView.findViewById(R.id.user_info_tV);
+        m_tv_username = (TextView) rootView.findViewById(R.id.user_name_tV);
         //m_tv_asset = (TextView)rootView.findViewById(R.id.asset_tV);
-        m_leaderboard = (TextView)rootView.findViewById(R.id.leaderboard_tV);
+        m_leaderboard = (TextView) rootView.findViewById(R.id.leaderboard_tV);
         m_tv_username.setText(CustomApplication.getInstance().getUsername());
         m_leaderboard.setOnClickListener(this);
-        
-        m_btn_logout=(Button)rootView.findViewById(R.id.button_logout);
-        m_btn_profile=(Button)rootView.findViewById(R.id.button_profile);
-        m_tV_shared=(TextView)rootView.findViewById(R.id.shared_history);
-        m_tV_shared_l=(TextView)rootView.findViewById(R.id.textView1);
-        m_tV_withdraw_history=(TextView)rootView.findViewById(R.id.withdraw_history);
-        m_tV_withdraw_history_l=(TextView)rootView.findViewById(R.id.textView2);
-        m_tV_withdraw_request=(TextView)rootView.findViewById(R.id.withdraw_request);
-        m_tV_withdraw_request_l=(TextView)rootView.findViewById(R.id.textView3);
-        m_layout_shared = (LinearLayout)rootView.findViewById(R.id.shared_history_layout);
-        m_layout_withdraw = (LinearLayout)rootView.findViewById(R.id.withdraw_history_layout);
-        m_layout_request = (LinearLayout)rootView.findViewById(R.id.withdraw_request_layout);
+
+        m_btn_logout = (Button) rootView.findViewById(R.id.button_logout);
+        m_btn_profile = (Button) rootView.findViewById(R.id.button_profile);
+        m_tV_shared = (TextView) rootView.findViewById(R.id.shared_history);
+        m_tV_shared_l = (TextView) rootView.findViewById(R.id.textView1);
+        m_tV_withdraw_history = (TextView) rootView.findViewById(R.id.withdraw_history);
+        m_tV_withdraw_history_l = (TextView) rootView.findViewById(R.id.textView2);
+        m_tV_withdraw_request = (TextView) rootView.findViewById(R.id.withdraw_request);
+        m_tV_withdraw_request_l = (TextView) rootView.findViewById(R.id.textView3);
+        m_layout_shared = (LinearLayout) rootView.findViewById(R.id.shared_history_layout);
+        m_layout_withdraw = (LinearLayout) rootView.findViewById(R.id.withdraw_history_layout);
+        m_layout_request = (LinearLayout) rootView.findViewById(R.id.withdraw_request_layout);
         m_btn_logout.setOnClickListener(this);
         m_btn_profile.setOnClickListener(this);
         m_layout_shared.setOnClickListener(this);
@@ -239,200 +250,320 @@ public class ProfileFragment extends HomeFragmentBase implements
         m_tV_withdraw_history_l.setOnClickListener(this);
         m_tV_withdraw_request.setOnClickListener(this);
         m_tV_withdraw_request_l.setOnClickListener(this);
-        
-        m_Notification_switch = ((CompoundButton)rootView.findViewById(R.id.noti_switch));
+
+        m_Notification_switch = ((CompoundButton) rootView.findViewById(R.id.noti_switch));
         m_Notification_switch.setChecked(CustomApplication.getInstance().getNotificationChecked());
+
         m_Notification_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 CustomApplication.getInstance().setNotificationChecked(isChecked);
             }
         });
-        
-        
+
+        m_lang_Group = (RadioGroup) rootView.findViewById(R.id.lang_radioGroup);
+        m_lang_en = (RadioButton) rootView.findViewById(R.id.en_radioButton);
+        m_lang_zh = (RadioButton) rootView.findViewById(R.id.zh_radioButton);
+
+        if (CustomApplication.getInstance().getLanguage().substring(0, 2).equals("zh")) {
+            m_lang_zh.setChecked(true);
+        } else {
+            m_lang_en.setChecked(true);
+        }
+
+        m_lang_Group.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if(m_bIsCancelled){
+                    m_bIsCancelled = false;
+                    return;
+                }
+                if (checkedId == m_lang_en.getId()) {
+
+                    /*if(homeActivity != null){
+                        homeActivity.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                homeActivity.showAlert(getActivity(),
+                                        getResources().getString(R.string.lang_title_en),
+                                        getResources().getString(R.string.lang_set_en));
+                            }
+                        });
+                    }*/
+                    SetENCallback callback = new SetENCallback();
+                    showCenterScreenOkCancelAlert(getContext(),
+                            getResources().getString(R.string.lang_title_en),
+                            getResources().getString(R.string.lang_change_en),
+                            "OK", "Cancel",
+                            callback, true);
+
+
+                } else if (checkedId == m_lang_zh.getId()) {
+                    SetZHCallback callback = new SetZHCallback();
+                    showCenterScreenOkCancelAlert(getContext(),
+                            getResources().getString(R.string.lang_title_zh),
+                            getResources().getString(R.string.lang_change_zh),
+                            "确认", "取消",
+                            callback, true);
+
+                    /*if(homeActivity != null){
+                        homeActivity.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                homeActivity.showAlert(getActivity(),
+                                        getResources().getString(R.string.lang_title_zh),
+                                        getResources().getString(R.string.lang_set_zh));
+                            }
+                        });
+                    }*/
+
+                }
+
+            }
+        });
+
         return rootView;
     }
-    
-    public void  SelectPhoto() {
-    	
-		final Bundle bundle = new Bundle(); 
+
+
+
+    public void SelectPhoto() {
+
+        final Bundle bundle = new Bundle();
         bundle.putString(Constants.LAST_PAGE, Constants.LOGIN_PAGE_FROM_LOGIN);
-        ViewUtils.startPageForResult(bundle, getActivity(),REQUEST_PICK_PICTURE, PhotoPickerActivity.class);
-    	//Intent intent = new Intent();
-		//intent.setClass(getActivity(), PhotoPickerActivity.class);
-    	//startActivityForResult(intent,REQUEST_PICK_PICTURE);
-    
+        ViewUtils.startPageForResult(bundle, getActivity(), REQUEST_PICK_PICTURE, PhotoPickerActivity.class);
+        //Intent intent = new Intent();
+        //intent.setClass(getActivity(), PhotoPickerActivity.class);
+        //startActivityForResult(intent,REQUEST_PICK_PICTURE);
+
     }
-    
-        
+
+
     @Override
-    public void onClick(View view){
-        switch (view.getId()){
-        	case R.id.button_logout:
-        		Logout_transferToHome();
-        		
-        		break;
-        		
-        	case R.id.img_avatar:
-        	case R.id.text_upload_avatar:
-        		
-        		SelectPhoto();
-        		
-        		break;
-        		
-	        case R.id.login_out_image_thumb:
-	        case R.id.login_out_profile_text:
-	        	if(CustomApplication.getInstance().getEmail().equalsIgnoreCase("")){
-	        		transferToLogin();
-            	}
-            	else{
-            		transferToLogout();
-            	}
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.button_logout:
+                Logout_transferToHome();
+
+                break;
+
+            case R.id.img_avatar:
+            case R.id.text_upload_avatar:
+
+                SelectPhoto();
+
+                break;
+
+            case R.id.login_out_image_thumb:
+            case R.id.login_out_profile_text:
+                if (CustomApplication.getInstance().getEmail().equalsIgnoreCase("")) {
+                    transferToLogin();
+                } else {
+                    transferToLogout();
+                }
                 break;
             case R.id.user_profile_layout:
             case R.id.user_image_thumb:
             case R.id.user_profile_text:
             case R.id.button_profile:
-            	if(CustomApplication.getInstance().getEmail().equalsIgnoreCase("")){
-            		ViewUtils.startPage(null, getActivity(), LoginActivity.class);
+                if (CustomApplication.getInstance().getEmail().equalsIgnoreCase("")) {
+                    ViewUtils.startPage(null, getActivity(), LoginActivity.class);
 //            		getActivity().finish();
-            	}
-            	else{
-            		transferToUserProfile();
-            	}
+                } else {
+                    transferToUserProfile();
+                }
                 break;
             case R.id.my_current_income_tv:
             case R.id.my_current_income_image:
             case R.id.leaderboard_tV:
-            	if(CustomApplication.getInstance().getEmail().equalsIgnoreCase("")){
-            		ViewUtils.startPage(null, getActivity(), LoginActivity.class);
+                if (CustomApplication.getInstance().getEmail().equalsIgnoreCase("")) {
+                    ViewUtils.startPage(null, getActivity(), LoginActivity.class);
 //            		getActivity().finish();
-            	}
-            	else{
-            		getMyCurrentIncome();
-            	}
+                } else {
+                    getMyCurrentIncome();
+                }
                 break;
             case R.id.my_forwarded_ad_tv:
             case R.id.my_forwarded_ad_image:
             case R.id.shared_history_layout:
             case R.id.shared_history:
             case R.id.textView1:
-            	if(CustomApplication.getInstance().getEmail().equalsIgnoreCase("")){
-            		ViewUtils.startPage(null, getActivity(), LoginActivity.class);
+                if (CustomApplication.getInstance().getEmail().equalsIgnoreCase("")) {
+                    ViewUtils.startPage(null, getActivity(), LoginActivity.class);
 //            		getActivity().finish();
-            	}
-            	else{
-            		getMyForwardedAd();
-            	}
+                } else {
+                    getMyForwardedAd();
+                }
                 break;
             case R.id.my_withdraw_record_tv:
             case R.id.my_withdraw_record_image:
             case R.id.withdraw_history_layout:
             case R.id.withdraw_history:
             case R.id.textView2:
-            	if(CustomApplication.getInstance().getEmail().equalsIgnoreCase("")){
-            		ViewUtils.startPage(null, getActivity(), LoginActivity.class);
+                if (CustomApplication.getInstance().getEmail().equalsIgnoreCase("")) {
+                    ViewUtils.startPage(null, getActivity(), LoginActivity.class);
 //            		getActivity().finish();
-            	}
-            	else{
-            		getMyWithDrawRecord();
-            	}
+                } else {
+                    getMyWithDrawRecord();
+                }
                 break;
             case R.id.my_withdraw_request_tv:
             case R.id.my_withdraw_request_image:
             case R.id.withdraw_request_layout:
             case R.id.withdraw_request:
             case R.id.textView3:
-            	if(CustomApplication.getInstance().getEmail().equalsIgnoreCase("")){
-            		ViewUtils.startPage(null, getActivity(), LoginActivity.class);
+                if (CustomApplication.getInstance().getEmail().equalsIgnoreCase("")) {
+                    ViewUtils.startPage(null, getActivity(), LoginActivity.class);
 //            		getActivity().finish();
-            	}
-            	else{
-            		withdrawRequest();
-            	}
+                } else {
+                    //withdrawRequest();
+
+                    showCenterScreenOkCancelAlert(getContext(),
+                            getResources().getString(R.string.confirm_prompt_text),
+                            getResources().getString(R.string.alert_withdraw_prompt_text),
+                            getString(R.string.button_ok), getString(R.string.button_cancel),
+                            this, true
+                    );
+                }
             default:
                 break;
         }
     }
 
-    private void transferToLogin(){
-        final Bundle bundle = new Bundle(); 
+
+    public CustomAlertDialog customADialog;
+
+    public void showCenterScreenOkCancelAlert(final Context context,
+                                              final CharSequence alertTitle, final String msg,
+                                              final String okButtonName, final String cancelButtonName,
+                                              final CustomAlertDialog.AlertCallback callback, final boolean isCancelable) {
+
+
+        homeActivity.runOnUiThread(new Runnable() {
+            public void run() {
+                homeActivity.dismissCustomAlertDialog();
+                customADialog = new CustomAlertDialog(
+                        context, R.style.alertStyle);
+                customADialog.setContentView(R.layout.alert_center_screen);
+                customADialog.setMessage(msg, R.id.alert_message);
+                customADialog.setTitle(alertTitle, R.id.alert_title);
+
+                if (okButtonName != null && okButtonName.length() > 0) {
+                    customADialog.setButton(okButtonName, alertButtonOkayClicked(callback));
+
+                }
+
+                if (cancelButtonName != null && cancelButtonName.length() > 0) {
+                    customADialog.setButton2(cancelButtonName,
+                            alertButtonCancelClicked(callback));
+                }
+
+                customADialog.setCancelable(isCancelable);
+                customADialog.show();
+            }
+        });
+    }
+
+
+    protected DialogInterface.OnClickListener alertButtonOkayClicked(final CustomAlertDialog.AlertCallback callback) {
+        return new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                try {
+                    callback.GetAlertButton(which);
+                } catch (Exception e) {
+                    // e.printStackTrace();
+                }
+            }
+        };
+    }
+
+    protected DialogInterface.OnClickListener alertButtonCancelClicked(
+            final CustomAlertDialog.AlertCallback callback) {
+        return new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                try {
+                    callback.GetAlertButton(which);
+                } catch (Exception e) {
+                    // e.printStackTrace();
+                }
+
+                return;
+            }
+        };
+    }
+
+    private void transferToLogin() {
+        final Bundle bundle = new Bundle();
         bundle.putString(Constants.LAST_PAGE, Constants.LOGIN_PAGE_FROM_LOGIN);
-        
-    	ViewUtils.startPage(bundle, getActivity(), LoginActivity.class);
+
+        ViewUtils.startPage(bundle, getActivity(), LoginActivity.class);
 
     }
-    
-    private void Logout_transferToHome(){
-    	final EdwardAlertDialog ad = new EdwardAlertDialog(getActivity());
-    	ad.setTitle(getResources().getString(R.string.my_logout_info_title));
-    	ad.setMessage(getResources().getString(R.string.my_logout_info_content));
-    	ad.setPositiveButton(getResources().getString(R.string.button_ok), new OnClickListener() { 
-    	@Override                  
-    	public void onClick(View v) {
-    	    // TODO Auto-generated method stub
-    	    ad.dismiss();
-    	    CustomApplication.getInstance().setEmail("");
-            CustomApplication.getInstance().setLoginOutStatus(false);
-            
-            HomeActivity pA = (HomeActivity)getActivity();
-    		pA.resetBottomSelected();
-    		pA.showHome();
 
-            //loginOutProfileText.setText(getResources().getString(R.string.my_log_in));
+    private void Logout_transferToHome() {
+        final EdwardAlertDialog ad = new EdwardAlertDialog(getActivity());
+        ad.setTitle(getResources().getString(R.string.my_logout_info_title));
+        ad.setMessage(getResources().getString(R.string.my_logout_info_content));
+        ad.setPositiveButton(getResources().getString(R.string.button_ok), new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                ad.dismiss();
+                CustomApplication.getInstance().setEmail("");
+                CustomApplication.getInstance().setLoginOutStatus(false);
+
+                HomeActivity pA = (HomeActivity) getActivity();
+                pA.resetBottomSelected();
+                pA.showHome();
+
+                //loginOutProfileText.setText(getResources().getString(R.string.my_log_in));
 //    	    Toast.makeText(Test.this, "被点到确定", Toast.LENGTH_LONG).show();        
-    	}
-    	}); 
-    	ad.setNegativeButton(getResources().getString(R.string.button_cancel), new OnClickListener() { 
-    	@Override                  
-    	public void onClick(View v) {
-    	// TODO Auto-generated method stub
-    	ad.dismiss();
+            }
+        });
+        ad.setNegativeButton(getResources().getString(R.string.button_cancel), new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                ad.dismiss();
 //    	Toast.makeText(Test.this, "被点到取消", Toast.LENGTH_LONG).show();
-    	}
-    	});
-    	
+            }
+        });
+
     }
-    
-    private void transferToLogout(){
-    	final EdwardAlertDialog ad = new EdwardAlertDialog(getActivity());
-    	ad.setTitle(getResources().getString(R.string.my_logout_info_title));
-    	ad.setMessage(getResources().getString(R.string.my_logout_info_content));
-    	ad.setPositiveButton(getResources().getString(R.string.button_ok), new OnClickListener() { 
-    	@Override                  
-    	public void onClick(View v) {
-    	    // TODO Auto-generated method stub
-    	    ad.dismiss();
-    	    CustomApplication.getInstance().setEmail("");
-            CustomApplication.getInstance().setLoginOutStatus(false);
-            //loginOutProfileText.setText(getResources().getString(R.string.my_log_in));
+
+    private void transferToLogout() {
+        final EdwardAlertDialog ad = new EdwardAlertDialog(getActivity());
+        ad.setTitle(getResources().getString(R.string.my_logout_info_title));
+        ad.setMessage(getResources().getString(R.string.my_logout_info_content));
+        ad.setPositiveButton(getResources().getString(R.string.button_ok), new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                ad.dismiss();
+                CustomApplication.getInstance().setEmail("");
+                CustomApplication.getInstance().setLoginOutStatus(false);
+                //loginOutProfileText.setText(getResources().getString(R.string.my_log_in));
 //    	    Toast.makeText(Test.this, "被点到确定", Toast.LENGTH_LONG).show();        
-    	}
-    	}); 
-    	ad.setNegativeButton(getResources().getString(R.string.button_cancel), new OnClickListener() { 
-    	@Override                  
-    	public void onClick(View v) {
-    	// TODO Auto-generated method stub
-    	ad.dismiss();
+            }
+        });
+        ad.setNegativeButton(getResources().getString(R.string.button_cancel), new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                ad.dismiss();
 //    	Toast.makeText(Test.this, "被点到取消", Toast.LENGTH_LONG).show();
-    	}
-    	});
-    	
+            }
+        });
+
     }
-    
-    private void withdrawRequest(){
-    	WebServiceHelper.getInstance().withdrawRequest(
-                CustomApplication.getInstance().getAndroidID(),
-                CustomApplication.getInstance().getEmail()
-        );
-    }
-    
-    protected void getMyCurrentIncome(){
-        getActivity().startActivity(new Intent(getActivity(),CurrentIncomeActivity.class));
+
+
+    protected void getMyCurrentIncome() {
+        getActivity().startActivity(new Intent(getActivity(), CurrentIncomeActivity.class));
         getActivity().finish();
     }
 
-    protected void getMyForwardedAd(){
+    protected void getMyForwardedAd() {
         Intent urlIntent = new Intent();
         urlIntent.putExtra(Constants.CONTACT_URL, WebServiceConstants.statsForwardedAdHistory);
         urlIntent.setClass(getActivity(), ProfileURLActivity.class);
@@ -441,7 +572,7 @@ public class ProfileFragment extends HomeFragmentBase implements
         getActivity().finish();
     }
 
-    protected void getMyWithDrawRecord(){
+    protected void getMyWithDrawRecord() {
         Intent urlIntent = new Intent();
         urlIntent.putExtra(Constants.CONTACT_URL, WebServiceConstants.statsWithdrawHistory);
         urlIntent.setClass(getActivity(), ProfileURLActivity.class);
@@ -451,51 +582,49 @@ public class ProfileFragment extends HomeFragmentBase implements
     }
 
 
-    protected void transferToUserProfile(){	
-    	startActivity(new Intent(getActivity(), UpdateProfileActivity.class));
+    protected void transferToUserProfile() {
+        startActivity(new Intent(getActivity(), UpdateProfileActivity.class));
         getActivity().finish();
     }
 
-    
-    
 
-	@Override
-	public void onHomeWithdrawUpdated(int tag, final WithdrawRequestResponse response) {
-		Log.e("Edward", "onHomeWithdrawUpdated ****");
-        if(homeActivity != null){
+    @Override
+    public void onHomeWithdrawUpdated(int tag, final WithdrawRequestResponse response) {
+        Log.e("Edward", "onHomeWithdrawUpdated ****");
+        if (homeActivity != null) {
             homeActivity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                	homeActivity.showAlert(getActivity(),
+                    homeActivity.showAlert(getActivity(),
                             getResources().getString(R.string.my_withdraw_request),
                             response.responseMessage);
                 }
             });
         }
-		
-	}
 
-	@Override
-	public void onHomeCurrentIncomeUpdated(int tag, CurrentIncomeResponse response) {
-		final CurrentIncomeResponse currentIncome = response;
-		
-		if(homeActivity != null){
+    }
+
+    @Override
+    public void onHomeCurrentIncomeUpdated(int tag, CurrentIncomeResponse response) {
+        final CurrentIncomeResponse currentIncome = response;
+
+        if (homeActivity != null) {
             homeActivity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                	if(isAdded()){
-                		m_tv_currentIncome.setText(getResources().getString(R.string.ui_current_income)+
-                            currentIncome.data.currentIncome);
-                	}
+                    if (isAdded()) {
+                        m_tv_currentIncome.setText(getResources().getString(R.string.ui_current_income) +
+                                currentIncome.data.currentIncome);
+                    }
                 }
             });
         }
-		
-	}
-	
 
-	@Override
-	public void onHomeAvatarUpdated(Bitmap data) {
+    }
+
+
+    @Override
+    public void onHomeAvatarUpdated(Bitmap data) {
 		/*Bundle extras = data.getExtras();
 		if (extras != null) {
 			m_bm_Avatar = extras.getParcelable("data");
@@ -503,25 +632,129 @@ public class ProfileFragment extends HomeFragmentBase implements
 			
 			
 		}*/
-		
-		if (data != null) {
-			m_bm_Avatar = data;
-			m_img_avatar.setImageBitmap(m_bm_Avatar);
-		}
-	}
-	
-	@Override
-	public void onDestroy(){
-		super.onDestroy();
-		
-		if(m_bm_Avatar != null && !m_bm_Avatar.isRecycled()){ 
-        // 回收并且置为null
-		m_bm_Avatar.recycle(); 
-		m_bm_Avatar = null; 
-		} 
-		System.gc();
-		
-	}
-	
 
+        if (data != null) {
+            m_bm_Avatar = data;
+            m_img_avatar.setImageBitmap(m_bm_Avatar);
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        if (m_bm_Avatar != null && !m_bm_Avatar.isRecycled()) {
+            // 回收并且置为null
+            m_bm_Avatar.recycle();
+            m_bm_Avatar = null;
+        }
+        System.gc();
+
+    }
+
+    private void withdrawRequest() {
+        WebServiceHelper.getInstance().withdrawRequest(
+                CustomApplication.getInstance().getAndroidID(),
+                CustomApplication.getInstance().getEmail()
+        );
+    }
+
+    @Override
+    public void GetAlertButton(int which) {
+        if(which == -1)
+            withdrawRequest();
+    }
+
+    @Override
+    public void AlertCancelled() {
+
+    }
+
+    public void setCurrentLanguage(String lang, String country) {
+        Locale locale = new Locale(lang, country);
+        Resources resources = getResources();
+        Configuration config = resources.getConfiguration();
+        config.locale = locale;
+        DisplayMetrics ldm = resources.getDisplayMetrics();
+        resources.updateConfiguration(config, ldm);
+
+        String language = config.locale.getLanguage();
+        CustomApplication.getInstance().setLanguage(language);
+
+
+        Intent intent = homeActivity.getIntent();
+        homeActivity.overridePendingTransition(0, 0);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        homeActivity.m_bottombar = null;
+        homeActivity.finish();
+        homeActivity.overridePendingTransition(0, 0);
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        //startActivity(intent);
+        ViewUtils.startPageWithClearStack(null, homeActivity, SplashActivity.class);
+
+    }
+
+
+    class SetZHCallback implements CustomAlertDialog.AlertCallback {
+
+        /*private static SetZHCallback instance = null;
+
+        public static SetZHCallback getInstance() {
+            if (instance == null)
+                instance = new SetZHCallback();
+
+            return instance;
+        }*/
+
+        @Override
+        public void GetAlertButton(int which) {
+            if(which == -1) {
+                Log.i("Raymond Language:", "中文");
+                setCurrentLanguage("zh","CN");
+            }else{
+                m_bIsCancelled = true;
+                m_lang_en.setChecked(true);
+            }
+
+        }
+
+        @Override
+        public void AlertCancelled() {
+
+        }
+    }
+
+    class SetENCallback implements CustomAlertDialog.AlertCallback {
+
+        /*private static SetENCallback instance = null;
+
+        public static SetENCallback getInstance() {
+            if (instance == null)
+                instance = new SetENCallback();
+
+            return instance;
+        }*/
+
+        @Override
+        public void GetAlertButton(int which) {
+            if(which == -1) {
+                Log.i("Raymond Language:", "English");
+                setCurrentLanguage("en","CA");
+            }else{
+                m_bIsCancelled = true;
+                m_lang_zh.setChecked(true);
+            }
+        }
+
+        @Override
+        public void AlertCancelled() {
+
+        }
+
+
+    }
 }

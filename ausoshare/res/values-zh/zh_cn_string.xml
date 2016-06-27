@@ -174,7 +174,7 @@
     
      <!-- ad list -->
      <string name="ui_click">点击打开广告</string>
-     <string name="ui_share">在打开的广告页点击分享到微信</string>
+     <string name="ui_share">在打开的广告页点击分享</string>
      <string name="ui_view">查看收入</string>
     <string name="ui_bonus">奖金：$</string>
     <string name="ui_income">每次点击：$</string>
@@ -198,7 +198,9 @@
      <string name="ui_share_record">  有效转发广告记录</string>  
      <string name="ui_withdraw_record">  我的提现记录</string>
      <string name="ui_withdraw_request">  提现请求</string>
-     <string name="ui_push_notification">  接受推送</string> 
+     <string name="ui_push_notification">  接受推送</string>
+     <string name="ui_lang_setting">语言设置</string>
+    <string name="ui_lang_zh">中文</string>
      <string name="ui_take_picture">拍照</string>
      <string name="ui_album">从相册中选取</string>
      
@@ -219,5 +221,11 @@
     <string name="no_photo">相册没有图片</string>
     
     <string name="no_data">没有数据，点击屏幕刷新</string>
+
+    <string name="confirm_prompt_text">操作确认提示</string>
+    <string name="alert_withdraw_prompt_text">您现在就要提现吗？</string>
+
+    <string name="update_title">发现新版本</string>
+    <string name="update_require">现在就升级吗？</string>
     
 </resources>

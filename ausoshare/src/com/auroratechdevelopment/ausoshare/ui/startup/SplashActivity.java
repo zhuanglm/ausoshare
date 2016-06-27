@@ -1,15 +1,20 @@
+
 package com.auroratechdevelopment.ausoshare.ui.startup;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.GestureDetector.OnGestureListener;
 import android.view.MotionEvent;
@@ -32,6 +37,8 @@ import com.auroratechdevelopment.ausoshare.ui.ext.MyViewFilpper;
 import com.auroratechdevelopment.ausoshare.ui.ext.MyViewFilpper.OnDisplayChagnedListener;
 import com.auroratechdevelopment.ausoshare.ui.home.HomeActivity;
 import com.auroratechdevelopment.ausoshare.ui.login.LoginActivity;
+import com.auroratechdevelopment.ausoshare.ui.startup.FirstTimeUseGuideActivity;
+import com.auroratechdevelopment.ausoshare.ui.startup.NotificationService;
 import com.auroratechdevelopment.ausoshare.util.AppLocationService;
 import com.auroratechdevelopment.ausoshare.util.CheckNetworkStatus;
 import com.auroratechdevelopment.ausoshare.util.LocationAddress;
@@ -100,18 +107,29 @@ public class SplashActivity extends Activity implements OnGestureListener,OnDisp
         });
         
         checkNetworkStatus = new CheckNetworkStatus(this);
-        
+        getDeviceLocation();
+
         isNotFirstTime = CustomApplication.getInstance().getNotFirstTimeUse();
+
+        if(!isNotFirstTime)
+            getSysLanguage();
+        else
+            getCurrentLanguage();
 
         if (isNotFirstTime && checkNetworkStatus.getNetworkStatus()) {
         	splashAdImage1.setScaleType(ScaleType.FIT_XY);
-        	new LoadNetPicture().getPicture(WebServiceConstants.splashAdImageURL, splashAdImage1);
+            if(CustomApplication.getInstance().getLanguage().substring(0,2).equals("zh")) {
+                new LoadNetPicture().getPicture(WebServiceConstants.splashAdImageURL, splashAdImage1);
+            }
+            else{
+                new LoadNetPicture().getPicture(WebServiceConstants.splashAdImageURL_EN, splashAdImage1);
+            }
         	//splashAdImage2.setScaleType(ScaleType.CENTER_INSIDE);
         	//splashAdImage2.setImageDrawable(getResources().getDrawable(R.drawable.splash_share));
             
             img_vf.setOnDisplayChagnedListener(this);
-            
-            
+
+            CustomApplication.getInstance().setIsUpdate(true);
                        
         }else{
         	splashAdImage1.setScaleType(ScaleType.FIT_XY);
@@ -119,9 +137,7 @@ public class SplashActivity extends Activity implements OnGestureListener,OnDisp
         	//splashAdImage1.setImageDrawable(getResources().getDrawable(R.drawable.splash_share));
         	
         }
-        
-        getDeviceLocation();
-        
+
         indicators = new ImageView[m_nPages];
         for(int i = 0; i< m_nPages;i++) {
         	indicators[i] = (ImageView) pointLayout.getChildAt(i);
@@ -132,7 +148,8 @@ public class SplashActivity extends Activity implements OnGestureListener,OnDisp
         
         //is not the first time, means from the second times
         if(isNotFirstTime){
-        	pointLayout.setVisibility(View.INVISIBLE);
+
+            pointLayout.setVisibility(View.INVISIBLE);
         	m_BtnSkip.setVisibility(View.VISIBLE);
         	
         	new Handler().postDelayed(new Runnable() {
@@ -152,14 +169,48 @@ public class SplashActivity extends Activity implements OnGestureListener,OnDisp
         	splashAdImage2.setScaleType(ScaleType.FIT_XY);
         	splashAdImage2.setImageDrawable(getResources().getDrawable(R.drawable.firsttime_launch_app_2));
         	//img_vf.setAutoStart(true);
-        	
-        	CustomApplication.getInstance().setNotificationChecked(false);
+
+        	CustomApplication.getInstance().setNotificationChecked(true);
         	CustomApplication.getInstance().setNotFirstTimeUse(true);
         	//showFirstTimeUseGuide();
         }
 
     }
-    
+
+
+
+    public void getCurrentLanguage(){
+        Locale locale;
+
+        if(CustomApplication.getInstance().getLanguage().substring(0,2).equals("zh")) {
+            locale = new Locale("zh","CN");
+            Log.i("Raymond Language:","zh");
+        }else{
+            locale = new Locale("en","CA");
+            Log.i("Raymond Language:","en");
+        }
+
+        Resources resources = getResources();
+        Configuration config = resources.getConfiguration();
+        config.locale = locale;
+        DisplayMetrics ldm = resources.getDisplayMetrics();
+        resources.updateConfiguration(config, ldm);
+
+
+
+    }
+
+    public void getSysLanguage(){
+
+        Configuration config = getResources().getConfiguration();
+
+        String language = config.locale.getLanguage();
+        CustomApplication.getInstance().setLanguage(language);
+
+        Log.i("Raymond sysLanguage:",language);
+
+    }
+
     public void getDeviceLocation(){
         appLocationService = new AppLocationService(SplashActivity.this);
 

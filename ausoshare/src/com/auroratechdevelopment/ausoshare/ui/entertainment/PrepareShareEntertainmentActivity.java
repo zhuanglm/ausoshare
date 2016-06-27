@@ -46,12 +46,16 @@ import com.auroratechdevelopment.ausoshare.util.Constants;
 import com.auroratechdevelopment.common.ViewUtils;
 import com.auroratechdevelopment.common.util.ImageService;
 import com.auroratechdevelopment.common.util.LoadNetPicture;
+import com.auroratechdevelopment.common.util.SocialMediaUtils;
 import com.auroratechdevelopment.common.webservice.models.AdDataItem;
 import com.auroratechdevelopment.common.webservice.models.OnGoingAdItem;
 
 //import com.tencent.mm.sdk.modelmsg.SendMessageToWX;
 //import com.tencent.mm.sdk.modelmsg.WXMediaMessage;
 //import com.tencent.mm.sdk.modelmsg.WXWebpageObject;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookSdk;
+import com.facebook.share.widget.ShareDialog;
 import com.tencent.mm.sdk.openapi.BaseReq;
 import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.SendMessageToWX;
@@ -69,7 +73,7 @@ public class PrepareShareEntertainmentActivity extends ActivityBase {
     private OnGoingAdItem adItem;
     private WebView wv;
     private String url;
-    private Button shareConfirmBtn;
+    //private Button shareConfirmBtn;
     
     private IWXAPI api;
     
@@ -87,11 +91,26 @@ public class PrepareShareEntertainmentActivity extends ActivityBase {
     
     private ImageView imageView, viewImage_ad_share;
     private int m_lastTab;
+
+    ShareDialog shareDialog;
+    CallbackManager callbackManager;
+
+
+    @Override
+    protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
+    }
     
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        //AppEventsLogger.activateApp(this);
+        callbackManager = CallbackManager.Factory.create();
+        shareDialog = new ShareDialog(this);
         
         Bundle bundle=this.getIntent().getExtras(); 
         m_lastTab = bundle.getInt(Constants.LAST_TAB);
@@ -105,7 +124,7 @@ public class PrepareShareEntertainmentActivity extends ActivityBase {
         adDataItem = b.getParcelable(Constants.BUNDLE_AD_ITEM);
 
         setContentView(R.layout.activity_prepare_share_ad);
-        shareConfirmBtn = (Button)findViewById(R.id.share_confirm_btn);   
+        //shareConfirmBtn = (Button)findViewById(R.id.share_confirm_btn);
         viewImage_ad_share = (ImageView)findViewById(R.id.view_image_ad_share);
 
         api = WXAPIFactory.createWXAPI(this, Constants.APP_ID);
@@ -367,7 +386,7 @@ public class PrepareShareEntertainmentActivity extends ActivityBase {
 			req.scene = SendMessageToWX.Req.WXSceneTimeline;
 		}
 		api.sendReq(req);
-		updatedSharedTimes();
+		//updatedSharedTimes();
     }
     
 	public void PrepareToShareOnClicked(View view){
@@ -377,6 +396,16 @@ public class PrepareShareEntertainmentActivity extends ActivityBase {
 	public void PrepareToShareToFriendOnClicked(View view){
 		readyToShare(Constants.SHARE_TO_FRIENDS);
 	}
+
+    public void FacebookOnClicked(View view){
+        SocialMediaUtils.FacebookOnShared(shareDialog,adDataItem);
+        //updatedSharedTimes();
+    }
+
+    public void TwitterOnClicked(View view){
+        //SocialMediaUtils.TwitterOnShared(this,adDataItem);
+        //updatedSharedTimes();
+    }
 	
 	public static Bitmap getLoacalBitmap(String url) {
         try {
